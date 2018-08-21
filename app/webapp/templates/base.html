@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang=ja>
+<head>
+    <meta charset="UTF-8">
+    {# タイトルブロック #}
+    <title>{% block title %}{% endblock %}</title>
+
+    {# style.cssを読み込む #}
+    <link rel="stylesheet" type="text/css" href="{% static 'poll/style.css' %}" />
+</head>
+<body>
+    {# メインコンテンツを配置する #}
+    {% block content %}{% endblock %}
+</body>
+</html>
