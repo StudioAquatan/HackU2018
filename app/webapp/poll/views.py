@@ -13,3 +13,9 @@ def listener(request):
     template_name = 'poll/listener.html'
 
     return render(request, template_name)
+
+
+def speaker(request):
+    template_name = 'poll/speaker.html'
+
+    return render(request, template_name)
