@@ -19,3 +19,9 @@ def speaker(request):
     template_name = 'poll/speaker.html'
 
     return render(request, template_name)
+
+
+def speaker_res(request):
+    template_name = 'poll/speaker_res.html'
+
+    return render(request, template_name)
