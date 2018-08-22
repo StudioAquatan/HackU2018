@@ -7,6 +7,10 @@
 {# メインコンテンツ #}
 {% block content %}
 
+    <p>{{ understand_vote }}</p>
+    <p>{{ have_known_vote }}</p>
+    <p>{{ not_understand_vote }}</p>
+
     <button>次のスライド</button>
     <button><a href={% url 'poll:speaker_res' %}> 講義終了</a></button>
     {# モーダルを表示する為のテスト用ボタン（後で消す） #}
