@@ -18,7 +18,17 @@ def listener(request):
 def speaker(request):
     template_name = 'poll/speaker.html'
 
-    return render(request, template_name)
+    understand_vote = Vote.objects.filter(votetype=0)
+    have_known_vote = Vote.objects.filter(votetype=1)
+    not_understand_vote = Vote.objects.filter(votetype=2)
+
+    context = {
+        'understand_vote': understand_vote.len,
+        'have_known_vote': have_known_vote.len,
+        'not_understand_vote': not_understand_vote.len,
+    }
+
+    return render(request, template_name, context)
 
 
 def speaker_res(request):
