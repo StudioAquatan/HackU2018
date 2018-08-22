@@ -8,6 +8,10 @@
 
     {# style.cssを読み込む #}
     <link rel="stylesheet" type="text/css" href="{% static 'poll/style.css' %}" />
+    {# モーダルウィンドウ作るのに必要っぽいものを読み込む #}
+    <link rel="stylesheet" href="{% static 'cms/css/bootstrap.min.css' %}">
+    <script src="{% static 'cms/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'cms/js/bootstrap.bundle.min.js' %}"></script>
 </head>
 <body>
     {# メインコンテンツを配置する #}
