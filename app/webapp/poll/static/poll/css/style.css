@@ -1,0 +1,36 @@
+.jumbotron {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    min-height: 450px;
+    background-image: url("../pictures/bg-toppage.jpg");
+    background-position: center;
+    background-size: cover;
+    text-align: center;
+}
+
+.jumbotron-container {
+    position: center;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+    padding-left: 80px;
+    margin-right: 80px;
+}
+
+.container-fluid {
+    position: center;
+    text-align: center;
+}
+
+.container-fluid h1 {
+    font-size: 10vw;
+    color: #FF8200;
+}
+
+.credits {
+    text-align: right;
+    padding: 10px 20px 10px 40px;
+}
+
+.btn-outline-primary:hover {
+}
