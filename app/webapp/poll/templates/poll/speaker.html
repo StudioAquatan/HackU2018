@@ -7,9 +7,72 @@
 {# メインコンテンツ #}
 {% block content %}
 
-    <p>{{ understand_vote }}</p>
-    <p>{{ have_known_vote }}</p>
-    <p>{{ not_understand_vote }}</p>
+    {#    <p>{{ understand_vote }}</p>#}
+    {#    <p>{{ have_known_vote }}</p>#}
+    {#    <p>{{ not_understand_vote }}</p>#}
+
+    {#  票数の割合のメーター  #}
+    <div id="understand_gauge" class="understand">
+        <h2>わかったメーター</h2>
+        <div class="epoch gauge-small"></div>
+        <p>
+            <button>Transition</button>
+        </p>
+    </div>
+    <script>
+        $(function () {
+            var chart = $('#understand_gauge .epoch').epoch({
+                type: 'time.gauge',
+                value: 0.0
+            });
+
+            $('#understand_gauge button').on('click', function (e) {
+                chart.update(Math.random());
+            });
+        });
+    </script>
+
+    <div id="have_known_gauge" class="have_known">
+        <h2>もう知ってるメーター</h2>
+        <div class="epoch gauge-small"></div>
+        <p>
+            <button>Transition</button>
+        </p>
+    </div>
+    <script>
+        $(function () {
+            var chart = $('#have_known_gauge .epoch').epoch({
+                type: 'time.gauge',
+                value: 0.0
+            });
+
+            $('#have_known_gauge button').on('click', function (e) {
+                chart.update(Math.random());
+            });
+        });
+    </script>
+
+    <div id="not_understand_gauge" class="not_understand">
+        <h2>わからないメーター</h2>
+        <div class="epoch gauge-small"></div>
+        <p>
+            <button>Transition</button>
+        </p>
+    </div>
+    <script>
+        $(function () {
+            var chart = $('#not_understand_gauge .epoch').epoch({
+                type: 'time.gauge',
+                value: 0.0
+            });
+
+            $('#not_understand_gauge button').on('click', function (e) {
+                chart.update(Math.random());
+            });
+        });
+    </script>
+
+    <!-- ========================================================== -->
 
     <button>次のスライド</button>
     <button><a href={% url 'poll:speaker_res' %}> 講義終了</a></button>
