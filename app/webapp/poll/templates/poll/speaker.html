@@ -1,0 +1,40 @@
+{# base.htmlを継承 #}
+{% extends 'base.html' %}
+
+{# タイトルを変更 #}
+{% block title %}TOPページ{% endblock %}
+
+{# メインコンテンツ #}
+{% block content %}
+
+    <button>次のスライド</button>
+    <button><a href={% url 'poll:speaker_res' %}> 講義終了</a></button>
+    {# モーダルを表示する為のテスト用ボタン（後で消す） #}
+    <button class="btn btn-primary" data-toggle="modal" data-target="#modal-sample">モーダルを表示</button>
+
+    {# モーダルの配置 #}
+    <div class="modal" id="modal-sample" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+
+            {# モーダルのコンテンツ #}
+            <div class="modal-content">
+                {# モーダルのヘッダ #}
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-label">（例）お知らせ</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {# モーダルのボディ #}
+                <div class="modal-body">
+                    （例）「わからない」がn%を超えました
+                </div>
+                {# モーダルのフッタ #}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

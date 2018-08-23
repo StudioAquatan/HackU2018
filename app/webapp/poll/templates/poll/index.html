@@ -1,0 +1,12 @@
+{# base.htmlを継承 #}
+{% extends 'base.html' %}
+
+{# タイトルを変更 #}
+{% block title %}TOPページ{% endblock %}
+
+{# メインコンテンツ #}
+{% block content %}
+    <p><a href={% url 'poll:listener'%}>生徒ページ</a></p>
+    <p><a href={% url 'poll:speaker'%}>講師ページ</a></p>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang=ja>
+<head>
+    <meta charset="UTF-8">
+    {# タイトルブロック #}
+    <title>{% block title %}{% endblock %}</title>
+
+    {# style.cssを読み込む #}
+    <link rel="stylesheet" type="text/css" href="{% static 'poll/css/style.css' %}"/>
+    {# モーダルウィンドウ作るのに必要っぽいものを読み込む #}
+    <link rel="stylesheet" href="{% static 'poll/css/bootstrap.min.css' %}">
+    <script src="{% static 'poll/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'poll/js/bootstrap.bundle.min.js' %}"></script>
+</head>
+<body>
+    {# メインコンテンツを配置する #}
+    {% block content %}{% endblock %}
+</body>
+</html>
