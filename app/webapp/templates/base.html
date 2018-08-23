@@ -8,13 +8,24 @@
 
     {# style.cssを読み込む #}
     <link rel="stylesheet" type="text/css" href="{% static 'poll/css/style.css' %}"/>
+    {# Epoch.jsに付随するCSS #}
+    <link rel="stylesheet" type="text/css" href="{% static 'poll/css/epoch.min.css' %}">
+
     {# モーダルウィンドウ作るのに必要っぽいものを読み込む #}
     <link rel="stylesheet" href="{% static 'poll/css/bootstrap.min.css' %}">
     <script src="{% static 'poll/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'poll/js/bootstrap.bundle.min.js' %}"></script>
+
+    {# Epoch.jsを導入 #}
+    {#    <script src="{% static 'poll/js/d3.min.js' %}"></script>#}
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="{% static 'poll/js/epoch.min.js' %}"></script>
+    {#  test用  #}
+    <script src="{% static 'poll/js/data.js' %}"></script>
+
 </head>
 <body>
-    {# メインコンテンツを配置する #}
-    {% block content %}{% endblock %}
+{# メインコンテンツを配置する #}
+{% block content %}{% endblock %}
 </body>
 </html>
