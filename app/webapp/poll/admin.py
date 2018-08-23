@@ -1,3 +1,7 @@
 from django.contrib import admin
+from poll.models import RoomTable, VoteTable, CommentTable
 
-# Register your models here.
+# RoomTable, VoteTable, CommentTableをadminサイトから触れられるように登録
+admin.site.register(RoomTable)
+admin.site.register(VoteTable)
+admin.site.register(CommentTable)
