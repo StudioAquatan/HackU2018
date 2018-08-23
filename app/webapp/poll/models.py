@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class RoomTable(models.Model):
     """
     ルームのモデル
@@ -9,7 +10,8 @@ class RoomTable(models.Model):
     # パスワード
     password = models.CharField(max_length=32)
     # リスナーの人数
-    num_listner = models.IntegerField(default=0)
+    num_listener = models.IntegerField(default=0)
+
 
 class VoteTable(models.Model):
     """
@@ -24,6 +26,7 @@ class VoteTable(models.Model):
     # ルームID
     room_id = models.ForeignKey(RoomTable, on_delete=models.CASCADE)
 
+
 class CommentTable(models.Model):
     """
     コメントのモデル
@@ -36,3 +39,4 @@ class CommentTable(models.Model):
     slide_no = models.CharField(max_length=8, default=0)
     # ルームID
     room_id = models.ForeignKey(RoomTable, on_delete=models.CASCADE)
+    
