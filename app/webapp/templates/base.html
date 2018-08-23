@@ -16,7 +16,7 @@
     <script src="{% static 'poll/js/bootstrap.bundle.js' %}"></script>
 </head>
 
-<body style="padding-top: 3.5rem">
+<body class="body" style="padding-top: 3.5rem">
 
 {# ナビゲーションバー #}
 {% block navi %}
@@ -52,14 +52,15 @@
 
 {# メインコンテンツ #}
 {% block content %}{% endblock %}
-</body>
 
-<footer style="background-color: #0086B2">
+<footer class="footer">
     <div class="credits">
         <span class="copyright">
 		    © <script>document.write(new Date().getFullYear().toString())</script> Studio Aquatan
         </span>
     </div>
 </footer>
+
+</body>
 
 </html>

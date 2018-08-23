@@ -1,24 +1,34 @@
-.jumbotron {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    min-height: 450px;
-    background-image: url("../pictures/bg-toppage.jpg");
-    background-position: center;
-    background-size: cover;
-    text-align: center;
+/*.jumbotron {*/
+/*display: flex;*/
+/*align-items: center;*/
+/*justify-content: center;*/
+/*height: 100vh;*/
+/*min-height: 450px;*/
+/*background-image: url("../pictures/bg-top-page.jpg");*/
+/*background-position: center;*/
+/*background-size: cover;*/
+/*text-align: center;*/
+/*}*/
+
+/*.jumbotron-container {*/
+/*position: center;*/
+/*background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));*/
+/*padding-left: 80px;*/
+/*margin-right: 80px;*/
+/*}*/
+
+html {
+    position: relative;
+    min-height: 100%;
 }
 
-.jumbotron-container {
-    position: center;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
-    padding-left: 80px;
-    margin-right: 80px;
+body {
+    margin-bottom: 60px;
 }
 
 .container-fluid {
     position: center;
+    padding-bottom: 60px;
     text-align: center;
 }
 
@@ -27,9 +37,17 @@
     color: #FF8200;
 }
 
-.credits {
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #0086B2;
     text-align: right;
-    padding: 10px 20px 10px 40px;
+}
+
+.credits {
+    padding: 20px;
 }
 
 .btn-outline-primary:hover {
