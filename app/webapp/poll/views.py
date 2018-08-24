@@ -11,6 +11,8 @@ from datetime import timedelta
 from .models import VoteTable, RoomTable, CommentTable
 from .serializer import VoteSerializer, RoomSerializer, CommentSerializer
 
+from . import listener_button
+
 
 def index(request):
     template_name = 'poll/index.html'
@@ -21,6 +23,17 @@ def index(request):
 
 def listener(request):
     template_name = 'poll/listener.html'
+
+    if request.method == 'POST':
+        if 'button_1' in request.POST:
+            # ボタン1がクリックされた場合の処理
+            button1()
+        elif 'button_2' in request.POST:
+            # ボタン2がクリックされた場合の処理
+            button2()
+        elif 'button_3' in request.POST:
+            # ボタン2がクリックされた場合の処理
+            button3()
 
     return render(request, template_name)
 

@@ -6,7 +6,10 @@
 
 {# メインコンテンツ #}
 {% block content %}
-    <button>分かった</button>
-    <button>もう知ってる</button>
-    <button>分からない</button>
+    <form action="{% url 'poll:listener' %}" method="post">
+      {% csrf_token %}
+      <input type="submit" name="button_1" value="分かった">
+      <input type="submit" name="button_2" value="もう知ってる">
+      <input type="submit" name="button_2" value="分からない">
+    </form>
 {% endblock %}
