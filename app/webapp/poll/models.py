@@ -9,7 +9,7 @@ class RoomTable(models.Model):
     # パスワード
     password = models.CharField(max_length=32)
     # リスナーの人数
-    num_listner = models.IntegerField(default=0)
+    num_listener = models.IntegerField(default=0)
 
 class VoteTable(models.Model):
     """
