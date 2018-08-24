@@ -39,4 +39,3 @@ class CommentTable(models.Model):
     slide_no = models.CharField(max_length=8, default=0)
     # ルームID
     room_id = models.ForeignKey(RoomTable, on_delete=models.CASCADE)
-    
