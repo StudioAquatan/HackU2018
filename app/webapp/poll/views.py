@@ -41,8 +41,8 @@ class VoteViewSet(viewsets.ModelViewSet):
     現在の時間から過去30秒の票だけ表示する
     """
     late_limit_sec = 30
-    queryset = VoteTable.objects.filter(vote_time__gte=timezone.now() - timedelta(seconds=late_limit_sec))
-    # queryset = VoteTable.objects.filter(vote_time__gte=timezone.now() - timedelta(hours=10))
+    # queryset = VoteTable.objects.filter(vote_time__gte=timezone.now() - timedelta(seconds=late_limit_sec))
+    queryset = VoteTable.objects.all()
     serializer_class = VoteSerializer
 
 
