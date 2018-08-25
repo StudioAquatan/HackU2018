@@ -7,6 +7,8 @@ name = "pypi"
 django = "*"
 python-dotenv = "*"
 "django-bootstrap4" = "*"
+djangorestframework = "*"
+django-filter = "*"
 
 [dev-packages]
 
