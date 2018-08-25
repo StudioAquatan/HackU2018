@@ -11,7 +11,7 @@ from datetime import timedelta
 from .models import VoteTable, RoomTable, CommentTable
 from .serializer import VoteSerializer, RoomSerializer, CommentSerializer
 
-from . import listener_button
+from .listener_button import button1, button2, button3
 
 
 def index(request):
