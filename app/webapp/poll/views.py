@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
-from . import listener_button
+from .listener_button import button1, button2, button3
 
 
 def index(request):
