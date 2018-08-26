@@ -44,9 +44,6 @@
             value: 0.0
         });
 
-        <!-- ========================================================== -->
-        {#let dfd = $.Deferred();#}
-
         function getRoomPeoplenum() {
             let dfd = $.Deferred();
             $('#result').text('通信中...');
@@ -73,8 +70,11 @@
                     console.log("通信失敗;_;");
                     dfd.reject();
                 });
+            console.log("部屋の人数とってきたよー");
             return dfd.promise();
         }
+
+        {# 票の情報を取得して集計 #}
 
         function getVotes() {
             let dfd = $.Deferred();
@@ -108,8 +108,11 @@
                     console.log("通信失敗;_;");
                     dfd.reject();
                 });
+            console.log("票数とってきたよー");
             return dfd.promise();
         }
+
+        {# ゲージの値をDBから取得した値に基づいて更新 #}
 
         function updateGauge() {
             understand_gauge_chart.update(understand_gauge_cnt / room_people_num);
@@ -119,19 +122,23 @@
             console.log(have_known_gauge_cnt);
             console.log(not_understand_gauge_cnt);
             console.log(room_people_num);
-            understand_gauge_cnt=0;
-            have_known_gauge_cnt=0;
-            not_understand_gauge_cnt=0;
+            understand_gauge_cnt = 0;
+            have_known_gauge_cnt = 0;
+            not_understand_gauge_cnt = 0;
         }
 
+        {# 第二引数[msec]の間隔でfunctionを実行 #}
         setInterval(function () {
-            $.when(
-                getVotes(),
-                getRoomPeoplenum(),
-            )
-                .then(updateGauge());
-            console.log("ループの最後に到達");
-         }, 3000);
+            {# getRoomPeoplenum()にするとconsoleに部屋の人数とってきたよーと票数とってきたよーが並ぶ #}
+            {# ひとまずこれで期待する動作が得られる #}
+            getVotes()
+                .then(getRoomPeoplenum)
+                .then(updateGauge);
+            {#$.when(#}
+            {#    getVotes(),#}
+            {#    getRoomPeoplenum()#}
+            {#).then(updateGauge())#}
+        }, 3000);
 
     </script>
 
