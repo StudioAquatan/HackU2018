@@ -28,6 +28,9 @@
         let have_known_gauge_cnt = 0;
         let not_understand_gauge_cnt = 0;
         let room_people_num = 1;
+        let understand_ratio;
+        let have_known_ratio;
+        let not_understand_ratio;
 
         let understand_gauge_chart = $('#understand_gauge .epoch').epoch({
             type: 'time.gauge',
@@ -78,6 +81,9 @@
 
         function getVotes() {
             let dfd = $.Deferred();
+            understand_gauge_cnt = 0;
+            have_known_gauge_cnt = 0;
+            not_understand_gauge_cnt = 0;
             $('#result').text('通信中...');
             // Ajax通信を開始
             $.ajax({
@@ -115,16 +121,36 @@
         {# ゲージの値をDBから取得した値に基づいて更新 #}
 
         function updateGauge() {
-            understand_gauge_chart.update(understand_gauge_cnt / room_people_num);
-            have_known_gauge_chart.update(have_known_gauge_cnt / room_people_num);
-            not_understand_gauge_chart.update(not_understand_gauge_cnt / room_people_num);
+            understand_ratio = understand_gauge_cnt / room_people_num;
+            have_known_ratio = have_known_gauge_cnt / room_people_num;
+            not_understand_ratio = not_understand_gauge_cnt / room_people_num;
+
+            understand_gauge_chart.update(understand_ratio);
+            have_known_gauge_chart.update(have_known_ratio);
+            not_understand_gauge_chart.update(not_understand_ratio);
             console.log(understand_gauge_cnt);
             console.log(have_known_gauge_cnt);
             console.log(not_understand_gauge_cnt);
             console.log(room_people_num);
-            understand_gauge_cnt = 0;
-            have_known_gauge_cnt = 0;
-            not_understand_gauge_cnt = 0;
+        }
+
+        function dispModal() {
+            if (have_known_ratio > 0.5 && not_understand_ratio > 0.5) {
+                $('#modal-both').modal('show');
+                setTimeout(function () {
+                    $('#modal-both').modal('hide');
+                }, 3000);
+            } else if (have_known_ratio > 0.5) {
+                $('#modal-have-known').modal('show');
+                setTimeout(function () {
+                    $('#modal-have-known').modal('hide');
+                }, 3000);
+            } else if (not_understand_ratio > 0.5) {
+                $('#modal-not-understand').modal('show');
+                setTimeout(function () {
+                    $('#modal-not-understand').modal('hide');
+                }, 3000);
+            }
         }
 
         {# 第二引数[msec]の間隔でfunctionを実行 #}
@@ -133,12 +159,13 @@
             {# ひとまずこれで期待する動作が得られる #}
             getVotes()
                 .then(getRoomPeoplenum)
-                .then(updateGauge);
+                .then(updateGauge)
+                .then(dispModal);
             {#$.when(#}
             {#    getVotes(),#}
             {#    getRoomPeoplenum()#}
             {#).then(updateGauge())#}
-        }, 3000);
+        }, 5000);
 
     </script>
 
@@ -146,29 +173,67 @@
 
     <button>次のスライド</button>
     <button><a href={% url 'poll:speaker_res' %}> 講義終了</a></button>
-    {# モーダルを表示する為のテスト用ボタン（後で消す） #}
-    <button class="btn btn-primary" data-toggle="modal" data-target="#modal-sample">モーダルを表示</button>
+
+    <!-- ========================================================== -->
 
     {# モーダルの配置 #}
-    <div class="modal" id="modal-sample" tabindex="-1">
+    <div class="modal" id="modal-both" tabindex="-1">
         <div class="modal-dialog modal-lg">
 
             {# モーダルのコンテンツ #}
             <div class="modal-content">
                 {# モーダルのヘッダ #}
                 <div class="modal-header">
-                    <h4 class="modal-title" id="modal-label">（例）お知らせ</h4>
+                    <h4 class="modal-title" id="modal-label">お知らせ</h4>
                     <button type="button" class="close" data-dismiss="modal">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 {# モーダルのボディ #}
                 <div class="modal-body">
-                    （例）「わからない」がn%を超えました
+                    「もう知ってる」「わからない」が50%を超えました
                 </div>
-                {# モーダルのフッタ #}
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    {# モーダルの配置 #}
+    <div class="modal" id="modal-have-known" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+
+            {# モーダルのコンテンツ #}
+            <div class="modal-content">
+                {# モーダルのヘッダ #}
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-label">お知らせ</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {# モーダルのボディ #}
+                <div class="modal-body">
+                    「もう知ってる」が50%を超えました
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# モーダルの配置 #}
+    <div class="modal" id="modal-not-understand" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+
+            {# モーダルのコンテンツ #}
+            <div class="modal-content">
+                {# モーダルのヘッダ #}
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-label">お知らせ</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {# モーダルのボディ #}
+                <div class="modal-body">
+                    「わからない」が50%を超えました
                 </div>
             </div>
         </div>
