@@ -7,34 +7,101 @@
 {# メインコンテンツ #}
 {% block content %}
 
-    <button>次のスライド</button>
-    <button><a href={% url 'poll:speaker_res' %}> 講義終了</a></button>
-    {# モーダルを表示する為のテスト用ボタン（後で消す） #}
-    <button class="btn btn-primary" data-toggle="modal" data-target="#modal-sample">モーダルを表示</button>
-
-    {# モーダルの配置 #}
-    <div class="modal" id="modal-sample" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-
-            {# モーダルのコンテンツ #}
-            <div class="modal-content">
-                {# モーダルのヘッダ #}
-                <div class="modal-header">
-                    <h4 class="modal-title" id="modal-label">（例）お知らせ</h4>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                {# モーダルのボディ #}
-                <div class="modal-body">
-                    （例）「わからない」がn%を超えました
-                </div>
-                {# モーダルのフッタ #}
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
-                </div>
+    <div class="row" style="position: center">
+        <div class="col-lg" style="padding: 0%">
+            <div class="container-meter">
+                <div class="GaugeMeter" id="understood_meter"
+                     data-percent="10"
+                     data-append="%"
+                     data-total="100"
+                     data-size="300"
+                     data-width="10"
+                     data-color="#19C5FF"
+                     data-style="Semi"
+                     data-label="<font style='font-size:1.3rem;'>わかった</font>"
+                ></div>
+            </div>
+        </div>
+        <div class="col-lg" style="padding: 0%">
+            <div class="container-meter">
+                <div class="GaugeMeter" id="knew_meter"
+                     data-percent="10"
+                     data-append="%"
+                     data-total="100"
+                     data-size="300"
+                     data-width="10"
+                     data-color="#19C5FF"
+                     data-style="Semi"
+                     data-label="<font style='font-size:1.3rem;'>わかった</font>"
+                ></div>
+            </div>
+        </div>
+        <div class="col-lg" style="padding: 0%">
+            <div class="container-meter">
+                <div class="GaugeMeter" id="not_understood_meter"
+                     data-percent="10"
+                     data-append="%"
+                     data-total="100"
+                     data-size="300"
+                     data-width="10"
+                     data-color="#19C5FF"
+                     data-style="Semi"
+                     data-label="<font style='font-size:1.3rem;'>わかった</font>"
+                ></div>
             </div>
         </div>
     </div>
+    <div class="container-fluid jumbotron-container">
+        <div class="container">
+            <button class="btn btn-outline-primary btn-lg">
+                コメント表示
+            </button>
+        </div>
+        <div class="container">
+            <p>
+                テストコメント
+            </p>
+        </div>
+    </div>
+    <div class="container-fluid jumbotron-container">
+        <div class="test">
+            <button class="btn btn-outline-primary btn-lg">
+                次のスライド
+            </button>
+            <button class="btn btn-outline-primary btn-lg">
+                終了
+            </button>
+        </div>
+    </div>
+
+{#    <button>次のスライド</button>#}
+{#    <button><a href={% url 'poll:speaker_res' %}> 講義終了</a></button>#}
+    {# モーダルを表示する為のテスト用ボタン（後で消す） #}
+{#    <button class="btn btn-primary" data-toggle="modal" data-target="#modal-sample">モーダルを表示</button>#}
+{##}
+    {# モーダルの配置 #}
+{#    <div class="modal" id="modal-sample" tabindex="-1">#}
+{#        <div class="modal-dialog modal-lg">#}
+{##}
+            {# モーダルのコンテンツ #}
+{#            <div class="modal-content">#}
+                {# モーダルのヘッダ #}
+{#                <div class="modal-header">#}
+{#                    <h4 class="modal-title" id="modal-label">（例）お知らせ</h4>#}
+{#                    <button type="button" class="close" data-dismiss="modal">#}
+{#                        <span aria-hidden="true">&times;</span>#}
+{#                    </button>#}
+{#                </div>#}
+                {# モーダルのボディ #}
+{#                <div class="modal-body">#}
+{#                    （例）「わからない」がn%を超えました#}
+{#                </div>#}
+                {# モーダルのフッタ #}
+{#                <div class="modal-footer">#}
+{#                    <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 
 {% endblock %}

@@ -28,6 +28,21 @@ body {
     margin-bottom: 60px;
 }
 
+.row {
+    width: 100%;
+}
+
+.container {
+    height: 100%;
+}
+
+.test {
+    padding: 10px;
+    margin: 10px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
 .container-fluid {
     position: center;
     top: 50%;
@@ -64,14 +79,19 @@ body {
 }
 
 /*.btn-circle {*/
-    /*width: 30px;*/
-    /*height: 30px;*/
-    /*text-align: center;*/
-    /*padding: 6px 0;*/
-    /*font-size: 12px;*/
-    /*line-height: 1.42;*/
-    /*border-radius: 15px;*/
+/*width: 30px;*/
+/*height: 30px;*/
+/*text-align: center;*/
+/*padding: 6px 0;*/
+/*font-size: 12px;*/
+/*line-height: 1.42;*/
+/*border-radius: 15px;*/
 /*}*/
+
+.btn-outline-primary.btn-lg {
+    /*padding: 20px;*/
+    margin: 20px;
+}
 
 .btn-circle.btn-lg {
     margin: 10px;
@@ -89,13 +109,87 @@ body {
     background-color: #0086B2;
 }
 
+.GaugeMeter {
+    Position: Relative;
+    Text-Align: Center;
+    Overflow: Hidden;
+    Cursor: Default;
+}
+
+.GaugeMeter SPAN,
+.GaugeMeter B {
+    Margin: 0 23%;
+    Width: 54%;
+    Position: Absolute;
+    Text-align: Center;
+    Display: Inline-Block;
+    Color: RGBa(0, 0, 0, .8);
+    Font-Weight: 100;
+    Overflow: Hidden;
+    White-Space: NoWrap;
+    Text-Overflow: Ellipsis;
+}
+
+.GaugeMeter[data-style="Semi"] B {
+    Margin: 0 10%;
+    Width: 80%;
+}
+
+.GaugeMeter S,
+.GaugeMeter U {
+    Text-Decoration: None;
+    Font-Size: .5em;
+    Opacity: .5;
+}
+
+.GaugeMeter B {
+    Color: Black;
+    Font-Weight: 300;
+    Font-Size: .5em;
+    Opacity: .8;
+}
+
+.container-meter {
+    margin-left: 3%;
+    margin-right: 5%;
+}
+
+@media (min-width: 320px) {
+
+    .container-meter {
+    margin-left: 8%;
+    margin-right: 0%;
+    }
+
+}
+
 @media (min-width: 375px) {
+
+    .container-meter {
+    margin-left: 15%;
+    margin-right: 0%;
+    }
+
     .container-fluid h1 {
         font-size: 4.3rem;
     }
 }
 
+@media (min-width: 425px) {
+
+    .container-meter {
+    margin-left: 19%;
+    margin-right: 0%;
+    }
+
+}
+
 @media (min-width: 768px) {
+
+   .container-meter {
+    margin-left: 33%;
+    margin-right: 0%;
+   }
 
     .form-group {
         margin-left: auto;
@@ -106,4 +200,30 @@ body {
     .container-fluid h1 {
         font-size: 7rem;
     }
+}
+
+@media (min-width: 1024px) {
+
+    .container-meter {
+    margin-left: 7%;
+    margin-right: 0%;
+    }
+
+}
+
+@media (min-width: 1440px) {
+
+    .container-meter {
+    margin-left: 20%;
+    margin-right: 0%;
+    }
+
+}
+@media (min-width: 2560px) {
+
+    .container-meter {
+    margin-left: 34%;
+    margin-right: 0%;
+    }
+
 }
