@@ -12,6 +12,9 @@ class RoomTable(models.Model):
     # リスナーの人数
     num_listener = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.room_name
+
 
 class VoteTable(models.Model):
     """
@@ -39,4 +42,3 @@ class CommentTable(models.Model):
     slide_no = models.CharField(max_length=8, default=0)
     # ルームID
     room_id = models.ForeignKey(RoomTable, on_delete=models.CASCADE)
-    
