@@ -12,6 +12,9 @@ class RoomTable(models.Model):
     # リスナーの人数
     num_listener = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.room_name
+
 
 class VoteTable(models.Model):
     """
