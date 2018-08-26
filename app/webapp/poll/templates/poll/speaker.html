@@ -11,85 +11,44 @@
     <div id="understand_gauge" class="understand">
         <h2>わかったメーター</h2>
         <div class="epoch gauge-small"></div>
-        <p>
-            <button>Transition</button>
-        </p>
     </div>
+
     <div id="have_known_gauge" class="have_known">
         <h2>もう知ってるメーター</h2>
         <div class="epoch gauge-small"></div>
-        <p>
-            <button>Transition</button>
-        </p>
     </div>
+
     <div id="not_understand_gauge" class="not_understand">
         <h2>わからないメーター</h2>
         <div class="epoch gauge-small"></div>
-        <p>
-            <button>Transition</button>
-        </p>
-    </div>
-
-    <div id="btnvotesget" class="hoge">
-        <p>
-            <button>votesGet</button>
-        </p>
-    </div>
-    <div id="btnroomsget" class="piyo">
-        <p>
-            <button>roomGet</button>
-        </p>
-    </div>
-
-    <div id="btngause" class="nyan">
-        <p>
-            <button>execGauge</button>
-        </p>
     </div>
 
     <script>
-        let understand_gauge_chart;
-        let have_known_gauge_chart;
-        let not_understand_gauge_chart;
         let understand_gauge_cnt = 0;
         let have_known_gauge_cnt = 0;
         let not_understand_gauge_cnt = 0;
-        let room_people_num;
-        $(function () {
-            understand_gauge_chart = $('#understand_gauge .epoch').epoch({
-                type: 'time.gauge',
-                value: 0.0
-            });
+        let room_people_num = 1;
 
-            $('#understand_gauge button').on('click', function (e) {
-                understand_gauge_chart.update(Math.random());
-            });
+        let understand_gauge_chart = $('#understand_gauge .epoch').epoch({
+            type: 'time.gauge',
+            value: 0.0
         });
 
-        $(function () {
-            have_known_gauge_chart = $('#have_known_gauge .epoch').epoch({
-                type: 'time.gauge',
-                value: 0.0
-            });
-
-            $('#have_known_gauge button').on('click', function (e) {
-                have_known_gauge_chart.update(Math.random());
-            });
+        let have_known_gauge_chart = $('#have_known_gauge .epoch').epoch({
+            type: 'time.gauge',
+            value: 0.0
         });
 
-        $(function () {
-            not_understand_gauge_chart = $('#not_understand_gauge .epoch').epoch({
-                type: 'time.gauge',
-                value: 0.0
-            });
-
-            $('#not_understand_gauge button').on('click', function (e) {
-                not_understand_gauge_chart.update(Math.random());
-            });
+        let not_understand_gauge_chart = $('#not_understand_gauge .epoch').epoch({
+            type: 'time.gauge',
+            value: 0.0
         });
 
         <!-- ========================================================== -->
-        $('#btnroomsget').on('click', function () {
+        {#let dfd = $.Deferred();#}
+
+        function getRoomPeoplenum() {
+            let dfd = $.Deferred();
             $('#result').text('通信中...');
             // Ajax通信を開始
             $.ajax({
@@ -104,17 +63,21 @@
                     // 通信成功時の処理を記述
                     for (let i in data) {
                         console.log(data[i]);
+
                         room_people_num = data[i].num_listener;
-                        console.log(room_people_num);
                     }
+                    dfd.resolve();
                 })
                 .fail(function () {
                     // 通信失敗時の処理を記述
-                    console.log("通信失敗;_;")
+                    console.log("通信失敗;_;");
+                    dfd.reject();
                 });
-        });
+            return dfd.promise();
+        }
 
-        $('#btnvotesget').on('click', function () {
+        function getVotes() {
+            let dfd = $.Deferred();
             $('#result').text('通信中...');
             // Ajax通信を開始
             $.ajax({
@@ -138,22 +101,38 @@
                             not_understand_gauge_cnt += 1;
                         }
                     }
-
-                    console.log(understand_gauge_cnt);
-                    console.log(have_known_gauge_cnt);
-                    console.log(not_understand_gauge_cnt);
+                    dfd.resolve();
                 })
                 .fail(function () {
                     // 通信失敗時の処理を記述
-                    console.log("通信失敗;_;")
+                    console.log("通信失敗;_;");
+                    dfd.reject();
                 });
-        });
+            return dfd.promise();
+        }
 
-        $('#btngause').on('click', function () {
+        function updateGauge() {
             understand_gauge_chart.update(understand_gauge_cnt / room_people_num);
             have_known_gauge_chart.update(have_known_gauge_cnt / room_people_num);
             not_understand_gauge_chart.update(not_understand_gauge_cnt / room_people_num);
-        });
+            console.log(understand_gauge_cnt);
+            console.log(have_known_gauge_cnt);
+            console.log(not_understand_gauge_cnt);
+            console.log(room_people_num);
+            understand_gauge_cnt=0;
+            have_known_gauge_cnt=0;
+            not_understand_gauge_cnt=0;
+        }
+
+        setInterval(function () {
+            $.when(
+                getVotes(),
+                getRoomPeoplenum(),
+            )
+                .then(updateGauge());
+            console.log("ループの最後に到達");
+         }, 3000);
+
     </script>
 
     <!-- ========================================================== -->
