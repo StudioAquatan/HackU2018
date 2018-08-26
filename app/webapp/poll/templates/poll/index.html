@@ -6,25 +6,33 @@
 
 {# メインコンテンツ #}
 {% block content %}
-    {#    <div class="jumbotron jumbotron-fluid">#}
-    {#        <div class="container-fluid jumbotron-container">#}
-    {#            <a href="https://jp.freepik.com/free-vector/_2803070.htm">Freepikによるデザイン</a>#}
-    {#        </div>#}
-    {#    </div>#}
-
-    <div class="container-fluid">
-        <h1 class="site-name">App Name</h1>
-        <p>
-            <a class="btn btn-black" href="./speaker/" role="button">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container-fluid jumbotron-container">
+            <h1 class="">App Name</h1>
+            <a class="btn" href="./speaker/" role="button">
                 <button class="btn btn-outline-primary btn-lg">
                     Make room
                 </button>
             </a>
-            <a class="btn btn-black" href="./listener/" role="button">
+            <a class="btn" href="./listener/" role="button">
                 <button class="btn btn-outline-primary btn-lg">
                     Join room
                 </button>
             </a>
-        </p>
+            {#                <a href="https://jp.freepik.com/free-vector/_2803070.htm">Freepikによるデザイン</a>#}
+        </div>
     </div>
+{#    <div class="container-fluid">#}
+        {#        <h1 class="">App Name</h1>#}
+        {#        <a class="btn" href="./speaker/" role="button">#}
+        {#            <button class="btn btn-outline-primary btn-lg">#}
+        {#                Make room#}
+        {#            </button>#}
+        {#        </a>#}
+        {#        <a class="btn" href="./listener/" role="button">#}
+        {#            <button class="btn btn-outline-primary btn-lg">#}
+        {#                Join room#}
+        {#            </button>#}
+        {#        </a>#}
+{#    </div>#}
 {% endblock %}

@@ -6,7 +6,27 @@
 
 {# メインコンテンツ #}
 {% block content %}
-    <button>分かった</button>
-    <button>もう知ってる</button>
-    <button>分からない</button>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container-fluid jumbotron-container">
+            <button class="btn btn-circle btn-lg">
+                わかった
+            </button>
+            <button class="btn btn-circle btn-lg">
+                もう知ってる
+            </button>
+            <button class="btn btn-circle btn-lg">
+                わからない
+            </button>
+            <form class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Input comment">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit" style="background-color: white">
+                            <i class="far fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
