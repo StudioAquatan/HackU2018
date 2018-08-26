@@ -33,7 +33,10 @@ def speaker(request):
 def speaker_res(request):
     template_name = 'poll/speaker_res.html'
 
-    return render(request, template_name)
+    return render(request, template_name, {
+        'slidenum': ['slide1', 'slide2'],  # テスト用データ
+        'test_number': 100  # テスト用データ
+    })
 
 
 class VoteViewSet(viewsets.ModelViewSet):

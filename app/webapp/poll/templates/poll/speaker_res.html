@@ -7,39 +7,44 @@
 {# メインコンテンツ #}
 {% block content %}
     <h1>振り返りのページ</h1>
-    <div id="chart"></div>
+
+    {# スライド数のグラフをバインドする要素の準備 #}
+    {% for i in slidenum %}
+        <p>{{ i }}</p>
+        <div id={{ i }}></div>
+    {% endfor %}
 
     <script>
-        {# 折れ線グラフ #}
-        var chart = c3.generate({
-            bindto: "#chart",
-            data: {
-                x: 'x',
-                xFormat: '%H%M%S',
-                columns: [
-                    ['x', '085501', '090302', '092003', '094004', '101005', '101506'],
-                    ['分かった', 30, 20, 10, 40, 15, 25],
-                    ['もう知ってる', 50, 10, 40, 15, 25],
-                    ['分からない', 10, 20, 30, 40, 50, 60, 70]
-                ]
-            },
-            axis: {
-                x: {
-                    type: 'timeseries',
-                    tick: {
-                        format: '%H:%M:%S'
-                    }
-                }
-            },
-            grid: {
-                x: {
-                    lines: [
-                        {value: '090505', text: 'Label 1'},
-                        {value: '094004', text: 'Label 3', position: 'middle'},
-                        {value: '101005', text: 'Label 4.5', position: 'start'}
+        {# 折れ線グラフ作成 #}
+        for (let i = 1; i < 3; i++) {
+            make_graph(i)
+        }
+
+        function make_graph(num) {
+            c3.generate({
+                bindto: "#slide" + num,
+                padding: {
+                    right: 20
+                },
+                data: {
+                    x: 'x',
+                    xFormat: '%H%M%S',
+                    columns: [
+                        ['x', '085501', '090302', '092003', '094004', '101005', '101500', '102000'],
+                        ['分かった', 30, 20, 10, 40, 15, {{ test_number }}],
+                        ['もう知ってる', 50, 10, 0, 15, 25],
+                        ['分からない', 10, 20, 30, 40, 50, 60, 70]
                     ]
-                }
-            }
-        });
+                },
+                axis: {
+                    x: {
+                        type: 'timeseries',
+                        tick: {
+                            format: '%H:%M:%S'
+                        }
+                    }
+                },
+            });
+        }
     </script>
 {% endblock %}
