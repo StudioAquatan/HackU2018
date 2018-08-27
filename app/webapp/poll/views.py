@@ -8,8 +8,8 @@ from django.db.models.functions import Now
 from django.utils import timezone
 from datetime import timedelta
 
-from .models import VoteTable, RoomTable
-from .serializer import VoteSerializer, RoomSerializer
+from .models import VoteTable, RoomTable, CommentTable
+from .serializer import VoteSerializer, RoomSerializer, CommentSerializer
 
 
 def index(request):
@@ -77,3 +77,12 @@ class RoomViewSet(viewsets.ModelViewSet):
     """
     queryset = RoomTable.objects.all()
     serializer_class = RoomSerializer
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    """
+    コメントテーブルの内容をすべて返す
+    （将来的に部屋やスライドの進行具合に合わせたコメント取得をしたい）
+    """
+    queryset = CommentTable.objects.all()
+    serializer_class = CommentSerializer

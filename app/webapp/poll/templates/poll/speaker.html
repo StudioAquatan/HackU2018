@@ -25,6 +25,11 @@
         <div class="epoch gauge-small"></div>
     </div>
 
+    <div id="comments">
+        <p>コメント一覧</p>
+
+    </div>
+
     <script>
         let understand_gauge_cnt = 0;
         let have_known_gauge_cnt = 0;
@@ -33,6 +38,7 @@
         let understand_ratio;
         let have_known_ratio;
         let not_understand_ratio;
+        let comments = [];
 
         let understand_gauge_chart = $('#understand_gauge .epoch').epoch({
             type: 'time.gauge',
@@ -120,6 +126,47 @@
             return dfd.promise();
         }
 
+        function getComments() {
+            let dfd = $.Deferred();
+            understand_gauge_cnt = 0;
+            have_known_gauge_cnt = 0;
+            not_understand_gauge_cnt = 0;
+            $('#result').text('通信中...');
+            // Ajax通信を開始
+            $.ajax({
+                url: 'http://127.0.0.1:8000/api/comments/',
+                type: 'GET',
+                dataType: 'json',
+                // フォーム要素の内容をハッシュ形式に変換
+                data: $('form').serializeArray(),
+                timeout: 1000,
+            })
+                .done(function (data) {
+                    // 通信成功時の処理を記述
+                    comments=[]
+                    for (let i in data) {
+                        console.log(data[i]);
+                        comments.push(data[i].comment_text)
+                    }
+                    console.log(comments);
+                    dfd.resolve();
+                })
+                .fail(function () {
+                    // 通信失敗時の処理を記述
+                    console.log("通信失敗;_;");
+                    dfd.reject();
+                });
+            console.log("コメントとってきたよー");
+            return dfd.promise();
+        }
+
+        function dispComments() {
+            document.getElementById('comments').innerHTML = "<p>コメント一覧</p>";
+            for (let i in comments) {
+                document.getElementById('comments').innerHTML += comments[i]+"<br>";
+            }
+        }
+
         {# ゲージの値をDBから取得した値に基づいて更新 #}
 
         function updateGauge() {
@@ -155,19 +202,25 @@
             }
         }
 
+        {# 票の情報を取得して集計 #}
+
+
+
         {# 第二引数[msec]の間隔でfunctionを実行 #}
         setInterval(function () {
-            {# getRoomPeoplenum()にするとconsoleに部屋の人数とってきたよーと票数とってきたよーが並ぶ #}
-            {# ひとまずこれで期待する動作が得られる #}
-            getVotes()
-                .then(getRoomPeoplenum)
-                .then(updateGauge)
-                .then(dispModal);
-            {#$.when(#}
-            {#    getVotes(),#}
-            {#    getRoomPeoplenum()#}
-            {#).then(updateGauge())#}
-        }, 5000);
+        {# getRoomPeoplenum()にするとconsoleに部屋の人数とってきたよーと票数とってきたよーが並ぶ #}
+        {# ひとまずこれで期待する動作が得られる #}
+        getVotes()
+            .then(getRoomPeoplenum)
+            .then(updateGauge)
+            .then(getComments)
+            .then(dispComments)
+            .then(dispModal);
+        {#$.when(#}
+        {#    getVotes(),#}
+        {#    getRoomPeoplenum()#}
+        {#).then(updateGauge())#}
+         }, 5000);
 
     </script>
 
