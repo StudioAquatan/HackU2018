@@ -9,31 +9,75 @@
     <h1>振り返りのページ</h1>
 
     {# スライド数のグラフをバインドする要素の準備 #}
-    {% for i in slidenum %}
+    {% for i in slide_list %}
         <p>{{ i }}</p>
         <div id={{ i }}></div>
     {% endfor %}
 
     <script>
-        {# 折れ線グラフ作成 #}
-        for (let i = 1; i < 3; i++) {
-            make_graph(i)
-        }
+        let datax = [];
+        let data1 = [];
+        let data2 = [];
+        let data3 = [];
 
-        function make_graph(num) {
+        let data_var = [];
+        let counter = 0;
+
+        {# x軸データ #}
+        {% for list in time_list %}
+            counter = {{ forloop.counter0 }};
+            data_var[counter] = [];
+            {% for v in list %}
+                data_var[counter].push('{{ v }}');
+            {% endfor %}
+            datax.push(data_var[counter]);
+        {% endfor %}
+
+        {# 分かったデータ #}
+        {% for list in data1_list %}
+            counter = {{ forloop.counter0 }};
+            data_var[counter] = [];
+            {% for v in list %}
+                data_var[counter].push('{{ v }}');
+            {% endfor %}
+            data1.push(data_var[counter]);
+        {% endfor %}
+
+        {# もう知ってるデータ #}
+        {% for list in data2_list %}
+            counter = {{ forloop.counter0 }};
+            data_var[counter] = [];
+            {% for v in list %}
+                data_var[counter].push('{{ v }}');
+            {% endfor %}
+            data2.push(data_var[counter]);
+        {% endfor %}
+
+        {# 分からないデータ #}
+        {% for list in data3_list %}
+            counter = {{ forloop.counter0 }};
+            data_var[counter] = [];
+            {% for v in list %}
+                data_var[counter].push('{{ v }}');
+            {% endfor %}
+            data3.push(data_var[counter]);
+        {% endfor %}
+
+        {# 折れ線グラフ作成 #}
+        for (let i = 0; i < {{ max_slide }}; i++) {
             c3.generate({
-                bindto: "#slide" + num,
+                bindto: "#slide_" + (i+1),
                 padding: {
                     right: 20
                 },
                 data: {
                     x: 'x',
-                    xFormat: '%H%M%S',
+                    xFormat: '%H:%M:%S',
                     columns: [
-                        ['x', '085501', '090302', '092003', '094004', '101005', '101500', '102000'],
-                        ['分かった', 30, 20, 10, 40, 15, {{ test_number }}],
-                        ['もう知ってる', 50, 10, 0, 15, 25],
-                        ['分からない', 10, 20, 30, 40, 50, 60, 70]
+                        datax[i],
+                        data1[i],
+                        data2[i],
+                        data3[i]
                     ]
                 },
                 axis: {
