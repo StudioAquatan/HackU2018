@@ -25,7 +25,7 @@ class VoteTable(models.Model):
     # 票の送信時刻
     vote_time = models.DateTimeField('date published')
     # 投票時のスライド番号
-    slide_no = models.CharField(max_length=8, default=0)
+    slide_no = models.IntegerField(default=1)
     # ルームID
     room_id = models.ForeignKey(RoomTable, on_delete=models.CASCADE)
 
