@@ -12,20 +12,20 @@ def set_vote():
 
 def button1():
     vote = set_vote()
-    vote.vote_type = 1;
+    vote.vote_type = 1
     vote.save()
     return
 
 
 def button2():
     vote = set_vote()
-    vote.vote_type = 2;
+    vote.vote_type = 2
     vote.save()
     return
 
 
 def button3():
     vote = set_vote()
-    vote.vote_type = 3;
+    vote.vote_type = 3
     vote.save()
     return
