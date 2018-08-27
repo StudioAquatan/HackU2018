@@ -171,8 +171,12 @@
 
     <!-- ========================================================== -->
 
-    <button>次のスライド</button>
-    <button><a href={% url 'poll:speaker_res' %}> 講義終了</a></button>
+    <form action="{% url 'poll:change-status' %}" method="post">
+    {% csrf_token %}
+        <button type='submit' name='action' value='start-lec'>講義開始</button>
+        <button type='submit' name='action' value='next-slide'>次のスライド</button>
+        <button type='submit' name='action' value='fin-lec'>講義終了</button>
+    </form>
 
     <!-- ========================================================== -->
 

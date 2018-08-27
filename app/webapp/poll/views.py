@@ -1,7 +1,8 @@
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets, filters
 import django_filters
+from django.urls import reverse
 from django.db.models.functions import Now
 
 from django.utils import timezone
@@ -34,6 +35,23 @@ def speaker_res(request):
     template_name = 'poll/speaker_res.html'
 
     return render(request, template_name)
+
+
+def change_status(request):
+    # TODO 任意のroom_idの取得
+    room_info = RoomTable.objects.first()
+    if request.POST['action'] == 'start-lec':
+        VoteTable.objects.create(vote_type=0, vote_time=timezone.now(), slide_no=1, room_id=room_info)
+        return HttpResponseRedirect(reverse('poll:speaker'))
+    elif request.POST['action'] == 'next-slide':
+        current_slide = VoteTable.objects.order_by('slide_no').last()
+        current_slide.slide_no += 1
+        VoteTable.objects.create(vote_type=0, vote_time=timezone.now(), slide_no=current_slide.slide_no,
+                                 room_id=room_info)
+        return HttpResponseRedirect(reverse('poll:speaker'))
+    elif request.POST['action'] == 'fin-lec':
+        VoteTable.objects.create(vote_type=-1, vote_time=timezone.now(), slide_no=1, room_id=room_info)
+        return HttpResponseRedirect(reverse('poll:speaker_res'))
 
 
 class VoteViewSet(viewsets.ModelViewSet):
