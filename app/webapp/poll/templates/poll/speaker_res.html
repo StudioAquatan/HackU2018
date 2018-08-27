@@ -24,11 +24,11 @@
             </tr>
         </thead>
         <tbody>
-            {% for comment in comments %}
+            {% for comment in comment_dic_list %}
                     <tr>
-                        <td>{{ comment.slide_no }}</td>
-                        <td>{{ comment.comment_time }}</td>
-                        <td>{{ comment.comment_text }}</td>
+                        <td>{{ comment.slide }}</td>
+                        <td>{{ comment.time }}</td>
+                        <td>{{ comment.text }}</td>
                     </tr>
             {% endfor %}
         </tbody>
