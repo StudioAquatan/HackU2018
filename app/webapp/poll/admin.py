@@ -21,3 +21,4 @@ class CommentAdmin(admin.ModelAdmin):
 admin.site.register(RoomTable, RoomAdmin)
 admin.site.register(VoteTable, VoteAdmin)
 admin.site.register(CommentTable, CommentAdmin)
+
