@@ -55,6 +55,8 @@ def speaker(request):
 
 def speaker_res(request):
     template_name = 'poll/speaker_res.html'
+
+    # グラフ
     # 部屋関係なしに全部のデータをとる
     max_slide = VoteTable.objects.all().aggregate(Max('slide_no'))['slide_no__max']
     # TODO: 部屋でフィルタをかける
@@ -94,6 +96,10 @@ def speaker_res(request):
         time_list.append(times)
         append_data(data1_list, data2_list, data3_list, data1s, data2s, data3s)
 
+    # コメント
+    # 部屋関係なしに全データ
+    comments = CommentTable.objects.all().order_by('comment_time')
+
     return render(request, template_name, {
         'slide_list': slide_list,  # スライドのタイトル'slide_n'のリスト，要素数はスライドの枚数
         'max_slide': max_slide,  # スライドの枚数
@@ -101,6 +107,7 @@ def speaker_res(request):
         'data1_list': data1_list,
         'data2_list': data2_list,
         'data3_list': data3_list,
+        'comments': comments
     })
 
 
