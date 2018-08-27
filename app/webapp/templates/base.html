@@ -12,20 +12,67 @@
     <link rel="stylesheet" type="text/css" href="{% static 'poll/css/epoch.min.css' %}">
 
     {# モーダルウィンドウ作るのに必要っぽいものを読み込む #}
-    <link rel="stylesheet" href="{% static 'poll/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'poll/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <script src="{% static 'poll/js/jquery-3.3.1.min.js' %}"></script>
-    <script src="{% static 'poll/js/bootstrap.bundle.min.js' %}"></script>
+    {# c3とd3の読み込み #}
+    <link rel="stylesheet" href="{% static 'poll/css/c3-v0.4.18.min.css' %}"/>
+    <script src="{% static 'poll/js/d3-v3.5.17.min.js' %}" charset="utf-8"></script>
+    <script src="{% static 'poll/js/c3-v0.4.18.min.js' %}"></script>
 
+    <script src="{% static 'poll/js/bootstrap.bundle.min.js' %}"></script>
     {# Epoch.jsを導入 #}
-    {#    <script src="{% static 'poll/js/d3.min.js' %}"></script>#}
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="{% static 'poll/js/epoch.min.js' %}"></script>
     {#  test用  #}
     <script src="{% static 'poll/js/data.js' %}"></script>
-
 </head>
-<body>
-{# メインコンテンツを配置する #}
+
+<body class="body" style="padding-top: 3.5rem">
+
+{# ナビゲーションバー #}
+{% block navi %}
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #00bfff">
+        <a class="navbar-brand" href="#">AppName</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search room">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit" style="background-color: white">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </nav>
+{% endblock %}
+
+{# メインコンテンツ #}
 {% block content %}{% endblock %}
+
+<footer class="footer">
+    <div class="credits">
+        <span class="copyright">
+		    © <script>document.write(new Date().getFullYear().toString())</script> Studio Aquatan
+        </span>
+    </div>
+</footer>
+
 </body>
+
 </html>

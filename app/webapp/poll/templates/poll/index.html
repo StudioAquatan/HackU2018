@@ -6,7 +6,25 @@
 
 {# メインコンテンツ #}
 {% block content %}
-    <p><a href={% url 'poll:listener'%}>生徒ページ</a></p>
-    <p><a href={% url 'poll:speaker'%}>講師ページ</a></p>
+    {#    <div class="jumbotron jumbotron-fluid">#}
+    {#        <div class="container-fluid jumbotron-container">#}
+    {#            <a href="https://jp.freepik.com/free-vector/_2803070.htm">Freepikによるデザイン</a>#}
+    {#        </div>#}
+    {#    </div>#}
 
+    <div class="container-fluid">
+        <h1 class="site-name">App Name</h1>
+        <p>
+            <a class="btn btn-black" href="./speaker-start/" role="button">
+                <button class="btn btn-outline-primary btn-lg">
+                    Make room
+                </button>
+            </a>
+            <a class="btn btn-black" href="./listener/" role="button">
+                <button class="btn btn-outline-primary btn-lg">
+                    Join room
+                </button>
+            </a>
+        </p>
+    </div>
 {% endblock %}
