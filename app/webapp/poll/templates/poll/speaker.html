@@ -7,6 +7,8 @@
 {# メインコンテンツ #}
 {% block content %}
 
+    <h1 class="site-name">Speaking Now!!</h1>
+
     {#  票数の割合のメーター  #}
     <div id="understand_gauge" class="understand">
         <h2>わかったメーター</h2>
@@ -172,11 +174,11 @@
     <!-- ========================================================== -->
 
     <form action="{% url 'poll:change-status' %}" method="post">
-    {% csrf_token %}
-        <button type='submit' name='action' value='start-lec'>講義開始</button>
+        {% csrf_token %}
         <button type='submit' name='action' value='next-slide'>次のスライド</button>
         <button type='submit' name='action' value='fin-lec'>講義終了</button>
     </form>
+
 
     <!-- ========================================================== -->
 
