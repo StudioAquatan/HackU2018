@@ -42,9 +42,10 @@ def speaker(request):
 
 def speaker_res(request):
     template_name = 'poll/speaker_res.html'
-    # 部屋をしぼる機能はまだない
-
+    # 部屋関係なしに全部のデータをとる
     max_slide = VoteTable.objects.all().aggregate(Max('slide_no'))['slide_no__max']
+    # TODO: 部屋でフィルタをかける
+
     slide_list = []  # slide_1, slide_2, ... slide_n
     time_list = []   # 時間(x軸)
     data1_list = []  # わかる
