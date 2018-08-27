@@ -1,0 +1,53 @@
+{# base.htmlを継承 #}
+{% extends 'base.html' %}
+
+{# タイトルを変更 #}
+{% block title %}TOPページ{% endblock %}
+
+{# メインコンテンツ #}
+{% block content %}
+
+    {#  票数の割合のメーター  #}
+    <div id="understand_gauge" class="understand">
+        <h2>わかったメーター</h2>
+        <div class="epoch gauge-small"></div>
+    </div>
+
+    <div id="have_known_gauge" class="have_known">
+        <h2>もう知ってるメーター</h2>
+        <div class="epoch gauge-small"></div>
+    </div>
+
+    <div id="not_understand_gauge" class="not_understand">
+        <h2>わからないメーター</h2>
+        <div class="epoch gauge-small"></div>
+    </div>
+
+    <script>
+        $('#understand_gauge .epoch').epoch({
+            type: 'time.gauge',
+            value: 0.0
+        });
+
+        $('#have_known_gauge .epoch').epoch({
+            type: 'time.gauge',
+            value: 0.0
+        });
+
+        $('#not_understand_gauge .epoch').epoch({
+            type: 'time.gauge',
+            value: 0.0
+        });
+    </script>
+
+    <!-- ========================================================== -->
+
+    <form action="{% url 'poll:change-status' %}" method="post">
+        {% csrf_token %}
+        <button type='submit' name='action' value='start-lec'>講義開始</button>
+    </form>
+
+    <!-- ========================================================== -->
+
+
+{% endblock %}
