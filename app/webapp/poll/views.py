@@ -20,6 +20,16 @@ from .listener_button import button1, button2, button3
 def index(request):
     template_name = 'poll/index.html'
 
+    if request.method == 'GET':
+        if 'make_room' in request.GET:
+            # ボタン1がクリックされた場合の処理
+            button1()
+            template_name = 'poll/listener.html'
+        elif 'join_room' in request.GET:
+            # ボタン2がクリックされた場合の処理
+            button2()
+            template_name = 'poll/speaker-start.html'
+
     return render(request, template_name)
     # return HttpResponse("Hello, world. You're at the polls index.")
 
