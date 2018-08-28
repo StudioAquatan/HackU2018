@@ -19,17 +19,15 @@ class SlideSerializer(serializers.ModelSerializer):
 
 class VoteSerializer(serializers.ModelSerializer):
     slide_id = SlideSerializer()
-    room_id = RoomSerializer()
 
     class Meta:
         model = VoteTable
-        fields = ('vote_type', 'vote_time', 'slide_id', 'room_id')
+        fields = ('vote_type', 'vote_time', 'slide_id')
 
 
 class CommentSerializer(serializers.ModelSerializer):
     slide_id = SlideSerializer()
-    room_id = RoomSerializer()
 
     class Meta:
         model = CommentTable
-        fields = ('comment_text', 'comment_time', 'slide_id', 'room_id')
+        fields = ('comment_text', 'comment_time', 'slide_id')
