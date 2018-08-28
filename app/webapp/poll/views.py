@@ -91,10 +91,6 @@ def speaker_res(request):
         data1s = ['分かった', 0]  # スライド開始時はすべて0票
         data2s = ['もう知ってる', 0]
         data3s = ['分からない', 0]
-        # times = ['x']
-        # data1s = ['分かった']
-        # data2s = ['もう知ってる']
-        # data3s = ['分からない']
         data1sum = 0
         data2sum = 0
         data3sum = 0
@@ -128,7 +124,6 @@ def speaker_res(request):
     for comment in comments:
         dic = dict()
         dic['slide'] = comment.slide_id.slide_no
-
         date_time_str = re.search(regex_date_time, str(timezone.localtime(comment.comment_time))).group()
         date_time_str = date_time_str.replace('-', '/')
         dic['time'] = date_time_str
