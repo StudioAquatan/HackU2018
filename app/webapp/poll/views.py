@@ -68,8 +68,9 @@ def speaker_res(request):
 
     # グラフ
     # 部屋関係なしに全部のデータをとる
-    max_slide = VoteTable.objects.all().aggregate(Max('slide_no'))['slide_no__max']
+    # スライドの枚数
     # TODO: 部屋でフィルタをかける
+    slide_num = SlideTable.objects.all().aggregate(Max('slide_no'))['slide_no__max']
 
     slide_list = []  # slide_1, slide_2, ... slide_n
     time_list = []  # 時間(x軸)
@@ -78,7 +79,7 @@ def speaker_res(request):
     data3_list = []  # わからん
     regex = r'\d\d:\d\d:\d\d'
 
-    for i in range(1, int(max_slide) + 1):
+    for i in range(1, int(slide_num) + 1):
         # スライドタイトル(slide_n)のリストに追加
         slide_list.append('slide_' + str(i))
 
@@ -90,7 +91,8 @@ def speaker_res(request):
         data1sum = 0
         data2sum = 0
         data3sum = 0
-        votes = VoteTable.objects.filter(slide_no__exact=i).order_by('vote_time')
+        # i番目のスライドの，vote_timeでソートされたvoteオブジェクトのリストを作成
+        votes = VoteTable.objects.filter(slide_id__slide_no__exact=i).order_by('vote_time')
         for vote in votes:
             time_str = re.search(regex, str(timezone.localtime(vote.vote_time))).group()
             times.append(time_str)
@@ -112,14 +114,14 @@ def speaker_res(request):
     comment_dic_list = []
     for comment in comments:
         dic = dict()
-        dic['slide'] = comment.slide_no
+        dic['slide'] = comment.slide_id.slide_no
         dic['time'] = re.search(regex, str(timezone.localtime(comment.comment_time))).group()
         dic['text'] = comment.comment_text
         comment_dic_list.append(dic)
 
     return render(request, template_name, {
         'slide_list': slide_list,  # スライドのタイトル'slide_n'のリスト，要素数はスライドの枚数
-        'max_slide': max_slide,  # スライドの枚数
+        'slide_num': slide_num,  # スライドの枚数
         'time_list': time_list,
         'data1_list': data1_list,
         'data2_list': data2_list,
