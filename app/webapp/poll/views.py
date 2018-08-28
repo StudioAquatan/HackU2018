@@ -79,6 +79,7 @@ def speaker_res(request):
     data3_list = []  # わからん
     regex_time = r'\d\d:\d\d:\d\d'
     regex_date_time = r'\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d'
+    time_divide = 10  # グラフの集計をする時の区切りの秒数.例えばtime_divide=10の場合，グラフは最低10秒の間隔ができる．
 
     for i in range(1, int(slide_num) + 1):
         # スライドタイトル(slide_i)のリストに追加
@@ -86,19 +87,18 @@ def speaker_res(request):
 
         # スライドごとのデータを作成
         slide_start_time = SlideTable.objects.filter(slide_no__exact=i)[0].start_time
-        slide_start_time = re.search(regex_time, str(timezone.localtime(slide_start_time))).group()
-        times = ['x', slide_start_time]
+        slide_st_time = re.search(regex_time, str(timezone.localtime(slide_start_time))).group()
+        times = ['x', slide_st_time]
         data1s = ['分かった', 0]  # スライド開始時はすべて0票
         data2s = ['もう知ってる', 0]
         data3s = ['分からない', 0]
         data1sum = 0
         data2sum = 0
         data3sum = 0
+        time_temp = slide_start_time
         # i番目のスライドの，vote_timeでソートされたvoteオブジェクトのリストを作成
         votes = VoteTable.objects.filter(slide_id__slide_no__exact=i).order_by('vote_time')
         for vote in votes:
-            time_str = re.search(regex_time, str(timezone.localtime(vote.vote_time))).group()
-            times.append(time_str)
             if vote.vote_type == 1:
                 data1sum += 1
             elif vote.vote_type == 2:
@@ -107,7 +107,14 @@ def speaker_res(request):
                 data3sum += 1
             else:
                 pass
-            append_data(data1s, data2s, data3s, data1sum, data2sum, data3sum)
+            # time_divideで決められた秒数に基づいてデータを追加するかなどを判断
+            time_str = re.search(regex_time, str(timezone.localtime(vote.vote_time))).group()
+            if (vote.vote_time - time_temp).total_seconds() >= time_divide:
+                times.append(time_str)
+                append_data(data1s, data2s, data3s, data1sum, data2sum, data3sum)
+                time_temp = vote.vote_time
+            else:
+                pass
         # スライド終了
         slide_end_time = SlideTable.objects.filter(slide_no__exact=i)[0].end_time
         slide_end_time = re.search(regex_time, str(timezone.localtime(slide_end_time))).group()
