@@ -84,7 +84,7 @@
         {% endfor %}
 
         {# 折れ線グラフ作成 #}
-        for (let i = 0; i < {{ max_slide }}; i++) {
+        for (let i = 0; i < {{ slide_num }}; i++) {
             c3.generate({
                 bindto: "#slide_" + (i+1),
                 padding: {
