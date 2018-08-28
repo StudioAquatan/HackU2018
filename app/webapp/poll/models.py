@@ -25,7 +25,7 @@ class SlideTable(models.Model):
     # スライドの開始時間
     start_time = models.DateTimeField('slide start time')
     # スライドの終了時間
-    end_time = models.DateTimeField('slide end time')
+    end_time = models.DateTimeField('slide end time', blank=True, null=True)
     # ルームID
     room_id = models.ForeignKey(RoomTable, on_delete=models.CASCADE)
 
