@@ -20,6 +20,16 @@ from .listener_button import button1, button2, button3
 def index(request):
     template_name = 'poll/index.html'
 
+    if request.method == 'GET':
+        if 'make_room' in request.GET:
+            # ボタン1がクリックされた場合の処理
+            button1()
+            template_name = 'poll/listener.html'
+        elif 'join_room' in request.GET:
+            # ボタン2がクリックされた場合の処理
+            button2()
+            template_name = 'poll/speaker-start.html'
+
     return render(request, template_name)
     # return HttpResponse("Hello, world. You're at the polls index.")
 
@@ -56,7 +66,7 @@ def speaker(request):
 def speaker_res(request):
     template_name = 'poll/speaker_res.html'
 
-    # グラフ
+    # グラフ機能
     # 部屋関係なしに全部のデータをとる
     # スライドの枚数
     # TODO: 部屋でフィルタをかける
@@ -67,24 +77,31 @@ def speaker_res(request):
     data1_list = []  # わかる
     data2_list = []  # しってる
     data3_list = []  # わからん
-    regex = r'\d\d:\d\d:\d\d'
+    regex_time = r'\d\d:\d\d:\d\d'
+    regex_date_time = r'\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d'
 
     for i in range(1, int(slide_num) + 1):
-        # スライドタイトル(slide_n)のリストに追加
+        # スライドタイトル(slide_i)のリストに追加
         slide_list.append('slide_' + str(i))
 
         # スライドごとのデータを作成
-        times = ['x']
-        data1s = ['分かった']
-        data2s = ['もう知ってる']
-        data3s = ['分からない']
+        slide_start_time = SlideTable.objects.filter(slide_no__exact=i)[0].start_time
+        slide_start_time = re.search(regex_time, str(timezone.localtime(slide_start_time))).group()
+        times = ['x', slide_start_time]
+        data1s = ['分かった', 0]  # スライド開始時はすべて0票
+        data2s = ['もう知ってる', 0]
+        data3s = ['分からない', 0]
+        # times = ['x']
+        # data1s = ['分かった']
+        # data2s = ['もう知ってる']
+        # data3s = ['分からない']
         data1sum = 0
         data2sum = 0
         data3sum = 0
         # i番目のスライドの，vote_timeでソートされたvoteオブジェクトのリストを作成
         votes = VoteTable.objects.filter(slide_id__slide_no__exact=i).order_by('vote_time')
         for vote in votes:
-            time_str = re.search(regex, str(timezone.localtime(vote.vote_time))).group()
+            time_str = re.search(regex_time, str(timezone.localtime(vote.vote_time))).group()
             times.append(time_str)
             if vote.vote_type == 1:
                 data1sum += 1
@@ -95,17 +112,26 @@ def speaker_res(request):
             else:
                 pass
             append_data(data1s, data2s, data3s, data1sum, data2sum, data3sum)
+        # スライド終了
+        slide_end_time = SlideTable.objects.filter(slide_no__exact=i)[0].end_time
+        slide_end_time = re.search(regex_time, str(timezone.localtime(slide_end_time))).group()
+        times.append(slide_end_time)
+        append_data(data1s, data2s, data3s, data1sum, data2sum, data3sum)
+        # スライドのデータを追加
         time_list.append(times)
         append_data(data1_list, data2_list, data3_list, data1s, data2s, data3s)
 
-    # コメント
-    # 部屋関係なしに全データ
+    # コメント機能
+    # 部屋関係なしに全データ取得
     comments = CommentTable.objects.all().order_by('comment_time')
     comment_dic_list = []
     for comment in comments:
         dic = dict()
         dic['slide'] = comment.slide_id.slide_no
-        dic['time'] = re.search(regex, str(timezone.localtime(comment.comment_time))).group()
+
+        date_time_str = re.search(regex_date_time, str(timezone.localtime(comment.comment_time))).group()
+        date_time_str = date_time_str.replace('-', '/')
+        dic['time'] = date_time_str
         dic['text'] = comment.comment_text
         comment_dic_list.append(dic)
 
