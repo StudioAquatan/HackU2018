@@ -15,16 +15,20 @@
     <div class="container-fluid">
         <h1 class="site-name">App Name</h1>
         <p>
-            <a class="btn btn-black" href="./speaker-start/" role="button">
-                <button class="btn btn-outline-primary btn-lg">
-                    Make room
-                </button>
-            </a>
-            <a class="btn btn-black" href="./listener/" role="button">
-                <button class="btn btn-outline-primary btn-lg">
-                    Join room
-                </button>
-            </a>
+            <form action="{% url 'poll:index' %}" method="post">
+                {% csrf_token %}
+                <label>Room Name:<input type="text" size="20" name="room_name"></label>
+                <a class="btn btn-black" role="button">
+                    <button class="btn btn-outline-primary btn-lg"  type="submit" name="make_room">
+                        Make room
+                    </button>
+                </a>
+                <a class="btn btn-black" role="button">
+                    <button class="btn btn-outline-primary btn-lg" type="submit" name="join_room">
+                        Join room
+                    </button>
+                </a>
+            </form>
         </p>
     </div>
 {% endblock %}
