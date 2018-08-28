@@ -11,10 +11,11 @@ class RoomTable(models.Model):
     password = models.CharField(max_length=32)
     # リスナーの人数
     num_listener = models.IntegerField(default=0)
+    # 現在のスライド番号
+    slide_no = models.IntegerField(default=0)
 
     def __str__(self):
         return self.room_name
-
 
 class VoteTable(models.Model):
     """
@@ -25,7 +26,7 @@ class VoteTable(models.Model):
     # 票の送信時刻
     vote_time = models.DateTimeField('date published')
     # 投票時のスライド番号
-    slide_no = models.IntegerField(default=1)
+    slide_no = models.IntegerField(default=0)
     # ルームID
     room_id = models.ForeignKey(RoomTable, on_delete=models.CASCADE)
 
@@ -39,6 +40,6 @@ class CommentTable(models.Model):
     # コメントの送信時刻
     comment_time = models.DateTimeField('date published')
     # コメント送信時のスライド番号
-    slide_no = models.CharField(max_length=8, default=0)
+    slide_no = models.IntegerField(default=0)
     # ルームID
     room_id = models.ForeignKey(RoomTable, on_delete=models.CASCADE)
