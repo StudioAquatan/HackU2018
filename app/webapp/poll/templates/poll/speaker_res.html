@@ -8,6 +8,8 @@
 {% block content %}
     <h1>振り返りのページ</h1>
 
+    <a href="{% url 'poll:index' %}" class="btn btn-secondary btn-sm">TOPに戻る</a>
+
     {# スライド数のグラフをバインドする要素の準備 #}
     {% for i in slide_list %}
         <p>{{ i }}</p>

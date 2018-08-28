@@ -91,10 +91,6 @@ def speaker_res(request):
         data1s = ['分かった', 0]  # スライド開始時はすべて0票
         data2s = ['もう知ってる', 0]
         data3s = ['分からない', 0]
-        # times = ['x']
-        # data1s = ['分かった']
-        # data2s = ['もう知ってる']
-        # data3s = ['分からない']
         data1sum = 0
         data2sum = 0
         data3sum = 0
