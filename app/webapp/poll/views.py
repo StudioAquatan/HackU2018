@@ -66,7 +66,7 @@ def speaker(request):
 def speaker_res(request):
     template_name = 'poll/speaker_res.html'
 
-    # グラフ
+    # グラフ機能
     # 部屋関係なしに全部のデータをとる
     # スライドの枚数
     # TODO: 部屋でフィルタをかける
@@ -80,14 +80,20 @@ def speaker_res(request):
     regex = r'\d\d:\d\d:\d\d'
 
     for i in range(1, int(slide_num) + 1):
-        # スライドタイトル(slide_n)のリストに追加
+        # スライドタイトル(slide_i)のリストに追加
         slide_list.append('slide_' + str(i))
 
         # スライドごとのデータを作成
-        times = ['x']
-        data1s = ['分かった']
-        data2s = ['もう知ってる']
-        data3s = ['分からない']
+        slide_start_time = SlideTable.objects.filter(slide_no__exact=i)[0].start_time
+        slide_start_time = re.search(regex, str(timezone.localtime(slide_start_time))).group()
+        times = ['x', slide_start_time]
+        data1s = ['分かった', 0]  # スライド開始時はすべて0票
+        data2s = ['もう知ってる', 0]
+        data3s = ['分からない', 0]
+        # times = ['x']
+        # data1s = ['分かった']
+        # data2s = ['もう知ってる']
+        # data3s = ['分からない']
         data1sum = 0
         data2sum = 0
         data3sum = 0
@@ -105,11 +111,17 @@ def speaker_res(request):
             else:
                 pass
             append_data(data1s, data2s, data3s, data1sum, data2sum, data3sum)
+        # スライド終了
+        slide_end_time = SlideTable.objects.filter(slide_no__exact=i)[0].end_time
+        slide_end_time = re.search(regex, str(timezone.localtime(slide_end_time))).group()
+        times.append(slide_end_time)
+        append_data(data1s, data2s, data3s, data1sum, data2sum, data3sum)
+        # スライドのデータを追加
         time_list.append(times)
         append_data(data1_list, data2_list, data3_list, data1s, data2s, data3s)
 
-    # コメント
-    # 部屋関係なしに全データ
+    # コメント機能
+    # 部屋関係なしに全データ取得
     comments = CommentTable.objects.all().order_by('comment_time')
     comment_dic_list = []
     for comment in comments:
