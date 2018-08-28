@@ -77,7 +77,8 @@ def speaker_res(request):
     data1_list = []  # わかる
     data2_list = []  # しってる
     data3_list = []  # わからん
-    regex = r'\d\d:\d\d:\d\d'
+    regex_time = r'\d\d:\d\d:\d\d'
+    regex_date_time = r'\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d'
 
     for i in range(1, int(slide_num) + 1):
         # スライドタイトル(slide_i)のリストに追加
@@ -85,7 +86,7 @@ def speaker_res(request):
 
         # スライドごとのデータを作成
         slide_start_time = SlideTable.objects.filter(slide_no__exact=i)[0].start_time
-        slide_start_time = re.search(regex, str(timezone.localtime(slide_start_time))).group()
+        slide_start_time = re.search(regex_time, str(timezone.localtime(slide_start_time))).group()
         times = ['x', slide_start_time]
         data1s = ['分かった', 0]  # スライド開始時はすべて0票
         data2s = ['もう知ってる', 0]
@@ -100,7 +101,7 @@ def speaker_res(request):
         # i番目のスライドの，vote_timeでソートされたvoteオブジェクトのリストを作成
         votes = VoteTable.objects.filter(slide_id__slide_no__exact=i).order_by('vote_time')
         for vote in votes:
-            time_str = re.search(regex, str(timezone.localtime(vote.vote_time))).group()
+            time_str = re.search(regex_time, str(timezone.localtime(vote.vote_time))).group()
             times.append(time_str)
             if vote.vote_type == 1:
                 data1sum += 1
@@ -113,7 +114,7 @@ def speaker_res(request):
             append_data(data1s, data2s, data3s, data1sum, data2sum, data3sum)
         # スライド終了
         slide_end_time = SlideTable.objects.filter(slide_no__exact=i)[0].end_time
-        slide_end_time = re.search(regex, str(timezone.localtime(slide_end_time))).group()
+        slide_end_time = re.search(regex_time, str(timezone.localtime(slide_end_time))).group()
         times.append(slide_end_time)
         append_data(data1s, data2s, data3s, data1sum, data2sum, data3sum)
         # スライドのデータを追加
@@ -127,7 +128,9 @@ def speaker_res(request):
     for comment in comments:
         dic = dict()
         dic['slide'] = comment.slide_id.slide_no
-        dic['time'] = re.search(regex, str(timezone.localtime(comment.comment_time))).group()
+        date_time_str = re.search(regex_date_time, str(timezone.localtime(comment.comment_time))).group()
+        date_time_str = date_time_str.replace('-', '/')
+        dic['time'] = date_time_str
         dic['text'] = comment.comment_text
         comment_dic_list.append(dic)
 
