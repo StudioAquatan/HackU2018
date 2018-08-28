@@ -40,8 +40,6 @@ class VoteTable(models.Model):
     vote_time = models.DateTimeField('date published')
     # 投票時のスライドID
     slide_id = models.ForeignKey(SlideTable, on_delete=models.CASCADE)
-    # ルームID
-    room_id = models.ForeignKey(RoomTable, on_delete=models.CASCADE)
 
 
 class CommentTable(models.Model):
@@ -54,5 +52,3 @@ class CommentTable(models.Model):
     comment_time = models.DateTimeField('date published')
     # コメント送信時のスライドID
     slide_id = models.ForeignKey(SlideTable, on_delete=models.CASCADE)
-    # ルームID
-    room_id = models.ForeignKey(RoomTable, on_delete=models.CASCADE)
