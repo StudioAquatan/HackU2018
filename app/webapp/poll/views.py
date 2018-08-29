@@ -31,11 +31,11 @@ def index(request):
             button2()
             template_name = 'poll/speaker-start.html'
 
-    return render(request, template_name, {'roomID': 3})
+    return render(request, template_name, {'room_id': 3})
     # return HttpResponse("Hello, world. You're at the polls index.")
 
 
-def listener(request, roomID):
+def listener(request, room_id):
     template_name = 'poll/listener.html'
 
     if request.method == 'POST':
@@ -49,22 +49,22 @@ def listener(request, roomID):
             # ボタン2がクリックされた場合の処理
             button3()
 
-    return render(request, template_name, {'roomID': roomID})
+    return render(request, template_name, {'room_id': room_id})
 
 
-def speaker_start(request, roomID):
+def speaker_start(request, room_id):
     template_name = 'poll/speaker-start.html'
 
-    return render(request, template_name, {'roomID': roomID})
+    return render(request, template_name, {'room_id': room_id})
 
 
-def speaker(request, roomID):
+def speaker(request, room_id):
     template_name = 'poll/speaker.html'
 
-    return render(request, template_name, {'roomID': roomID})
+    return render(request, template_name, {'room_id': room_id})
 
 
-def speaker_res(request, roomID):
+def speaker_res(request, room_id):
     template_name = 'poll/speaker_res.html'
 
     # --------------------グラフ機能--------------------
@@ -173,26 +173,26 @@ def append_data(a, b, c, x, y, z):
     c.append(z)
 
 
-def change_status(request, roomID):
+def change_status(request, room_id):
     # TODO 任意のroom_idの取得
     room_info = RoomTable.objects.first()
 
     if request.POST['action'] == 'start-lec':
         SlideTable.objects.create(slide_no=1, start_time=timezone.now(), room_id=room_info)
-        return HttpResponseRedirect(reverse('poll:speaker', args=(roomID,)))
+        return HttpResponseRedirect(reverse('poll:speaker', args=(room_id,)))
 
     elif request.POST['action'] == 'next-slide':
         current_slide = SlideTable.objects.order_by('start_time').last()
         current_slide.end_time = timezone.now()
         current_slide.save()
         SlideTable.objects.create(slide_no=current_slide.slide_no + 1, start_time=timezone.now(), room_id=room_info)
-        return HttpResponseRedirect(reverse('poll:speaker', args=(roomID,)))
+        return HttpResponseRedirect(reverse('poll:speaker', args=(room_id,)))
 
     elif request.POST['action'] == 'fin-lec':
         current_slide = SlideTable.objects.order_by('start_time').last()
         current_slide.end_time = timezone.now()
         current_slide.save()
-        return HttpResponseRedirect(reverse('poll:speaker_res', args=(roomID,)))
+        return HttpResponseRedirect(reverse('poll:speaker_res', args=(room_id,)))
 
 
 class VoteViewSet(viewsets.ModelViewSet):
