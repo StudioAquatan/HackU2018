@@ -6,8 +6,9 @@
 
 {# メインコンテンツ #}
 {% block content %}
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container-fluid jumbotron-container">
+    <div class="container-fluid">
+        <div class="container-fluid">
+            {% csrf_token %}
             <button class="btn btn-circle btn-lg">
                 わかった
             </button>
@@ -30,10 +31,10 @@
         </div>
     </div>
 
-    <form action="{% url 'poll:listener' %}" method="post">
-      {% csrf_token %}
-      <input type="submit" name="button_1" value="分かった">
-      <input type="submit" name="button_2" value="もう知ってる">
-      <input type="submit" name="button_3" value="分からない">
-    </form>
+{#    <form action="{% url 'poll:listener' %}" method="post">#}
+{#      {% csrf_token %}#}
+{#      <input type="submit" name="button_1" value="分かった">#}
+{#      <input type="submit" name="button_2" value="もう知ってる">#}
+{#      <input type="submit" name="button_3" value="分からない">#}
+{#    </form>#}
 {% endblock %}
