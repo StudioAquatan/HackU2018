@@ -17,22 +17,40 @@ import datetime
 
 from .listener_button import button1, button2, button3
 
+from .forms import RoomForm
+
 
 def index(request):
-    template_name = 'poll/index.html'
+    room = RoomTable()
+    if request.method == 'POST':
+        form = RoomForm(request.POST, instance=room)
+        if form.is_valid():
+            room = form.save(commit=False)
+            # type(room) - <class 'poll.models.RoomTable'>
+            # room.room_name - フォームで入力した文字列 <str>
+            # room.password - 空文字列 <str>
+            # room.num_listener - 0 <int>
+            # room.id - None <NoneType>
+            input_name = room.room_name
+            if request.POST['action'] == 'make_room':
+                # 同じ名前の部屋がすでにあればエラーメッセージを出させる
+                if RoomTable.objects.filter(room_name__exact=input_name).exists():
+                    return render(request, 'poll/index.html', {
+                        'form': form,
+                        'error_message': '"' + input_name + '"はすでに存在します．'
+                    })
+                else:
+                    room.save()
+                    return HttpResponseRedirect(reverse('poll:speaker_start', args=(room.id,)))
+            elif request.POST['action'] == 'join_room':
+                join = RoomTable.objects.filter(room_name__exact=input_name).first()
+                return HttpResponseRedirect(reverse('poll:listener', args=(join.id,)))
+            else:
+                pass
+    else:
+        form = RoomForm(instance=room)
 
-    if request.method == 'GET':
-        if 'make_room' in request.GET:
-            # ボタン1がクリックされた場合の処理
-            button1()
-            template_name = 'poll/listener.html'
-        elif 'join_room' in request.GET:
-            # ボタン2がクリックされた場合の処理
-            button2()
-            template_name = 'poll/speaker-start.html'
-
-    return render(request, template_name, {'room_id': 3})
-    # return HttpResponse("Hello, world. You're at the polls index.")
+    return render(request, 'poll/index.html', {'form': form})
 
 
 def listener(request, room_id):
