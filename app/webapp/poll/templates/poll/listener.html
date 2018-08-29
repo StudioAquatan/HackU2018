@@ -31,9 +31,11 @@
     </div>
 
     <form action="{% url 'poll:listener' %}" method="post">
-      {% csrf_token %}
-      <input type="submit" name="button_1" value="分かった">
-      <input type="submit" name="button_2" value="もう知ってる">
-      <input type="submit" name="button_3" value="分からない">
+        {% csrf_token %}
+        <input type="submit" name="button_1" value="分かった">
+        <input type="submit" name="button_2" value="もう知ってる">
+        <input type="submit" name="button_3" value="分からない">
+        <label>コメント:<input type="text" size="20" name="your_name"></label>
+        <input type="submit" value="送信">
     </form>
 {% endblock %}
