@@ -7,6 +7,73 @@
 {# メインコンテンツ #}
 {% block content %}
 
+    <div class="row" style="position: center">
+        <div class="col-lg" style="padding: 0%">
+            <div class="container-meter">
+                <div class="GaugeMeter" id="understood_meter"
+                     data-percent="10"
+                     data-append="%"
+                     data-total="100"
+                     data-size="300"
+                     data-width="10"
+                     data-color="#19C5FF"
+                     data-style="Semi"
+                     data-label="<font style='font-size:1.3rem;'>わかった</font>"
+                ></div>
+            </div>
+        </div>
+        <div class="col-lg" style="padding: 0%">
+            <div class="container-meter">
+                <div class="GaugeMeter" id="knew_meter"
+                     data-percent="10"
+                     data-append="%"
+                     data-total="100"
+                     data-size="300"
+                     data-width="10"
+                     data-color="#19C5FF"
+                     data-style="Semi"
+                     data-label="<font style='font-size:1.3rem;'>わかった</font>"
+                ></div>
+            </div>
+        </div>
+        <div class="col-lg" style="padding: 0%">
+            <div class="container-meter">
+                <div class="GaugeMeter" id="not_understood_meter"
+                     data-percent="10"
+                     data-append="%"
+                     data-total="100"
+                     data-size="300"
+                     data-width="10"
+                     data-color="#19C5FF"
+                     data-style="Semi"
+                     data-label="<font style='font-size:1.3rem;'>わかった</font>"
+                ></div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid jumbotron-container">
+        <div class="container">
+            <button class="btn btn-outline-primary btn-lg">
+                コメント表示
+            </button>
+        </div>
+        <div class="container">
+            <p>
+                テストコメント
+            </p>
+        </div>
+    </div>
+    <div class="container-fluid jumbotron-container">
+        <div class="test">
+            <button class="btn btn-outline-primary btn-lg">
+                次のスライド
+            </button>
+            <button class="btn btn-outline-primary btn-lg">
+                終了
+            </button>
+        </div>
+    </div>
+
     <h1 class="site-name">Speaking Now!!</h1>
 
     {#  票数の割合のメーター  #}
