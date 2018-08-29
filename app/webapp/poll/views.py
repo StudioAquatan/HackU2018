@@ -44,7 +44,13 @@ def index(request):
                     return HttpResponseRedirect(reverse('poll:speaker_start', args=(room.id,)))
             elif request.POST['action'] == 'join_room':
                 join = RoomTable.objects.filter(room_name__exact=input_name).first()
-                return HttpResponseRedirect(reverse('poll:listener', args=(join.id,)))
+                if join is None:
+                    return render(request, 'poll/index.html', {
+                        'form': form,
+                        'error_message': '"' + input_name + '"は存在しません．'
+                    })
+                else:
+                    return HttpResponseRedirect(reverse('poll:listener', args=(join.id,)))
             else:
                 pass
     else:
