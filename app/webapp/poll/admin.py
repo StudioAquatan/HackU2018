@@ -27,6 +27,7 @@ class ListenerAdmin(admin.ModelAdmin):
     list_display_links = ('listener_ip',)  # 修正リンクでクリックできる項目
 
 
+
 # RoomTable, VoteTable, CommentTableをadminサイトから触れられるように登録
 admin.site.register(RoomTable, RoomAdmin)
 admin.site.register(SlideTable, SlideAdmin)

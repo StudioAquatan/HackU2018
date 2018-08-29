@@ -1,21 +1,23 @@
-/*.jumbotron {*/
-/*display: flex;*/
-/*align-items: center;*/
-/*justify-content: center;*/
-/*height: 100vh;*/
-/*min-height: 450px;*/
-/*background-image: url("../pictures/bg-top-page.jpg");*/
-/*background-position: center;*/
-/*background-size: cover;*/
-/*text-align: center;*/
-/*}*/
+.jumbotron {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    min-height: 450px;
+    background: transparent !important;
+    /*background-color: #000;*/
+    /*background-image: url("../pictures/bg-top-page.jpg");*/
+    /*background-position: center;*/
+    /*background-size: cover;*/
+    text-align: center;
+}
 
-/*.jumbotron-container {*/
-/*position: center;*/
-/*background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));*/
-/*padding-left: 80px;*/
-/*margin-right: 80px;*/
-/*}*/
+.jumbotron-container {
+    position: center;
+    /*background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));*/
+    padding-left: 80px;
+    margin-right: 80px;
+}
 
 html {
     position: relative;
@@ -26,29 +28,202 @@ body {
     margin-bottom: 60px;
 }
 
+.row {
+    width: 100%;
+}
+
+.container {
+    height: 100%;
+}
+
+.test {
+    padding: 10px;
+    margin: 10px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
 .container-fluid {
     position: center;
+    top: 50%;
     padding-bottom: 60px;
     text-align: center;
 }
 
 .container-fluid h1 {
-    font-size: 10vw;
+    font-size: 3.6rem;
     color: #FF8200;
+}
+
+.input-group {
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 60px;
+    height: 50px;
     background-color: #0086B2;
     text-align: right;
 }
 
 .credits {
-    padding: 20px;
+    padding: 10px;
+    height: 50px;
 }
 
 .btn-outline-primary:hover {
+}
+
+/*.btn-circle {*/
+/*width: 30px;*/
+/*height: 30px;*/
+/*text-align: center;*/
+/*padding: 6px 0;*/
+/*font-size: 12px;*/
+/*line-height: 1.42;*/
+/*border-radius: 15px;*/
+/*}*/
+
+.btn-outline-primary.btn-lg {
+    /*padding: 20px;*/
+    margin: 20px;
+}
+
+.btn-circle.btn-lg {
+    margin: 10px;
+    width: 10rem;
+    height: 10rem;
+    padding: 2rem 2rem;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 25rem;
+    background-color: #fff;
+    border-color: #19C5FF;
+}
+
+.btn-circle:hover {
+    background-color: #0086B2;
+}
+
+.GaugeMeter {
+    Position: Relative;
+    Text-Align: Center;
+    Overflow: Hidden;
+    Cursor: Default;
+}
+
+.GaugeMeter SPAN,
+.GaugeMeter B {
+    Margin: 0 23%;
+    Width: 54%;
+    Position: Absolute;
+    Text-align: Center;
+    Display: Inline-Block;
+    Color: RGBa(0, 0, 0, .8);
+    Font-Weight: 100;
+    Overflow: Hidden;
+    White-Space: NoWrap;
+    Text-Overflow: Ellipsis;
+}
+
+.GaugeMeter[data-style="Semi"] B {
+    Margin: 0 10%;
+    Width: 80%;
+}
+
+.GaugeMeter S,
+.GaugeMeter U {
+    Text-Decoration: None;
+    Font-Size: .5em;
+    Opacity: .5;
+}
+
+.GaugeMeter B {
+    Color: Black;
+    Font-Weight: 300;
+    Font-Size: .5em;
+    Opacity: .8;
+}
+
+.container-meter {
+    margin-left: 3%;
+    margin-right: 5%;
+}
+
+@media (min-width: 320px) {
+
+    .container-meter {
+    margin-left: 8%;
+    margin-right: 0%;
+    }
+
+}
+
+@media (min-width: 375px) {
+
+    .container-meter {
+    margin-left: 15%;
+    margin-right: 0%;
+    }
+
+    .container-fluid h1 {
+        font-size: 4.3rem;
+    }
+}
+
+@media (min-width: 425px) {
+
+    .container-meter {
+    margin-left: 19%;
+    margin-right: 0%;
+    }
+
+}
+
+@media (min-width: 768px) {
+
+   .container-meter {
+    margin-left: 33%;
+    margin-right: 0%;
+   }
+
+    .form-group {
+        margin-left: auto;
+        margin-right: auto;
+        width: 60%;
+    }
+
+    .container-fluid h1 {
+        font-size: 7rem;
+    }
+}
+
+@media (min-width: 1024px) {
+
+    .container-meter {
+    margin-left: 15%;
+    margin-right: 0%;
+    }
+
+}
+
+@media (min-width: 1440px) {
+
+    .container-meter {
+    margin-left: 21%;
+    margin-right: 0%;
+    }
+
+}
+@media (min-width: 2560px) {
+
+    .container-meter {
+    margin-left: 35%;
+    margin-right: 0%;
+    }
+
 }

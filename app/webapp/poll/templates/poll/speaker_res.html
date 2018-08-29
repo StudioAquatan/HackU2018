@@ -8,6 +8,8 @@
 {% block content %}
     <h1>振り返りのページ</h1>
 
+    <a href="{% url 'poll:index' %}" class="btn btn-secondary btn-sm">TOPに戻る</a>
+
     {# スライド数のグラフをバインドする要素の準備 #}
     {% for i in slide_list %}
         <p>{{ i }}</p>
@@ -84,7 +86,7 @@
         {% endfor %}
 
         {# 折れ線グラフ作成 #}
-        for (let i = 0; i < {{ max_slide }}; i++) {
+        for (let i = 0; i < {{ slide_num }}; i++) {
             c3.generate({
                 bindto: "#slide_" + (i+1),
                 padding: {
