@@ -73,6 +73,7 @@ def listener(request, room_id):
     template_name = 'poll/listener.html'
 
     if request.method == 'POST':
+        input_comment = request.POST.get('input_comment')
         if 'button_1' in request.POST:
             # ボタン1がクリックされた場合の処理
             button1()
@@ -83,7 +84,6 @@ def listener(request, room_id):
             # ボタン2がクリックされた場合の処理
             button3()
         elif 'button_submit' in request.POST:
-            input_comment = request.POST.get('input_comment')
             comment_submit(input_comment)
 
     return render(request, template_name, {'room_id': room_id})
