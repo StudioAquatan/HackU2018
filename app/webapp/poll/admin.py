@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import RoomTable, SlideTable, VoteTable, CommentTable
+from .models import RoomTable, SlideTable, VoteTable, CommentTable, ListenerTable
 
 
 class RoomAdmin(admin.ModelAdmin):
@@ -19,7 +19,13 @@ class VoteAdmin(admin.ModelAdmin):
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('id', 'comment_text', 'comment_time', 'slide_id',)  # 一覧に出したい項目
-    list_display_links = ('comment_text', 'comment_time')  # 修正リンクでクリックできる項目
+    list_display_links = ('comment_text', 'comment_time',)  # 修正リンクでクリックできる項目
+
+
+class ListenerAdmin(admin.ModelAdmin):
+    list_display = ('id', 'listener_ip', 'room_id',)  # 一覧に出したい項目
+    list_display_links = ('listener_ip',)  # 修正リンクでクリックできる項目
+
 
 
 # RoomTable, VoteTable, CommentTableをadminサイトから触れられるように登録
@@ -27,3 +33,4 @@ admin.site.register(RoomTable, RoomAdmin)
 admin.site.register(SlideTable, SlideAdmin)
 admin.site.register(VoteTable, VoteAdmin)
 admin.site.register(CommentTable, CommentAdmin)
+admin.site.register(ListenerTable, ListenerAdmin)

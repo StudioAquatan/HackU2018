@@ -15,20 +15,25 @@ from .serializer import VoteSerializer, RoomSerializer, CommentSerializer
 import re
 
 from .listener_button import button1, button2, button3
+from .room_module import make_room, join_room
 
 
 def index(request):
     template_name = 'poll/index.html'
 
-    if request.method == 'GET':
-        if 'make_room' in request.GET:
-            # ボタン1がクリックされた場合の処理
-            button1()
-            template_name = 'poll/listener.html'
-        elif 'join_room' in request.GET:
-            # ボタン2がクリックされた場合の処理
-            button2()
-            template_name = 'poll/speaker-start.html'
+    if request.method == 'POST':
+        name = request.POST.get('room_name')
+        if 'make_room' in request.POST:
+            make_room(name)
+            template_name="poll/speaker-start.html"
+        elif 'join_room' in request.POST:
+            x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+            if x_forwarded_for:
+                ip = x_forwarded_for.split(',')[0]
+            else:
+                ip = request.META.get('REMOTE_ADDR')
+            join_room(name, ip)
+            template_name="poll/listener.html"
 
     return render(request, template_name)
     # return HttpResponse("Hello, world. You're at the polls index.")
@@ -38,15 +43,20 @@ def listener(request):
     template_name = 'poll/listener.html'
 
     if request.method == 'POST':
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
         if 'button_1' in request.POST:
             # ボタン1がクリックされた場合の処理
-            button1()
+            button1(ip)
         elif 'button_2' in request.POST:
             # ボタン2がクリックされた場合の処理
-            button2()
+            button2(ip)
         elif 'button_3' in request.POST:
             # ボタン2がクリックされた場合の処理
-            button3()
+            button3(ip)
 
     return render(request, template_name)
 
