@@ -176,10 +176,14 @@ class VoteViewSet(viewsets.ModelViewSet):
     （将来的に部屋に合わせた票の取得をしたい）
     """
     current_slide = SlideTable.objects.order_by('start_time').last()
-    late_limit_sec = 30
+    # デモ用(過去10秒の票を持ってくる)
+    # late_limit_sec = 10
+    # 展示用(過去60秒の票を持ってくる)
+    # late_limit_sec 60
+    # 過去late_limit[sec]の票を持ってくる
     # queryset = VoteTable.objects.filter(slide_no=current_slide.slide_no,
     #                                     vote_time__gte=timezone.now() - timedelta(seconds=late_limit_sec))
-    # ↓時間にかかわらずとってくる
+    # ↓時間にかかわらず全てとってくる
     queryset = VoteTable.objects.filter(slide_id=current_slide)
     serializer_class = VoteSerializer
 
