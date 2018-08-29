@@ -2,43 +2,20 @@
 {% extends 'base.html' %}
 
 {# タイトルを変更 #}
-{% block title %}TOPページ{% endblock %}
+{% block title %}Home{% endblock %}
 
 {# メインコンテンツ #}
 {% block content %}
-    {#    <div class="jumbotron jumbotron-fluid">#}
-    {#        <div class="container-fluid jumbotron-container">#}
-    {#            <a href="https://jp.freepik.com/free-vector/_2803070.htm">Freepikによるデザイン</a>#}
-    {#        </div>#}
-    {#    </div>#}
-
-    <div class="container-fluid">
-        <h1 class="site-name">App Name</h1>
-        <p>
-            <a class="btn btn-black" href="./speaker-start/" role="button">
-                <button class="btn btn-outline-primary btn-lg">
-                    Make room
-                </button>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container-fluid jumbotron-container">
+            <h1>SeeVo</h1>
+            {% csrf_token %}
+            <a class="btn btn-outline-primary btn-lg" href="./speaker-start/" role="button">
+                Make room
             </a>
-            <a class="btn" href="./listener/" role="button">
-                <button class="btn btn-outline-primary btn-lg">
-                    Join room
-                </button>
+            <a class="btn btn-outline-primary btn-lg" href="./listener/" role="button">
+                Join room
             </a>
-            {#                <a href="https://jp.freepik.com/free-vector/_2803070.htm">Freepikによるデザイン</a>#}
         </div>
-{#    </div>#}
-{#    <div class="container-fluid">#}
-        {#        <h1 class="">App Name</h1>#}
-        {#        <a class="btn" href="./speaker/" role="button">#}
-        {#            <button class="btn btn-outline-primary btn-lg">#}
-        {#                Make room#}
-        {#            </button>#}
-        {#        </a>#}
-        {#        <a class="btn" href="./listener/" role="button">#}
-        {#            <button class="btn btn-outline-primary btn-lg">#}
-        {#                Join room#}
-        {#            </button>#}
-        {#        </a>#}
-{#    </div>#}
+    </div>
 {% endblock %}
