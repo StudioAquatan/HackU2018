@@ -31,7 +31,7 @@ def index(request):
             button2()
             template_name = 'poll/speaker-start.html'
 
-    return render(request, template_name)
+    return render(request, template_name, {'roomID': 3})
     # return HttpResponse("Hello, world. You're at the polls index.")
 
 
@@ -49,19 +49,19 @@ def listener(request, roomID):
             # ボタン2がクリックされた場合の処理
             button3()
 
-    return render(request, template_name)
+    return render(request, template_name, {'roomID': roomID})
 
 
 def speaker_start(request, roomID):
     template_name = 'poll/speaker-start.html'
 
-    return render(request, template_name)
+    return render(request, template_name, {'roomID': roomID})
 
 
 def speaker(request, roomID):
     template_name = 'poll/speaker.html'
 
-    return render(request, template_name)
+    return render(request, template_name, {'roomID': roomID})
 
 
 def speaker_res(request, roomID):
