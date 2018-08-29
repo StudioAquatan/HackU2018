@@ -16,7 +16,7 @@ from .serializer import VoteSerializer, RoomSerializer, CommentSerializer, Slide
 import re
 import datetime
 
-from .listener_button import button1, button2, button3
+from .listener_button import button1, button2, button3, comment_submit
 
 from .forms import RoomForm
 
@@ -82,6 +82,9 @@ def listener(request, room_id):
         elif 'button_3' in request.POST:
             # ボタン2がクリックされた場合の処理
             button3()
+        elif 'button_submit' in request.POST:
+            input_comment = request.POST.get('input_comment')
+            comment_submit(input_comment)
 
     return render(request, template_name, {'room_id': room_id})
 
