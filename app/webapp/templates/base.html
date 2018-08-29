@@ -9,6 +9,9 @@
 
     {# style.cssを読み込む #}
     <link rel="stylesheet" type="text/css" href="{% static 'poll/css/style.css' %}"/>
+    {# Epoch.jsに付随するCSS #}
+    <link rel="stylesheet" type="text/css" href="{% static 'poll/css/epoch.min.css' %}">
+
     {# モーダルウィンドウ作るのに必要っぽいものを読み込む #}
     <link rel="stylesheet" href="{% static 'poll/css/bootstrap.css' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
@@ -21,6 +24,16 @@
                 $(".GaugeMeter").gaugeMeter();
             });
         </script>
+
+    {# c3とd3の読み込み #}
+    <link rel="stylesheet" href="{% static 'poll/css/c3-v0.4.18.min.css' %}"/>
+    <script src="{% static 'poll/js/d3-v3.5.17.min.js' %}" charset="utf-8"></script>
+    <script src="{% static 'poll/js/c3-v0.4.18.min.js' %}"></script>
+    <script src="{% static 'poll/js/bootstrap.bundle.min.js' %}"></script>
+
+    {# Epoch.jsを導入 #}
+    <script src="{% static 'poll/js/epoch.min.js' %}"></script>
+
 </head>
 
 <body class="body" style="padding-top: 3.5rem">
