@@ -14,7 +14,7 @@ from .serializer import VoteSerializer, RoomSerializer, CommentSerializer
 
 import re
 
-from .listener_button import button1, button2, button3
+from .listener_button import button1, button2, button3, comment_submit
 
 
 def index(request):
@@ -47,6 +47,9 @@ def listener(request):
         elif 'button_3' in request.POST:
             # ボタン2がクリックされた場合の処理
             button3()
+        elif 'button_submit' in request.POST:
+            input_comment = request.POST.get('input_comment')
+            comment_submit(input_comment)
 
     return render(request, template_name)
 
