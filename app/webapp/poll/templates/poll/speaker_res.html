@@ -12,7 +12,7 @@
 
     <div class="container-group-graph">
         <a href="{% url 'poll:index' %}" class="btn btn-outline-secondary btn-lg">
-            HOMEに戻る
+            Homeに戻る
         </a>
 
         {# スライド数のグラフをバインドする要素の準備 #}
@@ -44,6 +44,12 @@
             {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <div class="container-home">
+        <a href="{% url 'poll:index' %}" class="btn btn-outline-secondary btn-lg">
+            Homeに戻る
+        </a>
     </div>
 
     <script>

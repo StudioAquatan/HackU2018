@@ -161,6 +161,11 @@ body {
     background-color: #0086B2;
 }
 
+.container-home {
+    margin: 0 20px 60px 20px;
+    padding-bottom: 20px;
+}
+
 .container-meter {
     margin-left: 3%;
     margin-right: 5%;
@@ -169,7 +174,6 @@ body {
 .container-table {
     margin-left: 7%;
     margin-right: 7%;
-    padding-bottom: 30px;
     margin-bottom: 30px;
 }
 
