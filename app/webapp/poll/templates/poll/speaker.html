@@ -218,7 +218,7 @@
             })
                 .done(function (data) {
                     // 通信成功時の処理を記述
-                    comments = []
+                    comments = [];
                     for (let i in data) {
                         console.log(data[i]);
                         comments.push(data[i])
@@ -239,9 +239,9 @@
             $('#comment_info tr').remove();
             for (let i in comments) {
                 let time = comments[i].comment_time;
-                time = time.replace('-', '年', 1);
-                time = time.replace('-', '月', 1);
-                time = time.replace('T', '日 ', 1);
+                time = time.replace('-', '/');
+                time = time.replace('-', '/');
+                time = time.replace('T', '  ', 1);
                 time = time.split('+')[0];
                 $('#comment_info').append(
                     '<tr><td id="slide_num">' + comments[i].slide_id.slide_no + '</td>' +
@@ -286,27 +286,24 @@
             }
         }
 
-        function dispVariousInfo() {
-            {# getRoomPeoplenum()にするとconsoleに部屋の人数とってきたよーと票数とってきたよーが並ぶ #}
-            {# ひとまずこれで期待する動作が得られる #}
+        {# 画面読み込み時に実行 #}
+        window.onload = function () {
             getVotes()
                 .then(getRoomPeoplenum)
                 .then(updateGauge)
                 .then(getComments)
                 .then(dispComments)
                 .then(dispModal);
-        }
-
-        {# 画面読み込み時に実行 #}
-        window.onload = dispVariousInfo();
+        };
         {# 第二引数[msec]の間隔でfunctionを実行 #}
-        setInterval(dispVariousInfo(), 5000);
-
-        $(function () {
-            $("table").resizableColumns({
-                store: store
-            });
-        });
+        setInterval(function () {
+            getVotes()
+                .then(getRoomPeoplenum)
+                .then(updateGauge)
+                .then(getComments)
+                .then(dispComments)
+                .then(dispModal);
+        }, 5000);
 
     </script>
 
