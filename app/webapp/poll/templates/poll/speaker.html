@@ -268,21 +268,21 @@
         }
 
         function dispModal() {
-            if (have_known_ratio > 0.5 && not_understand_ratio > 0.5) {
+            if (have_known_ratio > 0.8 && not_understand_ratio > 0.5) {
                 $('#modal-both').modal('show');
                 setTimeout(function () {
                     $('#modal-both').modal('hide');
-                }, 3000);
-            } else if (have_known_ratio > 0.5) {
+                }, 5000);
+            } else if (have_known_ratio > 0.8) {
                 $('#modal-have-known').modal('show');
                 setTimeout(function () {
                     $('#modal-have-known').modal('hide');
-                }, 3000);
+                }, 5000);
             } else if (not_understand_ratio > 0.5) {
                 $('#modal-not-understand').modal('show');
                 setTimeout(function () {
                     $('#modal-not-understand').modal('hide');
-                }, 3000);
+                }, 5000);
             }
         }
 
@@ -303,7 +303,7 @@
                 .then(getComments)
                 .then(dispComments)
                 .then(dispModal);
-        }, 5000);
+        }, 10000);
 
     </script>
 
@@ -333,7 +333,7 @@
                 </div>
                 {# モーダルのボディ #}
                 <div class="modal-body">
-                    「もう知ってる」「わからない」が50%を超えました
+                    「もう知ってる」が80%「わからない」が50%を超えました
                 </div>
             </div>
         </div>
@@ -354,7 +354,7 @@
                 </div>
                 {# モーダルのボディ #}
                 <div class="modal-body">
-                    「もう知ってる」が50%を超えました
+                    「もう知ってる」が80%を超えました
                 </div>
             </div>
         </div>
