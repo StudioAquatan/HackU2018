@@ -11,38 +11,45 @@
         <h1>Speaking Now!!</h1>
     </div>
 
-    <div class="row" style="position: center">
-        <div class="col-lg" style="padding: 0%">
-            <div class="container-meter">
-                <div id="understand_gauge" class="understand">
-                    <h3>わかった</h3>
-                    <div class="epoch gauge-small"></div>
+    <div class="container-fluid container-group-meter">
+        <div class="row" style="position: center">
+            <div class="col-lg" style="padding: 0%">
+                <div class="container-meter">
+                    <div id="understand_gauge" class="understand">
+                        <h3>わかった</h3>
+                        <div class="epoch gauge-small"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg" style="padding: 0%">
-            <div class="container-meter">
-                <div id="have_known_gauge" class="have_known">
-                    <h3>もう知ってる</h3>
-                    <div class="epoch gauge-small"></div>
+            <div class="col-lg" style="padding: 0%">
+                <div class="container-meter">
+                    <div id="have_known_gauge" class="have_known">
+                        <h3>もう知ってる</h3>
+                        <div class="epoch gauge-small"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg" style="padding: 0%">
-            <div class="container-meter">
-                <div id="not_understand_gauge" class="not_understand">
-                    <h3>わからない</h3>
-                    <div class="epoch gauge-small"></div>
+            <div class="col-lg" style="padding: 0%">
+                <div class="container-meter">
+                    <div id="not_understand_gauge" class="not_understand">
+                        <h3>わからない</h3>
+                        <div class="epoch gauge-small"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="container-fluid jumbotron-container">
-        <div class="container">
-            {% csrf_token %}
-            <button class="btn btn-outline-primary btn-lg">
-                コメント表示
-            </button>
+        <div class="slide-group-buttons">
+            <form action="{% url 'poll:change-status' %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='next-slide'>
+                    次のスライド
+                </button>
+                <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='fin-lec'>
+                    終了
+                </button>
+            </form>
         </div>
         {# コメント一覧表 #}
         <div class="container-table">
