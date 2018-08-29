@@ -35,7 +35,7 @@ def index(request):
     # return HttpResponse("Hello, world. You're at the polls index.")
 
 
-def listener(request):
+def listener(request, roomID):
     template_name = 'poll/listener.html'
 
     if request.method == 'POST':
@@ -52,19 +52,19 @@ def listener(request):
     return render(request, template_name)
 
 
-def speaker_start(request):
+def speaker_start(request, roomID):
     template_name = 'poll/speaker-start.html'
 
     return render(request, template_name)
 
 
-def speaker(request):
+def speaker(request, roomID):
     template_name = 'poll/speaker.html'
 
     return render(request, template_name)
 
 
-def speaker_res(request):
+def speaker_res(request, roomID):
     template_name = 'poll/speaker_res.html'
 
     # --------------------グラフ機能--------------------
@@ -173,26 +173,26 @@ def append_data(a, b, c, x, y, z):
     c.append(z)
 
 
-def change_status(request):
+def change_status(request, roomID):
     # TODO 任意のroom_idの取得
     room_info = RoomTable.objects.first()
 
     if request.POST['action'] == 'start-lec':
         SlideTable.objects.create(slide_no=1, start_time=timezone.now(), room_id=room_info)
-        return HttpResponseRedirect(reverse('poll:speaker'))
+        return HttpResponseRedirect(reverse('poll:speaker', args=(roomID,)))
 
     elif request.POST['action'] == 'next-slide':
         current_slide = SlideTable.objects.order_by('start_time').last()
         current_slide.end_time = timezone.now()
         current_slide.save()
         SlideTable.objects.create(slide_no=current_slide.slide_no + 1, start_time=timezone.now(), room_id=room_info)
-        return HttpResponseRedirect(reverse('poll:speaker'))
+        return HttpResponseRedirect(reverse('poll:speaker', args=(roomID,)))
 
     elif request.POST['action'] == 'fin-lec':
         current_slide = SlideTable.objects.order_by('start_time').last()
         current_slide.end_time = timezone.now()
         current_slide.save()
-        return HttpResponseRedirect(reverse('poll:speaker_res'))
+        return HttpResponseRedirect(reverse('poll:speaker_res', args=(roomID,)))
 
 
 class VoteViewSet(viewsets.ModelViewSet):

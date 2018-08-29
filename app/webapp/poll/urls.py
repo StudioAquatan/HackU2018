@@ -13,9 +13,9 @@ router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('listener/', views.listener, name='listener'),
-    path('speaker-start/', views.speaker_start, name='speaker_start'),
-    path('speaker/', views.speaker, name='speaker'),
-    path('speaker/res', views.speaker_res, name='speaker_res'),
-    path('speaker/change-status', views.change_status, name='change-status'),
+    path('<int:roomID>listener/', views.listener, name='listener'),
+    path('<int:roomID>/speaker-start/', views.speaker_start, name='speaker_start'),
+    path('<int:roomID>/speaker/', views.speaker, name='speaker'),
+    path('<int:roomID>/speaker/res', views.speaker_res, name='speaker_res'),
+    path('<int:roomID>/speaker/change-status', views.change_status, name='change-status'),
 ]
