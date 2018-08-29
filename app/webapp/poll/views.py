@@ -13,6 +13,7 @@ from .models import VoteTable, RoomTable, CommentTable, SlideTable
 from .serializer import VoteSerializer, RoomSerializer, CommentSerializer
 
 import re
+import datetime
 
 from .listener_button import button1, button2, button3
 
@@ -88,6 +89,8 @@ def speaker_res(request):
         # スライドごとのデータを作成
         slide_start_time = SlideTable.objects.filter(slide_no__exact=i)[0].start_time
         slide_st_time = re.search(regex_time, str(timezone.localtime(slide_start_time))).group()
+        slide_end_time = SlideTable.objects.filter(slide_no__exact=i)[0].end_time
+        slide_ed_time = re.search(regex_time, str(timezone.localtime(slide_end_time))).group()
         times = ['x', slide_st_time]
         data1s = ['分かった', 0]  # スライド開始時はすべて0票
         data2s = ['もう知ってる', 0]
@@ -96,8 +99,58 @@ def speaker_res(request):
         data2sum = 0
         data3sum = 0
         time_temp = slide_start_time
+        plus_time_div = time_temp + datetime.timedelta(seconds=time_divide)
         # i番目のスライドの，vote_timeでソートされたvoteオブジェクトのリストを作成
-        votes = VoteTable.objects.filter(slide_id__slide_no__exact=i).order_by('vote_time')
+        # votes = VoteTable.objects.filter(slide_id__slide_no__exact=i).order_by('vote_time')
+        # for vote in votes:
+        #     if vote.vote_type == 1:
+        #         data1sum += 1
+        #     elif vote.vote_type == 2:
+        #         data2sum += 1
+        #     elif vote.vote_type == 3:
+        #         data3sum += 1
+        #     else:
+        #         pass
+        #     # time_divideで決められた秒数に基づいてデータを追加するかなどを判断
+        #     time_str = re.search(regex_time, str(timezone.localtime(vote.vote_time))).group()
+        #     if (vote.vote_time - time_temp).total_seconds() >= time_divide:
+        #         times.append(time_str)
+        #         append_data(data1s, data2s, data3s, data1sum, data2sum, data3sum)
+        #         time_temp = vote.vote_time
+        #         # time_divideの時間ごとの累積にする
+        #         data1sum = 0
+        #         data2sum = 0
+        #         data3sum = 0
+        #     else:
+        #         pass
+
+        # time_divideごとのデータを作成する
+        while plus_time_div < slide_end_time:
+            # slide_no == i && time_temp <= vote_time < plus_time_div
+            votes = VoteTable.objects\
+                .filter(slide_id__slide_no__exact=i, vote_time__gte=time_temp, vote_time__lt=plus_time_div)\
+                .order_by('vote_time')
+            for vote in votes:
+                if vote.vote_type == 1:
+                    data1sum += 1
+                elif vote.vote_type == 2:
+                    data2sum += 1
+                elif vote.vote_type == 3:
+                    data3sum += 1
+                else:
+                    pass
+            times.append(re.search(regex_time, str(timezone.localtime(plus_time_div))).group())
+            append_data(data1s, data2s, data3s, data1sum, data2sum, data3sum)
+            data1sum = 0
+            data2sum = 0
+            data3sum = 0
+            time_temp = plus_time_div
+            plus_time_div += datetime.timedelta(seconds=time_divide)
+
+        # スライド終了
+        votes = VoteTable.objects \
+            .filter(slide_id__slide_no__exact=i, vote_time__gte=time_temp, vote_time__lte=slide_end_time) \
+            .order_by('vote_time')
         for vote in votes:
             if vote.vote_type == 1:
                 data1sum += 1
@@ -107,18 +160,7 @@ def speaker_res(request):
                 data3sum += 1
             else:
                 pass
-            # time_divideで決められた秒数に基づいてデータを追加するかなどを判断
-            time_str = re.search(regex_time, str(timezone.localtime(vote.vote_time))).group()
-            if (vote.vote_time - time_temp).total_seconds() >= time_divide:
-                times.append(time_str)
-                append_data(data1s, data2s, data3s, data1sum, data2sum, data3sum)
-                time_temp = vote.vote_time
-            else:
-                pass
-        # スライド終了
-        slide_end_time = SlideTable.objects.filter(slide_no__exact=i)[0].end_time
-        slide_end_time = re.search(regex_time, str(timezone.localtime(slide_end_time))).group()
-        times.append(slide_end_time)
+        times.append(slide_ed_time)
         append_data(data1s, data2s, data3s, data1sum, data2sum, data3sum)
         # スライドのデータを追加
         time_list.append(times)
