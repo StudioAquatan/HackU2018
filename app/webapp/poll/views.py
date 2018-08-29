@@ -67,11 +67,10 @@ def speaker(request):
 def speaker_res(request):
     template_name = 'poll/speaker_res.html'
 
-    # グラフ機能
-    # 部屋関係なしに全部のデータをとる
-    # スライドの枚数
+    # --------------------グラフ機能--------------------
+    # スライドの枚数，最後に終わったスライドのslide_noを見ている
+    slide_num = SlideTable.objects.all().order_by('-end_time').first().slide_no
     # TODO: 部屋でフィルタをかける
-    slide_num = SlideTable.objects.all().aggregate(Max('slide_no'))['slide_no__max']
 
     slide_list = []  # slide_1, slide_2, ... slide_n
     time_list = []  # 時間(x軸)
@@ -87,9 +86,9 @@ def speaker_res(request):
         slide_list.append('slide_' + str(i))
 
         # スライドごとのデータを作成
-        slide_start_time = SlideTable.objects.filter(slide_no__exact=i)[0].start_time
+        slide_start_time = SlideTable.objects.filter(slide_no__exact=i).order_by('-end_time').first().start_time
         slide_st_time = re.search(regex_time, str(timezone.localtime(slide_start_time))).group()
-        slide_end_time = SlideTable.objects.filter(slide_no__exact=i)[0].end_time
+        slide_end_time = SlideTable.objects.filter(slide_no__exact=i).order_by('-end_time').first().end_time
         slide_ed_time = re.search(regex_time, str(timezone.localtime(slide_end_time))).group()
         times = ['x', slide_st_time]
         data1s = ['分かった', 0]  # スライド開始時はすべて0票
@@ -100,29 +99,6 @@ def speaker_res(request):
         data3sum = 0
         time_temp = slide_start_time
         plus_time_div = time_temp + datetime.timedelta(seconds=time_divide)
-        # i番目のスライドの，vote_timeでソートされたvoteオブジェクトのリストを作成
-        # votes = VoteTable.objects.filter(slide_id__slide_no__exact=i).order_by('vote_time')
-        # for vote in votes:
-        #     if vote.vote_type == 1:
-        #         data1sum += 1
-        #     elif vote.vote_type == 2:
-        #         data2sum += 1
-        #     elif vote.vote_type == 3:
-        #         data3sum += 1
-        #     else:
-        #         pass
-        #     # time_divideで決められた秒数に基づいてデータを追加するかなどを判断
-        #     time_str = re.search(regex_time, str(timezone.localtime(vote.vote_time))).group()
-        #     if (vote.vote_time - time_temp).total_seconds() >= time_divide:
-        #         times.append(time_str)
-        #         append_data(data1s, data2s, data3s, data1sum, data2sum, data3sum)
-        #         time_temp = vote.vote_time
-        #         # time_divideの時間ごとの累積にする
-        #         data1sum = 0
-        #         data2sum = 0
-        #         data3sum = 0
-        #     else:
-        #         pass
 
         # time_divideごとのデータを作成する
         while plus_time_div < slide_end_time:
@@ -166,9 +142,10 @@ def speaker_res(request):
         time_list.append(times)
         append_data(data1_list, data2_list, data3_list, data1s, data2s, data3s)
 
-    # コメント機能
+    # --------------------コメント機能--------------------
     # 部屋関係なしに全データ取得
-    comments = CommentTable.objects.all().order_by('comment_time')
+    speak_start_time = SlideTable.objects.filter(slide_no__exact=1).order_by('-start_time').first().start_time
+    comments = CommentTable.objects.filter(comment_time__gte=speak_start_time).order_by('comment_time')
     comment_dic_list = []
     for comment in comments:
         dic = dict()
