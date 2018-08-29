@@ -103,6 +103,16 @@
 
         {# 折れ線グラフ作成 #}
         for (let i = 0; i < {{ slide_num }}; i++) {
+            let array1 = data1[i].slice(1, data1[i].length - 1);
+            let array2 = data2[i].slice(1, data2[i].length - 1);
+            let array3 = data3[i].slice(1, data3[i].length - 1);
+            let max_array = [Math.max(...array1), Math.max(...array2), Math.max(...array3)];
+            let max_val = Math.max(...max_array);
+            let y_tick_val = [];
+            for(let i=0; i<max_val+1; i++) {
+                y_tick_val.push(i);
+            }
+
             c3.generate({
                 bindto: "#slide_" + (i + 1),
                 padding: {
@@ -116,7 +126,12 @@
                         data1[i],
                         data2[i],
                         data3[i]
-                    ]
+                    ],
+                    types: {
+                        分かった: 'area',
+                        もう知ってる: 'area',
+                        分からない: 'area'
+                    }
                 },
                 axis: {
                     x: {
@@ -124,8 +139,19 @@
                         tick: {
                             format: '%H:%M:%S'
                         }
+                    },
+                    y: {
+                        tick: {values: y_tick_val}
                     }
-                },
+                 },
+                grid: {
+                    x: {
+                        show: false
+                    },
+                    y: {
+                        show: true
+                    }
+                }
             });
         }
     </script>
