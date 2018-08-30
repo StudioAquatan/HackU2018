@@ -7,6 +7,11 @@
 {# メインコンテンツ #}
 {% block content %}
     <div class="listener-group">
+        {% if error_message %}
+            <h2 style="color: red;">
+                <strong>{{ error_message }}</strong>
+            </h2>
+        {% endif %}
         <form action="{% url 'poll:listener_a' room_id %}" method="post">
             <div class="row">
                 {% csrf_token %}

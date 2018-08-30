@@ -64,18 +64,24 @@ def listener_a(request, room_id):
         input_comment = request.POST.get('input_comment')
         if 'button_1' in request.POST:
             # ボタン1がクリックされた場合の処理
-            button1(room_id)
-            template_name = 'poll/listener_b.html'
+            is_slide_empty = button1(room_id)
         elif 'button_2' in request.POST:
             # ボタン2がクリックされた場合の処理
-            button2(room_id)
-            template_name = 'poll/listener_b.html'
+            is_slide_empty = button2(room_id)
         elif 'button_3' in request.POST:
             # ボタン3がクリックされた場合の処理
-            button3(room_id)
-            template_name = 'poll/listener_b.html'
+            is_slide_empty = button3(room_id)
         elif 'button_submit' in request.POST:
-            comment_submit(input_comment, room_id)
+            is_slide_empty = comment_submit(input_comment, room_id)
+
+        # slideがあればlistener_bへ
+        if is_slide_empty:
+            template_name = 'poll/listener_b.html'
+        else:
+            return render(request, template_name, {
+                'room_id': room_id,
+                'error_message': '講義が始まっていません'
+            })
 
     return render(request, template_name, {'room_id': room_id})
 
@@ -94,9 +100,39 @@ def listener_b(request, room_id):
             button2(room_id)
         elif 'button_3' in request.POST:
             # ボタン3がクリックされた場合の処理
+            is_slide_empty = button3(room_id)
+        elif 'button_submit' in request.POST:
+            comment_submit(input_comment, room_id)
+
+        # slideがあればlistener_bへ
+        if is_slide_empty:
+            template_name = 'poll/listener_b.html'
+        else:
+            return render(request, template_name, {
+                'room_id': room_id,
+                'error_message': '講義が始まっていません'
+            })
+
+    return render(request, template_name, {'room_id': room_id})
+
+
+def listener_b(request, room_id):
+    template_name = 'poll/listener_b.html'
+
+    if request.method == 'POST':
+        input_comment = request.POST.get('input_comment')
+        if 'button_1' in request.POST:
+            # ボタン1がクリックされた場合の処理
+            button1(room_id)
+        elif 'button_2' in request.POST:
+            # ボタン2がクリックされた場合の処理
+            button2(room_id)
+        elif 'button_3' in request.POST:
+            # ボタン3がクリックされた場合の処理
             button3(room_id)
         elif 'button_submit' in request.POST:
             comment_submit(input_comment, room_id)
+            template_name = 'poll/listener_a.html'
 
     return render(request, template_name, {'room_id': room_id})
 
@@ -258,7 +294,7 @@ class VoteViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """querysetを取得する関数をオーバーライド"""
         queryset = super(VoteViewSet, self).get_queryset()
-        return queryset.filter(vote_time__gte=timezone.now() - timedelta(seconds=10))
+        return queryset.filter(vote_time__gte=timezone.now() - timedelta(seconds=60))
 
 
 class RoomViewSet(viewsets.ModelViewSet):
