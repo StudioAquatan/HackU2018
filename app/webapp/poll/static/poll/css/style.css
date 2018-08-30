@@ -247,7 +247,7 @@ body {
     }
 
     .container-meter {
-        margin-left: 16%;
+        margin-left: 14%;
         margin-right: 0%;
     }
 
@@ -269,19 +269,82 @@ body {
     }
 
     .understand h3 {
-        margin-right: 12%;
+        margin-right: 20%;
     }
 
     .have_known h3 {
-        margin-right: 13%;
+        margin-right: 20%;
     }
 
     .not_understand h3 {
-        margin-right: 13%;
+        margin-right: 20%;
     }
 
     .container-meter {
-        margin-left: 20%;
+        margin-left: 14%;
+        margin-right: 0%;
+    }
+
+}
+
+@media (min-width: 470px) {
+
+    .understand h3 {
+        margin-right: 24%;
+    }
+
+    .have_known h3 {
+        margin-right: 24%;
+    }
+
+    .not_understand h3 {
+        margin-right: 24%;
+    }
+
+    .container-meter {
+        margin-left: 23%;
+        margin-right: 0%;
+    }
+
+}
+
+@media (min-width: 540px) {
+
+    .understand h3 {
+        margin-right: 30%;
+    }
+
+    .have_known h3 {
+        margin-right: 30%;
+    }
+
+    .not_understand h3 {
+        margin-right: 30%;
+    }
+
+    .container-meter {
+        margin-left: 25%;
+        margin-right: 0%;
+    }
+
+}
+
+@media (min-width: 600px) {
+
+    .understand h3 {
+        margin-right: 35%;
+    }
+
+    .have_known h3 {
+        margin-right: 35%;
+    }
+
+    .not_understand h3 {
+        margin-right: 35%;
+    }
+
+    .container-meter {
+        margin-left: 26%;
         margin-right: 0%;
     }
 
@@ -331,6 +394,48 @@ body {
     }
 }
 
+@media (min-width: 800px) {
+
+    .understand h3 {
+        margin-right: 55%;
+    }
+
+    .have_known h3 {
+        margin-right: 55%;
+    }
+
+    .not_understand h3 {
+        margin-right: 55%;
+    }
+
+    .container-meter {
+        margin-left: 37%;
+        margin-right: 0%;
+    }
+
+}
+
+@media (min-width: 992px) {
+
+    .understand h3 {
+        margin-right: 10%;
+    }
+
+    .have_known h3 {
+        margin-right: 10%;
+    }
+
+    .not_understand h3 {
+        margin-right: 10%;
+    }
+
+    .container-meter {
+        margin-left: 15%;
+        margin-right: 0%;
+    }
+
+}
+
 @media (min-width: 1024px) {
 
     .logo {
@@ -344,15 +449,15 @@ body {
     }
 
     .understand h3 {
-        margin-right: 15%;
+        margin-right: 25%;
     }
 
     .have_known h3 {
-        margin-right: 15%;
+        margin-right: 25%;
     }
 
     .not_understand h3 {
-        margin-right: 15%;
+        margin-right: 25%;
     }
 
     .container-meter {
