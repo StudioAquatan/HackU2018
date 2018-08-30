@@ -6,6 +6,11 @@
 
 {# メインコンテンツ #}
 {% block content %}
+    {% if error_message %}
+        <p style="color: red;">
+            <strong>{{ error_message }}</strong>
+        </p>
+    {% endif %}
     <div class="jumbotron jumbotron-fluid">
         <form action="{% url 'poll:listener_a' room_id %}" method="post">
             <div class="row">
