@@ -38,7 +38,12 @@ INSTALLED_APPS = [
     'poll',
     'rest_framework',
     'bootstrap4',
+    'django_filters',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

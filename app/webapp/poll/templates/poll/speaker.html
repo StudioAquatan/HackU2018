@@ -89,6 +89,7 @@
         let have_known_ratio;
         let not_understand_ratio;
         let comments = [];
+        let current_slidenum = 1;
 
         let understand_gauge_chart = $('#understand_gauge .epoch').epoch({
             type: 'time.gauge',
@@ -105,12 +106,43 @@
             value: 0.0
         });
 
+        function getCurrentSlideNum() {
+            let dfd = $.Deferred();
+            $('#result').text('通信中...');
+            // Ajax通信を開始
+            $.ajax({
+                url: 'http://127.0.0.1:8000/api/slides/?id={{ room_id }}',
+                type: 'GET',
+                dataType: 'json',
+                // フォーム要素の内容をハッシュ形式に変換
+                data: $('form').serializeArray(),
+                timeout: 1000,
+            })
+                .done(function (data) {
+                    // 通信成功時の処理を記述
+                    for (let i in data) {
+                        console.log(data[i]);
+                        if (current_slidenum > data[i].slide_no) {
+                            current_slidenum = data[i].slide_no;
+                        }
+                    }
+                    dfd.resolve();
+                })
+                .fail(function () {
+                    // 通信失敗時の処理を記述
+                    console.log("通信失敗;_;");
+                    dfd.reject();
+                });
+            console.log("http://127.0.0.1:8000/api/slides/?id={{ room_id }}からスライド枚数とってきたよー");
+            return dfd.promise();
+        }
+
         function getRoomPeoplenum() {
             let dfd = $.Deferred();
             $('#result').text('通信中...');
             // Ajax通信を開始
             $.ajax({
-                url: 'http://127.0.0.1:8000/api/room-people/',
+                url: 'http://127.0.0.1:8000/api/rooms/?id={{ room_id }}',
                 type: 'GET',
                 dataType: 'json',
                 // フォーム要素の内容をハッシュ形式に変換
@@ -123,6 +155,9 @@
                         console.log(data[i]);
 
                         room_people_num = data[i].num_listener;
+                        if (room_people_num === 0) {
+                            room_people_num = 1;
+                        }
                     }
                     dfd.resolve();
                 })
@@ -131,7 +166,7 @@
                     console.log("通信失敗;_;");
                     dfd.reject();
                 });
-            console.log("部屋の人数とってきたよー");
+            console.log("http://127.0.0.1:8000/api/rooms/?id={{ room_id }}から部屋の人数とってきたよー");
             return dfd.promise();
         }
 
@@ -145,7 +180,7 @@
             $('#result').text('通信中...');
             // Ajax通信を開始
             $.ajax({
-                url: 'http://127.0.0.1:8000/api/votes/',
+                url: 'http://127.0.0.1:8000/api/votes/?slide_id__slide_no=' + current_slidenum + '&slide_id__room_id__id={{ room_id }}',
                 type: 'GET',
                 dataType: 'json',
                 // フォーム要素の内容をハッシュ形式に変換
@@ -172,9 +207,11 @@
                     console.log("通信失敗;_;");
                     dfd.reject();
                 });
-            console.log("票数とってきたよー");
+            console.log("http://127.0.0.1:8000/api/votes/?slide_id__slide_no=' + current_slidenum + '&slide_id__room_id__id={{ room_id }}から票数とってきたよー");
             return dfd.promise();
         }
+
+        {# コメントの情報を取得して集計 #}
 
         function getComments() {
             let dfd = $.Deferred();
@@ -184,7 +221,7 @@
             $('#result').text('通信中...');
             // Ajax通信を開始
             $.ajax({
-                url: 'http://127.0.0.1:8000/api/comments/',
+                url: 'http://127.0.0.1:8000/api/comments/?slide_id__slide_no=' + current_slidenum + '&slide_id__room_id__id={{ room_id }}',
                 type: 'GET',
                 dataType: 'json',
                 // フォーム要素の内容をハッシュ形式に変換
@@ -206,7 +243,7 @@
                     console.log("通信失敗;_;");
                     dfd.reject();
                 });
-            console.log("コメントとってきたよー");
+            console.log("http://127.0.0.1:8000/api/comments/?slide_id__slide_no=' + current_slidenum + '&slide_id__room_id__id={{ room_id }}からコメントとってきたよー");
             return dfd.promise();
         }
 
@@ -278,7 +315,8 @@
                 .then(getComments)
                 .then(dispComments)
                 .then(dispModal);
-        }, 10000);
+            {# }, 10000);#}
+        }, 3000);
 
     </script>
 

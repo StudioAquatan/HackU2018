@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets, filters
+from django_filters import rest_framework
 import django_filters
 from django.urls import reverse
 from django.db.models.functions import Now
@@ -10,7 +11,7 @@ from django.utils import timezone
 from datetime import timedelta
 
 from .models import VoteTable, RoomTable, CommentTable, SlideTable
-from .serializer import VoteSerializer, RoomSerializer, CommentSerializer
+from .serializer import VoteSerializer, RoomSerializer, CommentSerializer, SlideSerializer
 
 import re
 import datetime
@@ -207,22 +208,21 @@ def append_data(a, b, c, x, y, z):
 
 
 def change_status(request, room_id):
-    # TODO 任意のroom_idの取得
-    room_info = RoomTable.objects.first()
+    room_info = RoomTable.objects.filter(id=room_id).first()
 
     if request.POST['action'] == 'start-lec':
         SlideTable.objects.create(slide_no=1, start_time=timezone.now(), room_id=room_info)
         return HttpResponseRedirect(reverse('poll:speaker', args=(room_id,)))
 
     elif request.POST['action'] == 'next-slide':
-        current_slide = SlideTable.objects.order_by('start_time').last()
+        current_slide = SlideTable.objects.filter(room_id=room_info).order_by('start_time').last()
         current_slide.end_time = timezone.now()
         current_slide.save()
         SlideTable.objects.create(slide_no=current_slide.slide_no + 1, start_time=timezone.now(), room_id=room_info)
         return HttpResponseRedirect(reverse('poll:speaker', args=(room_id,)))
 
     elif request.POST['action'] == 'fin-lec':
-        current_slide = SlideTable.objects.order_by('start_time').last()
+        current_slide = SlideTable.objects.filter(room_id=room_info).order_by('start_time').last()
         current_slide.end_time = timezone.now()
         current_slide.save()
         return HttpResponseRedirect(reverse('poll:speaker_res', args=(room_id,)))
@@ -231,10 +231,9 @@ def change_status(request, room_id):
 class VoteViewSet(viewsets.ModelViewSet):
     """
     現在発表中のスライド(startが最も遅いslide)に対する現在の時間から過去30秒の票だけ返す
-    現状部屋の区別はつけていない
-    （将来的に部屋に合わせた票の取得をしたい）
+    部屋とスライドの何枚目かを指定する場合は
+    /api/votes/?slide_id__slide_no=<何枚目か>&slide_id__room_id__id=<欲しい部屋のpk>
     """
-    current_slide = SlideTable.objects.order_by('start_time').last()
     # デモ用(過去10秒の票を持ってくる)
     # late_limit_sec = 10
     # 展示用(過去60秒の票を持ってくる)
@@ -243,25 +242,40 @@ class VoteViewSet(viewsets.ModelViewSet):
     # queryset = VoteTable.objects.filter(slide_no=current_slide.slide_no,
     #                                     vote_time__gte=timezone.now() - timedelta(seconds=late_limit_sec))
     # ↓時間にかかわらず全てとってくる
-    queryset = VoteTable.objects.filter(slide_id=current_slide)
+    queryset = VoteTable.objects.all()
     serializer_class = VoteSerializer
+    filter_fields = ('slide_id__room_id__id',)
 
 
 class RoomViewSet(viewsets.ModelViewSet):
     """
-    現在いる部屋の情報を返す
-    （なお現在は部屋をつくる機能がないため常に部屋数が1つであることから全ての部屋情報を返すコードになっている）
+    存在する部屋の情報全て返す
+    部屋を指定する場合は  /api/rooms/?id=<欲しい部屋のpk>
     """
+    # TODO 任意の部屋の情報をもってくる
     queryset = RoomTable.objects.all()
     serializer_class = RoomSerializer
+    filter_fields = ('id',)
 
 
 class CommentViewSet(viewsets.ModelViewSet):
     """
     現在発表中のスライド(startが最も遅いslide)に対するコメントを返す
-    現状部屋の区別はつけていない
-    （将来的に部屋に合わせたコメント取得をしたい）
+    部屋とスライドの何枚目かを指定する場合は
+    /api/comments/?slide_id__slide_no=<何枚目か>&slide_id__room_id__id=<欲しい部屋のpk>
     """
     current_slide = SlideTable.objects.order_by('start_time').last()
     queryset = CommentTable.objects.filter(slide_id=current_slide)
     serializer_class = CommentSerializer
+    filter_fields = ('slide_id__slide_no', 'slide_id__room_id__id',)
+
+
+class SlideViewSet(viewsets.ModelViewSet):
+    """
+    存在するスライドの情報全て返す
+    部屋を指定する場合は  /api/slides/?id=<欲しい部屋のpk>
+    """
+    # TODO 任意の部屋の情報をもってくる
+    queryset = SlideTable.objects.all()
+    serializer_class = SlideSerializer
+    filter_fields = ('room_id__id',)
