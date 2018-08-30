@@ -244,7 +244,7 @@ class VoteViewSet(viewsets.ModelViewSet):
     # ↓時間にかかわらず全てとってくる
     queryset = VoteTable.objects.all()
     serializer_class = VoteSerializer
-    filter_fields = ('slide_id__room_id__id',)
+    filter_fields = ('slide_id__slide_no','slide_id__room_id__id',)
 
 
 class RoomViewSet(viewsets.ModelViewSet):
@@ -264,8 +264,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     部屋とスライドの何枚目かを指定する場合は
     /api/comments/?slide_id__slide_no=<何枚目か>&slide_id__room_id__id=<欲しい部屋のpk>
     """
-    current_slide = SlideTable.objects.order_by('start_time').last()
-    queryset = CommentTable.objects.filter(slide_id=current_slide)
+    queryset = CommentTable.objects.all()
     serializer_class = CommentSerializer
     filter_fields = ('slide_id__slide_no', 'slide_id__room_id__id',)
 

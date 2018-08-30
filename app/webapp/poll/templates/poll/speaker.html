@@ -122,7 +122,7 @@
                     // 通信成功時の処理を記述
                     for (let i in data) {
                         console.log(data[i]);
-                        if (current_slidenum > data[i].slide_no) {
+                        if (current_slidenum < data[i].slide_no) {
                             current_slidenum = data[i].slide_no;
                         }
                     }
@@ -300,7 +300,8 @@
 
         {# 画面読み込み時に実行 #}
         window.onload = function () {
-            getVotes()
+            getCurrentSlideNum()
+                .then(getVotes)
                 .then(getRoomPeoplenum)
                 .then(updateGauge)
                 .then(getComments)
