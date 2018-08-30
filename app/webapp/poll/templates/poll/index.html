@@ -1,5 +1,6 @@
 {# base.htmlを継承 #}
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 
 {# タイトルを変更 #}
 {% block title %}Home{% endblock %}
@@ -9,13 +10,22 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container-fluid jumbotron-container">
             <h1>SeeVo</h1>
-            {% csrf_token %}
-            <a class="btn btn-outline-primary btn-lg" href="./speaker-start/" role="button">
-                Make room
-            </a>
-            <a class="btn btn-outline-primary btn-lg" href="./listener/" role="button">
-                Join room
-            </a>
+{#            {% csrf_token %}#}
+{#            <a class="btn btn-outline-primary btn-lg" href="./speaker-start/" role="button">#}
+{#                Make room#}
+{#            </a>#}
+{#            <a class="btn btn-outline-primary btn-lg" href="./listener/" role="button">#}
+{#                Join room#}
+{#            </a>#}
+            <form action="{% url 'poll:index' %}" method="post">
+                {% csrf_token %}
+                {% bootstrap_form form layout='horizontal' %}
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='make_room'>Make room
+                </button>
+                <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='join_room'>Join room
+                </button>
+            </form>
         </div>
     </div>
 {% endblock %}

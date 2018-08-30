@@ -55,7 +55,7 @@
 
     <div class="container-fluid jumbotron-container">
         <div class="slide-group-buttons">
-            <form action="{% url 'poll:change-status' %}" method="post">
+            <form action="{% url 'poll:change-status' room_id %}" method="post">
                 {% csrf_token %}
                 <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='start-lec'>
                     講義開始

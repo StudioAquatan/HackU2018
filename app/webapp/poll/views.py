@@ -17,25 +17,49 @@ import datetime
 
 from .listener_button import button1, button2, button3
 
+from .forms import RoomForm
+
 
 def index(request):
-    template_name = 'poll/index.html'
+    room = RoomTable()
+    if request.method == 'POST':
+        form = RoomForm(request.POST, instance=room)
+        if form.is_valid():
+            room = form.save(commit=False)
+            # type(room) - <class 'poll.models.RoomTable'>
+            # room.room_name - フォームで入力した文字列 <str>
+            # room.password - 空文字列 <str>
+            # room.num_listener - 0 <int>
+            # room.id - None <NoneType>
+            input_name = room.room_name
+            if request.POST['action'] == 'make_room':
+                # 同じ名前の部屋がすでにあればエラーメッセージを出させる
+                if RoomTable.objects.filter(room_name__exact=input_name).exists():
+                    return render(request, 'poll/index.html', {
+                        'form': form,
+                        'error_message': '"' + input_name + '"はすでに存在します．'
+                    })
+                else:
+                    room.save()
+                    return HttpResponseRedirect(reverse('poll:speaker_start', args=(room.id,)))
+            elif request.POST['action'] == 'join_room':
+                join = RoomTable.objects.filter(room_name__exact=input_name).first()
+                if join is None:
+                    return render(request, 'poll/index.html', {
+                        'form': form,
+                        'error_message': '"' + input_name + '"は存在しません．'
+                    })
+                else:
+                    return HttpResponseRedirect(reverse('poll:listener', args=(join.id,)))
+            else:
+                pass
+    else:
+        form = RoomForm(instance=room)
 
-    if request.method == 'GET':
-        if 'make_room' in request.GET:
-            # ボタン1がクリックされた場合の処理
-            button1()
-            template_name = 'poll/listener.html'
-        elif 'join_room' in request.GET:
-            # ボタン2がクリックされた場合の処理
-            button2()
-            template_name = 'poll/speaker-start.html'
-
-    return render(request, template_name)
-    # return HttpResponse("Hello, world. You're at the polls index.")
+    return render(request, 'poll/index.html', {'form': form})
 
 
-def listener(request):
+def listener(request, room_id):
     template_name = 'poll/listener.html'
 
     if request.method == 'POST':
@@ -49,22 +73,22 @@ def listener(request):
             # ボタン2がクリックされた場合の処理
             button3()
 
-    return render(request, template_name)
+    return render(request, template_name, {'room_id': room_id})
 
 
-def speaker_start(request):
+def speaker_start(request, room_id):
     template_name = 'poll/speaker-start.html'
 
-    return render(request, template_name)
+    return render(request, template_name, {'room_id': room_id})
 
 
-def speaker(request):
+def speaker(request, room_id):
     template_name = 'poll/speaker.html'
 
-    return render(request, template_name)
+    return render(request, template_name, {'room_id': room_id})
 
 
-def speaker_res(request):
+def speaker_res(request, room_id):
     template_name = 'poll/speaker_res.html'
 
     # --------------------グラフ機能--------------------
@@ -173,26 +197,26 @@ def append_data(a, b, c, x, y, z):
     c.append(z)
 
 
-def change_status(request):
+def change_status(request, room_id):
     # TODO 任意のroom_idの取得
     room_info = RoomTable.objects.first()
 
     if request.POST['action'] == 'start-lec':
         SlideTable.objects.create(slide_no=1, start_time=timezone.now(), room_id=room_info)
-        return HttpResponseRedirect(reverse('poll:speaker'))
+        return HttpResponseRedirect(reverse('poll:speaker', args=(room_id,)))
 
     elif request.POST['action'] == 'next-slide':
         current_slide = SlideTable.objects.order_by('start_time').last()
         current_slide.end_time = timezone.now()
         current_slide.save()
         SlideTable.objects.create(slide_no=current_slide.slide_no + 1, start_time=timezone.now(), room_id=room_info)
-        return HttpResponseRedirect(reverse('poll:speaker'))
+        return HttpResponseRedirect(reverse('poll:speaker', args=(room_id,)))
 
     elif request.POST['action'] == 'fin-lec':
         current_slide = SlideTable.objects.order_by('start_time').last()
         current_slide.end_time = timezone.now()
         current_slide.save()
-        return HttpResponseRedirect(reverse('poll:speaker_res'))
+        return HttpResponseRedirect(reverse('poll:speaker_res', args=(room_id,)))
 
 
 class VoteViewSet(viewsets.ModelViewSet):
