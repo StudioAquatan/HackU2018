@@ -23,6 +23,9 @@ def button1(room_id):
         vote = VoteTable(vote_time=timezone.now(), slide_id=slide)
         vote.vote_type = 1
         vote.save()
+        return True
+    else:
+        return False
 
 
 def button2(room_id):
@@ -33,6 +36,9 @@ def button2(room_id):
         vote = VoteTable(vote_time=timezone.now(), slide_id=slide)
         vote.vote_type = 2
         vote.save()
+        return True
+    else:
+        return False
 
 
 def button3(room_id):
@@ -43,6 +49,9 @@ def button3(room_id):
         vote = VoteTable(vote_time=timezone.now(), slide_id=slide)
         vote.vote_type = 3
         vote.save()
+        return True
+    else:
+        return False
 
 
 def comment_submit(input_comment, room_id):
@@ -52,3 +61,6 @@ def comment_submit(input_comment, room_id):
         # slide情報からcommentを作成
         comment = CommentTable(comment_text=input_comment, comment_time=timezone.now(), slide_id=slide)
         comment.save()
+        return True
+    else:
+        return False
