@@ -16,7 +16,7 @@ from .serializer import VoteSerializer, RoomSerializer, CommentSerializer, Slide
 import re
 import datetime
 
-from .listener_button import button1, button2, button3
+from .listener_button import button1, button2, button3, comment_submit
 
 from .forms import RoomForm
 
@@ -68,15 +68,18 @@ def listener(request, room_id):
     template_name = 'poll/listener.html'
 
     if request.method == 'POST':
+        input_comment = request.POST.get('input_comment')
         if 'button_1' in request.POST:
             # ボタン1がクリックされた場合の処理
-            button1()
+            button1(room_id)
         elif 'button_2' in request.POST:
             # ボタン2がクリックされた場合の処理
-            button2()
+            button2(room_id)
         elif 'button_3' in request.POST:
             # ボタン2がクリックされた場合の処理
-            button3()
+            button3(room_id)
+        elif 'button_submit' in request.POST:
+            comment_submit(input_comment, room_id)
 
     return render(request, template_name, {'room_id': room_id})
 

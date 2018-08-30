@@ -6,43 +6,38 @@
 
 {# メインコンテンツ #}
 {% block content %}
-    <div class="container-fluid">
-        <div class="row">
+    <div class="jumbotron jumbotron-fluid">
+        <form action="{% url 'poll:listener' room_id %}" method="post">
+            <div class="row">
+                {% csrf_token %}
+                <div class="col-lg">
+                    <h3>わかった</h3>
+                    <button class="btn btn-circle btn-understand" name="button_1">
+                    </button>
+                </div>
+                <div class="col-lg">
+                    <h3>もう知っている</h3>
+                    <button class="btn btn-circle btn-have-known" name="button_2">
+                    </button>
+                </div>
+                <div class="col-lg">
+                    <h3>わからない</h3>
+                    <button class="btn btn-circle btn-not-understand" name="button_3">
+                    </button>
+                </div>
+            </div>
+        </form>
+        <form action="{% url 'poll:listener' room_id %}" method="post">
             {% csrf_token %}
-            <div class="col-lg">
-                <h3>わかった</h3>
-                <button class="btn btn-circle btn-understand">
-                </button>
-            </div>
-            <div class="col-lg">
-                <h3>もう知っている</h3>
-                <button class="btn btn-circle btn-have-known">
-                </button>
-            </div>
-            <div class="col-lg">
-                <h3>わからない</h3>
-                <button class="btn btn-circle btn-not-understand">
-                </button>
-            </div>
-        </div>
-        <form class="form-group">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Input comment">
+                <input type="text" class="form-control" placeholder="Input comment" size="100" name="input_comment">
                 <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit" style="background-color: white">
+                    <button class="btn btn-default" type="submit" style="background-color: white"
+                            name="button_submit">
                         <i class="far fa-paper-plane"></i>
                     </button>
                 </div>
             </div>
         </form>
     </div>
-
-
-    {#    <form action="{% url 'poll:listener' %}" method="post">#}
-    {#      {% csrf_token %}#}
-    {#      <input type="submit" name="button_1" value="分かった">#}
-    {#      <input type="submit" name="button_2" value="もう知ってる">#}
-    {#      <input type="submit" name="button_3" value="分からない">#}
-    {#    </form>#}
-
 {% endblock %}
