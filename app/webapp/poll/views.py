@@ -72,7 +72,7 @@ def listener_a(request, room_id):
             # ボタン3がクリックされた場合の処理
             is_slide_empty = button3(room_id)
         elif 'button_submit' in request.POST:
-            comment_submit(input_comment, room_id)
+            is_slide_empty = comment_submit(input_comment, room_id)
 
         # slideがあればlistener_bへ
         if is_slide_empty:
