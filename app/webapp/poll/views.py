@@ -234,17 +234,14 @@ class VoteViewSet(viewsets.ModelViewSet):
     部屋とスライドの何枚目かを指定する場合は
     /api/votes/?slide_id__slide_no=<何枚目か>&slide_id__room_id__id=<欲しい部屋のpk>
     """
-    # デモ用(過去10秒の票を持ってくる)
-    # late_limit_sec = 10
-    # 展示用(過去60秒の票を持ってくる)
-    # late_limit_sec 60
-    # 過去late_limit[sec]の票を持ってくる
-    # queryset = VoteTable.objects.filter(slide_no=current_slide.slide_no,
-    #                                     vote_time__gte=timezone.now() - timedelta(seconds=late_limit_sec))
-    # ↓時間にかかわらず全てとってくる
     queryset = VoteTable.objects.all()
     serializer_class = VoteSerializer
-    filter_fields = ('slide_id__slide_no','slide_id__room_id__id',)
+    filter_fields = ('slide_id__slide_no', 'slide_id__room_id__id',)
+
+    def get_queryset(self):
+        """querysetを取得する関数をオーバーライド"""
+        queryset = super(VoteViewSet, self).get_queryset()
+        return queryset.filter(vote_time__gte=timezone.now() - timedelta(seconds=10))
 
 
 class RoomViewSet(viewsets.ModelViewSet):
