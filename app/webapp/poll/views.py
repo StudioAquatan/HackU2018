@@ -60,7 +60,7 @@ def index(request):
                         'error_message': '"' + input_name + '"は存在しません．'
                     })
                 else:
-                    return HttpResponseRedirect(reverse('poll:listener', args=(join.id,)))
+                    return HttpResponseRedirect(reverse('poll:listener_a', args=(join.id,)))
             else:
                 pass
     else:
@@ -69,22 +69,45 @@ def index(request):
     return render(request, 'poll/index.html', {'form': form})
 
 
-def listener(request, room_id):
-    template_name = 'poll/listener.html'
+def listener_a(request, room_id):
+    template_name = 'poll/listener_a.html'
 
     if request.method == 'POST':
         input_comment = request.POST.get('input_comment')
         if 'button_1' in request.POST:
             # ボタン1がクリックされた場合の処理
             button1(room_id)
+            template_name = 'poll/listener_b.html'
         elif 'button_2' in request.POST:
             # ボタン2がクリックされた場合の処理
             button2(room_id)
+            template_name = 'poll/listener_b.html'
         elif 'button_3' in request.POST:
             # ボタン2がクリックされた場合の処理
             button3(room_id)
+            template_name = 'poll/listener_b.html'
         elif 'button_submit' in request.POST:
             comment_submit(input_comment, room_id)
+
+    return render(request, template_name, {'room_id': room_id})
+
+
+def listener_b(request, room_id):
+    template_name = 'poll/listener_b.html'
+
+    if request.method == 'POST':
+        input_comment = request.POST.get('input_comment')
+        if 'button_1' in request.POST:
+            # ボタン1がクリックされた場合の処理
+            button1()
+        elif 'button_2' in request.POST:
+            # ボタン2がクリックされた場合の処理
+            button2()
+        elif 'button_3' in request.POST:
+            # ボタン2がクリックされた場合の処理
+            button3()
+        elif 'button_submit' in request.POST:
+            comment_submit(input_comment)
 
     return render(request, template_name, {'room_id': room_id})
 

@@ -10,13 +10,13 @@
         <div class="container-fluid jumbotron-container">
             <form action="{% url 'poll:listener' %}" method="post">
                 {% csrf_token %}
-                <button class="btn btn-circle btn-lg" type="submit" name="button_1">
+                <button class="btn btn-circle btn-lg" type="submit" name="button_1" id="btn_1" onclick="clicked();">
                     わかった
                 </button>
-                <button class="btn btn-circle btn-lg" type="submit" name="button_2">
+                <button class="btn btn-circle btn-lg" type="submit" name="button_2" id="btn_2" onclick="clicked();">
                     もう知ってる
                 </button>
-                <button class="btn btn-circle btn-lg" type="submit" name="button_3">
+                <button class="btn btn-circle btn-lg" type="submit" name="button_3" id="btn_3" onclick="clicked();">
                     わからない
                 </button>
             </form>
@@ -35,3 +35,24 @@
         </div>
     </div>
 {% endblock %}
+
+<script type="text/javascript">
+    function btnDisable() { //①ボタンを無効にする
+        document.getElementById('btn_1').disabled = true;
+        document.getElementById('btn_2').disabled = true;
+        document.getElementById('btn_3').disabled = true;
+        clearInterval(statusDis);
+    }
+
+    function btnAble() {  //②ボタンを有効にする
+        document.getElementById('btn_1').disabled = false;
+        document.getElementById('btn_2').disabled = false;
+        document.getElementById('btn_3').disabled = false;
+        clearInterval(statusAble);
+    }
+
+    function clicked() { //① + ②
+        statusDis = setInterval(btnDisable, 1); //ボタンを押した直後に①を呼び出し
+        statusAble = setInterval(btnAble, 60000); //ボタンを押して三秒後に②を呼び出し
+    }
+</script>
