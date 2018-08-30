@@ -92,9 +92,8 @@ def speaker_res(request, room_id):
     template_name = 'poll/speaker_res.html'
 
     # --------------------グラフ機能--------------------
-    # スライドの枚数，最後に終わったスライドのslide_noを見ている
-    slide_num = SlideTable.objects.all().order_by('-end_time').first().slide_no
-    # TODO: 部屋でフィルタをかける
+    # スライドの枚数，room_idの中で一番大きいslide_no
+    slide_num = SlideTable.objects.filter(room_id_id__exact=room_id).aggregate(Max('slide_no'))['slide_no__max']
 
     slide_list = []  # slide_1, slide_2, ... slide_n
     time_list = []  # 時間(x軸)
@@ -110,9 +109,9 @@ def speaker_res(request, room_id):
         slide_list.append('slide_' + str(i))
 
         # スライドごとのデータを作成
-        slide_start_time = SlideTable.objects.filter(slide_no__exact=i).order_by('-end_time').first().start_time
+        slide_start_time = SlideTable.objects.filter(room_id_id__exact=room_id, slide_no__exact=i).first().start_time
         slide_st_time = re.search(regex_time, str(timezone.localtime(slide_start_time))).group()
-        slide_end_time = SlideTable.objects.filter(slide_no__exact=i).order_by('-end_time').first().end_time
+        slide_end_time = SlideTable.objects.filter(room_id_id__exact=room_id, slide_no__exact=i).first().end_time
         slide_ed_time = re.search(regex_time, str(timezone.localtime(slide_end_time))).group()
         times = ['x', slide_st_time]
         data1s = ['分かった', 0]  # スライド開始時はすべて0票
@@ -126,9 +125,10 @@ def speaker_res(request, room_id):
 
         # time_divideごとのデータを作成する
         while plus_time_div < slide_end_time:
-            # slide_no == i && time_temp <= vote_time < plus_time_div
+            # room_id_id == room_id && slide_no == i && time_temp <= vote_time < plus_time_div
             votes = VoteTable.objects\
-                .filter(slide_id__slide_no__exact=i, vote_time__gte=time_temp, vote_time__lt=plus_time_div)\
+                .filter(slide_id__room_id_id__exact=room_id, slide_id__slide_no__exact=i,
+                        vote_time__gte=time_temp, vote_time__lt=plus_time_div)\
                 .order_by('vote_time')
             for vote in votes:
                 if vote.vote_type == 1:
@@ -149,7 +149,8 @@ def speaker_res(request, room_id):
 
         # スライド終了
         votes = VoteTable.objects \
-            .filter(slide_id__slide_no__exact=i, vote_time__gte=time_temp, vote_time__lte=slide_end_time) \
+            .filter(slide_id__room_id_id__exact=room_id, slide_id__slide_no__exact=i,
+                    vote_time__gte=time_temp, vote_time__lte=slide_end_time) \
             .order_by('vote_time')
         for vote in votes:
             if vote.vote_type == 1:
@@ -167,9 +168,8 @@ def speaker_res(request, room_id):
         append_data(data1_list, data2_list, data3_list, data1s, data2s, data3s)
 
     # --------------------コメント機能--------------------
-    # 部屋関係なしに全データ取得
-    speak_start_time = SlideTable.objects.filter(slide_no__exact=1).order_by('-start_time').first().start_time
-    comments = CommentTable.objects.filter(comment_time__gte=speak_start_time).order_by('comment_time')
+    # room_idの部屋の全データ取得
+    comments = CommentTable.objects.filter(slide_id__room_id_id__exact=room_id).order_by('comment_time')
     comment_dic_list = []
     for comment in comments:
         dic = dict()
