@@ -27,11 +27,6 @@ def index(request):
         form = RoomForm(request.POST, instance=room)
         if form.is_valid():
             room = form.save(commit=False)
-            # type(room) - <class 'poll.models.RoomTable'>
-            # room.room_name - フォームで入力した文字列 <str>
-            # room.password - 空文字列 <str>
-            # room.num_listener - 0 <int>
-            # room.id - None <NoneType>
             input_name = room.room_name
             if request.POST['action'] == 'make_room':
                 # 同じ名前の部屋がすでにあればエラーメッセージを出させる
@@ -122,6 +117,8 @@ def speaker_res(request, room_id):
         slide_start_time = SlideTable.objects.filter(room_id_id__exact=room_id, slide_no__exact=i).first().start_time
         slide_st_time = re.search(regex_time, str(timezone.localtime(slide_start_time))).group()
         slide_end_time = SlideTable.objects.filter(room_id_id__exact=room_id, slide_no__exact=i).first().end_time
+        if slide_end_time is None:  # 講義中にHOMEに戻りView resultsを押すと起こる
+            slide_end_time = timezone.now()
         slide_ed_time = re.search(regex_time, str(timezone.localtime(slide_end_time))).group()
         times = ['x', slide_st_time]
         data1s = ['分かった', 0]  # スライド開始時はすべて0票
