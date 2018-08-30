@@ -111,7 +111,7 @@
             $('#result').text('通信中...');
             // Ajax通信を開始
             $.ajax({
-                url: 'http://127.0.0.1:8000/api/slides/?id={{ room_id }}',
+                url: 'http://127.0.0.1:8000/api/slides/?room_id__id={{ room_id }}',
                 type: 'GET',
                 dataType: 'json',
                 // フォーム要素の内容をハッシュ形式に変換

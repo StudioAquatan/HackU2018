@@ -269,7 +269,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 class SlideViewSet(viewsets.ModelViewSet):
     """
     存在するスライドの情報全て返す
-    部屋を指定する場合は  /api/slides/?id=<欲しい部屋のpk>
+    部屋を指定する場合は  /api/slides/?room_id__id=<欲しい部屋のpk>
     """
     # TODO 任意の部屋の情報をもってくる
     queryset = SlideTable.objects.all()
