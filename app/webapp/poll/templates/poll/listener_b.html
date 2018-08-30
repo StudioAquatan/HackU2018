@@ -17,12 +17,12 @@
                 </div>
                 <div class="col-lg">
                     <h3>もう知っている</h3>
-                    <button class="btn btn-circle btn-have-known" name="button_2" id="btn_2">
+                    <button class="btn btn-circle btn-have-known" name="button_2"id="btn_2">
                     </button>
                 </div>
                 <div class="col-lg">
                     <h3>わからない</h3>
-                    <button class="btn btn-circle btn-not-understand" name="button_3" id="btn_3">
+                    <button class="btn btn-circle btn-not-understand" name="button_3"id="btn_3">
                     </button>
                 </div>
             </div>
@@ -40,21 +40,20 @@
             </div>
         </form>
     </div>
+
+    <script>
+        window.onload = function () {
+            $("#btn_1").attr('disabled', true);
+            $("#btn_2").attr('disabled', true);
+            $("#btn_3").attr('disabled', true);
+            console.log("disableにしたよ");
+            setTimeout(function () {
+                $("#btn_1").attr('disabled', false);
+                $("#btn_2").attr('disabled', false);
+                $("#btn_3").attr('disabled', false);
+                console.log("ableにしたよ");
+            }, 60000);
+        };
+    </script>
 {% endblock %}
 
-<script type="text/javascript">
-
-    function btnAble() {
-        document.getElementById('btn_1').disabled = false;
-        document.getElementById('btn_2').disabled = false;
-        document.getElementById('btn_3').disabled = false;
-    }
-
-    window.onload = function() {
-        //ボタンを無効化する
-        document.vote.elements[0].disabled = "disabled";
-        document.getElementById('btn_2').disabled = true;
-        document.getElementById('btn_3').disabled = true;
-        // statusAble = setTimeout(btnAble, 60000); //ボタンを押して60秒後に②を呼び出し
-    }
-</script>
