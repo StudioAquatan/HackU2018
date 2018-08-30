@@ -1,15 +1,16 @@
 from django.urls import path
 from rest_framework import routers
 
-from .views import VoteViewSet, RoomViewSet, CommentViewSet
+from .views import VoteViewSet, RoomViewSet, CommentViewSet,SlideViewSet
 from . import views
 
 app_name = 'poll'
 
 router = routers.DefaultRouter()
 router.register(r'votes', VoteViewSet)
-router.register(r'room-people', RoomViewSet)
+router.register(r'rooms', RoomViewSet)
 router.register(r'comments', CommentViewSet)
+router.register(r'slides', SlideViewSet)
 
 urlpatterns = [
     path('', views.index, name='index'),
