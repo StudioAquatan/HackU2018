@@ -16,7 +16,7 @@
             <form action="{% url 'poll:index' %}" method="post">
                 {% csrf_token %}
                 <div class="form-group row">
-                    <div class="offset-md-7 col-md-11">
+                    <div class="offset-md-6 col-md-12">
                         {% bootstrap_form form layout='horizontal' %}
                     </div>
                 </div>
