@@ -27,6 +27,29 @@ body {
     margin-bottom: 60px;
 }
 
+.th-slide {
+    text-align: center;
+    width: 5%;
+}
+
+.th-time {
+    text-align: center;
+    width: 20%;
+}
+
+.th-comments {
+    text-align: center;
+    width: 35%;
+}
+
+.td-slide {
+    text-align: right;
+}
+
+.td-time {
+    text-align: right;
+}
+
 .logo {
     height: 300px;
     width: 200px;
@@ -46,6 +69,14 @@ body {
 
 .container {
     height: 100%;
+}
+
+.listener-group {
+    display: block;
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
 }
 
 .slide-group-buttons {
@@ -69,9 +100,12 @@ body {
 }
 
 .input-group {
-    width: 80%;
+    width: 100%;
     margin-right: auto;
     margin-left: auto;
+    padding-left: 15%;
+    padding-right: 15%;
+    padding-bottom: 20px;
     margin-bottom: 60px;
 }
 
@@ -83,6 +117,14 @@ body {
     background-color: #0086B2;
     text-align: right;
 }
+
+/*.table .table-striped .table-bordered {*/
+
+/*}*/
+
+/*table, tbody, tr, th, td {*/
+/*display: block;*/
+/*}*/
 
 .credits {
     padding: 10px;
@@ -351,6 +393,23 @@ body {
 
 }
 
+@media (min-width: 700px) {
+    .th-slide {
+        text-align: center;
+        width: 10%;
+    }
+
+    .th-time {
+        text-align: center;
+        width: 20%;
+    }
+
+    .th-comments {
+        text-align: center;
+        width: 35%;
+    }
+}
+
 @media (min-width: 768px) {
 
     .logo {
@@ -533,4 +592,32 @@ body {
         margin-right: 0%;
     }
 
+}
+
+@media (max-width: 700px) {
+    table {
+        width: 100%;
+    }
+
+    th, td {
+        display: block;
+        text-align: left;
+        width: 100%;
+    }
+
+    .th-slide {
+        width: 100%;
+    }
+
+    .th-time {
+        width: 100%;
+    }
+
+    .th-comments {
+        width: 100%;
+    }
+
+    .td-comments {
+        text-align: left;
+    }
 }

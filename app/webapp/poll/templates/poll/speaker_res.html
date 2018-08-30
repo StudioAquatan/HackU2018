@@ -29,17 +29,17 @@
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
-                <th scope="col" class="text-center" style="width: 5%">スライド</th>
-                <th scope="col" class="text-center" style="width: 10%">時刻</th>
-                <th scope="col" class="text-center" style="width: 35%;">内容</th>
+                <th scope="col" class="th-slide">スライド</th>
+                <th scope="col" class="th-time">時刻</th>
+                <th scope="col" class="th-comments">内容</th>
             </tr>
             </thead>
             <tbody>
             {% for comment in comment_dic_list %}
                 <tr>
-                    <td class="text-right">{{ comment.slide }}</td>
-                    <td class="text-right">{{ comment.time }}</td>
-                    <td class="text-left">{{ comment.text }}</td>
+                    <td class="td-slide">{{ comment.slide }}</td>
+                    <td class="td-time">{{ comment.time }}</td>
+                    <td class="td-comments">{{ comment.text }}</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -109,7 +109,7 @@
             let max_array = [Math.max(...array1), Math.max(...array2), Math.max(...array3)];
             let max_val = Math.max(...max_array);
             let y_tick_val = [];
-            for(let i=0; i<max_val+1; i++) {
+            for (let i = 0; i < max_val + 1; i++) {
                 y_tick_val.push(i);
             }
 
@@ -143,7 +143,7 @@
                     y: {
                         tick: {values: y_tick_val}
                     }
-                 },
+                },
                 grid: {
                     x: {
                         show: false

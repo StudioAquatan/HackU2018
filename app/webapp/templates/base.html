@@ -13,7 +13,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'poll/css/epoch.min.css' %}">
 
     {# アイコンを読み込む #}
-    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+        <link href="{% static 'poll/css/fontawesome.min.css' %}" rel="stylesheet">
+{#    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">#}
 
     {# フォントを読み込む #}
     <link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel="stylesheet">
@@ -24,12 +25,7 @@
           integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <script src="{% static 'poll/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'poll/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'poll/js/GaugeMeter.js' %}"></script>
-    <script>
-        $(document).ready(function () {
-            $(".GaugeMeter").gaugeMeter();
-        });
-    </script>
+
 
     {# c3とd3の読み込み #}
     <link rel="stylesheet" href="{% static 'poll/css/c3-v0.4.18.min.css' %}"/>
@@ -58,16 +54,6 @@
                     <a class="nav-link" href="{% url 'poll:index' %}">Home</a>
                 </li>
             </ul>
-{#            <form class="navbar-form navbar-right">#}
-{#                <div class="input-group">#}
-{#                    <input type="text" class="form-control" placeholder="Search room">#}
-{#                    <div class="input-group-btn">#}
-{#                        <button class="btn btn-default" type="submit" style="background-color: white">#}
-{#                            <i class="fas fa-search"></i>#}
-{#                        </button>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </form>#}
         </div>
     </nav>
 {% endblock %}

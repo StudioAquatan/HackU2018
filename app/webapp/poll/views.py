@@ -1,23 +1,15 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
-from rest_framework import viewsets, filters
-from django_filters import rest_framework
-import django_filters
+from django.shortcuts import render
+from rest_framework import viewsets
 from django.urls import reverse
-from django.db.models.functions import Now
 from django.db.models import Max
-
 from django.utils import timezone
 from datetime import timedelta
-
 from .models import VoteTable, RoomTable, CommentTable, SlideTable
 from .serializer import VoteSerializer, RoomSerializer, CommentSerializer, SlideSerializer
-
 import re
 import datetime
-
 from .listener_button import button1, button2, button3, comment_submit
-
 from .forms import RoomForm
 
 
@@ -27,11 +19,6 @@ def index(request):
         form = RoomForm(request.POST, instance=room)
         if form.is_valid():
             room = form.save(commit=False)
-            # type(room) - <class 'poll.models.RoomTable'>
-            # room.room_name - フォームで入力した文字列 <str>
-            # room.password - 空文字列 <str>
-            # room.num_listener - 0 <int>
-            # room.id - None <NoneType>
             input_name = room.room_name
             if request.POST['action'] == 'make_room':
                 # 同じ名前の部屋がすでにあればエラーメッセージを出させる
@@ -150,6 +137,8 @@ def speaker_res(request, room_id):
         slide_start_time = SlideTable.objects.filter(room_id_id__exact=room_id, slide_no__exact=i).first().start_time
         slide_st_time = re.search(regex_time, str(timezone.localtime(slide_start_time))).group()
         slide_end_time = SlideTable.objects.filter(room_id_id__exact=room_id, slide_no__exact=i).first().end_time
+        if slide_end_time is None:  # 講義中にHOMEに戻りView resultsを押すと起こる
+            slide_end_time = timezone.now()
         slide_ed_time = re.search(regex_time, str(timezone.localtime(slide_end_time))).group()
         times = ['x', slide_st_time]
         data1s = ['分かった', 0]  # スライド開始時はすべて0票
@@ -277,7 +266,6 @@ class RoomViewSet(viewsets.ModelViewSet):
     存在する部屋の情報全て返す
     部屋を指定する場合は  /api/rooms/?id=<欲しい部屋のpk>
     """
-    # TODO 任意の部屋の情報をもってくる
     queryset = RoomTable.objects.all()
     serializer_class = RoomSerializer
     filter_fields = ('id',)
@@ -299,7 +287,6 @@ class SlideViewSet(viewsets.ModelViewSet):
     存在するスライドの情報全て返す
     部屋を指定する場合は  /api/slides/?room_id__id=<欲しい部屋のpk>
     """
-    # TODO 任意の部屋の情報をもってくる
     queryset = SlideTable.objects.all()
     serializer_class = SlideSerializer
     filter_fields = ('room_id__id',)
