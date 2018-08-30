@@ -109,15 +109,15 @@ def listener_b(request, room_id):
         input_comment = request.POST.get('input_comment')
         if 'button_1' in request.POST:
             # ボタン1がクリックされた場合の処理
-            button1()
+            button1(room_id)
         elif 'button_2' in request.POST:
             # ボタン2がクリックされた場合の処理
-            button2()
+            button2(room_id)
         elif 'button_3' in request.POST:
-            # ボタン2がクリックされた場合の処理
-            button3()
+            # ボタン3がクリックされた場合の処理
+            button3(room_id)
         elif 'button_submit' in request.POST:
-            comment_submit(input_comment)
+            comment_submit(input_comment, room_id)
 
     return render(request, template_name, {'room_id': room_id})
 
