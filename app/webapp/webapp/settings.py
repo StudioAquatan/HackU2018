@@ -15,18 +15,16 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'e2u(*km+f(fb5%z9p@c*9@sujbq%w^)i5@pg1sa-v+=l(7b-tx'
+SECRET_KEY = 'n$#5%k))_wvb#14a+g+h+l@$%9#!)aj113579kz$-cf@i=-44i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -37,7 +35,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'poll',
+    'rest_framework',
+    'bootstrap4',
+    'django_filters',
+    'corsheaders',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -47,14 +54,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'webapp.urls'
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,7 +81,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'webapp.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -79,7 +90,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -99,20 +109,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ja-jp'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/

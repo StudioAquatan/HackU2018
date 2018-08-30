@@ -1,0 +1,345 @@
+{% extends 'base.html' %}
+
+{# タイトルを変更 #}
+{% block title %}Speaker{% endblock %}
+
+{# メインコンテンツ #}
+{% block content %}
+
+    <div class="container-head" style="color: #FF8200">
+        <h1 id="speaking_title">Speaking Now!!</h1>
+    </div>
+
+    <div class="container-fluid container-group-meter">
+        <div class="row" style="position: center">
+            <div class="col-lg" style="padding: 0%">
+                <div class="container-meter">
+                    <div id="understand_gauge" class="understand">
+                        <h3>わかった</h3>
+                        <div class="epoch gauge-medium"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg" style="padding: 0%">
+                <div class="container-meter">
+                    <div id="have_known_gauge" class="have_known">
+                        <h3>もう知ってる</h3>
+                        <div class="epoch gauge-medium"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg" style="padding: 0%">
+                <div class="container-meter">
+                    <div id="not_understand_gauge" class="not_understand">
+                        <h3>わからない</h3>
+                        <div class="epoch gauge-medium"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid jumbotron-container">
+        <div class="slide-group-buttons">
+            <form action="{% url 'poll:change-status' room_id %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='next-slide'>
+                    次のスライド
+                </button>
+                <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='fin-lec'>
+                    終了
+                </button>
+            </form>
+        </div>
+        {# コメント一覧表 #}
+        <div class="container-table">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col" class="th-slide">スライド</th>
+                    <th scope="col" class="th-time">時刻</th>
+                    <th scope="col" class="th-comments">内容</th>
+                </tr>
+                </thead>
+                <tbody id="comment_info">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="container-fluid jumbotron-container">
+        <div class="slide-group-buttons">
+            <form action="{% url 'poll:change-status' room_id %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='next-slide'>
+                    次のスライド
+                </button>
+                <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='fin-lec'>
+                    終了
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let understand_gauge_cnt = 0;
+        let have_known_gauge_cnt = 0;
+        let not_understand_gauge_cnt = 0;
+        let room_people_num = 1;
+        let understand_ratio;
+        let have_known_ratio;
+        let not_understand_ratio;
+        let comments = [];
+        let current_slidenum = 1;
+
+        let understand_gauge_chart = $('#understand_gauge .epoch').epoch({
+            type: 'time.gauge',
+            value: 0.0
+        });
+
+        let have_known_gauge_chart = $('#have_known_gauge .epoch').epoch({
+            type: 'time.gauge',
+            value: 0.0
+        });
+
+        let not_understand_gauge_chart = $('#not_understand_gauge .epoch').epoch({
+            type: 'time.gauge',
+            value: 0.0
+        });
+
+        function getCurrentSlideNum() {
+            let dfd = $.Deferred();
+            $('#result').text('通信中...');
+            $.ajax({
+                url: 'http://127.0.0.1:8000/api/slides/?room_id__id={{ room_id }}',
+                type: 'GET',
+                dataType: 'json',
+                data: $('form').serializeArray(),
+                timeout: 1000,
+            })
+                .done(function (data) {
+                    for (let i in data) {
+                        if (current_slidenum < data[i].slide_no) {
+                            current_slidenum = data[i].slide_no;
+                        }
+                    }
+                    dfd.resolve();
+                })
+                .fail(function () {
+                    dfd.reject();
+                });
+            return dfd.promise();
+        }
+
+        function getRoomPeoplenum() {
+            let dfd = $.Deferred();
+            $('#result').text('通信中...');
+            // Ajax通信を開始
+            $.ajax({
+                url: 'http://127.0.0.1:8000/api/rooms/?id={{ room_id }}',
+                type: 'GET',
+                dataType: 'json',
+                data: $('form').serializeArray(),
+                timeout: 1000,
+            })
+                .done(function (data) {
+                    for (let i in data) {
+                        room_people_num = data[i].num_listener;
+                        if (room_people_num === 0) {
+                            room_people_num = 1;
+                        }
+                    }
+                    dfd.resolve();
+                })
+                .fail(function () {
+                    dfd.reject();
+                });
+            return dfd.promise();
+        }
+
+        {# 票の情報を取得して集計 #}
+
+        function getVotes() {
+            let dfd = $.Deferred();
+            understand_gauge_cnt = 0;
+            have_known_gauge_cnt = 0;
+            not_understand_gauge_cnt = 0;
+            $('#result').text('通信中...');
+            $.ajax({
+                url: 'http://127.0.0.1:8000/api/votes/?slide_id__slide_no=' + current_slidenum + '&slide_id__room_id__id={{ room_id }}',
+                type: 'GET',
+                dataType: 'json',
+                data: $('form').serializeArray(),
+                timeout: 1000,
+            })
+                .done(function (data) {
+                    for (let i in data) {
+                        if (data[i].vote_type === 1) {
+                            understand_gauge_cnt += 1;
+                        } else if (data[i].vote_type === 2) {
+                            have_known_gauge_cnt += 1;
+                        } else if (data[i].vote_type === 3) {
+                            not_understand_gauge_cnt += 1;
+                        }
+                    }
+                    dfd.resolve();
+                })
+                .fail(function () {
+                    console.log("通信失敗;_;");
+                    dfd.reject();
+                });
+            return dfd.promise();
+        }
+
+        {# コメントの情報を取得して集計 #}
+
+        function getComments() {
+            let dfd = $.Deferred();
+            understand_gauge_cnt = 0;
+            have_known_gauge_cnt = 0;
+            not_understand_gauge_cnt = 0;
+            $('#result').text('通信中...');
+            $.ajax({
+                url: 'http://127.0.0.1:8000/api/comments/?slide_id__slide_no=' + current_slidenum + '&slide_id__room_id__id={{ room_id }}',
+                type: 'GET',
+                dataType: 'json',
+                data: $('form').serializeArray(),
+                timeout: 1000,
+            })
+                .done(function (data) {
+                    comments = [];
+                    for (let i in data) {
+                        comments.push(data[i])
+                    }
+                    dfd.resolve();
+                })
+                .fail(function () {
+                    console.log("通信失敗;_;");
+                    dfd.reject();
+                });
+            return dfd.promise();
+        }
+
+        function dispComments() {
+            $('#comment_info tr').remove();
+            for (let i in comments) {
+                let time = comments[i].comment_time;
+                time = time.replace('-', '/');
+                time = time.replace('-', '/');
+                time = time.replace('T', '  ', 1);
+                time = time.split('+')[0];
+                $('#comment_info').append(
+                    '<tr><td id="slide_num">' + comments[i].slide_id.slide_no + '</td>' +
+                    '<td id="post_time">' + time + '</td>' +
+                    '<td id="comment_text">' + comments[i].comment_text + '</td>' +
+                    '</tr>');
+            }
+        }
+
+        function dispCurrentSlideNum() {
+            $("#speaking_title").text("Slide" + current_slidenum);
+        }
+
+        {# ゲージの値をDBから取得した値に基づいて更新 #}
+
+        function updateGauge() {
+            understand_ratio = understand_gauge_cnt / room_people_num;
+            have_known_ratio = have_known_gauge_cnt / room_people_num;
+            not_understand_ratio = not_understand_gauge_cnt / room_people_num;
+
+            understand_gauge_chart.update(understand_ratio);
+            have_known_gauge_chart.update(have_known_ratio);
+            not_understand_gauge_chart.update(not_understand_ratio);
+        }
+
+        function dispModal() {
+            if (have_known_ratio > 0.8 && not_understand_ratio > 0.5) {
+                $('#modal-both').modal('show');
+                setTimeout(function () {
+                    $('#modal-both').modal('hide');
+                }, 5000);
+            } else if (have_known_ratio > 0.8) {
+                $('#modal-have-known').modal('show');
+                setTimeout(function () {
+                    $('#modal-have-known').modal('hide');
+                }, 5000);
+            } else if (not_understand_ratio > 0.5) {
+                $('#modal-not-understand').modal('show');
+                setTimeout(function () {
+                    $('#modal-not-understand').modal('hide');
+                }, 5000);
+            }
+        }
+
+        {# 画面読み込み時に実行 #}
+        window.onload = function () {
+            getCurrentSlideNum()
+                .then(dispCurrentSlideNum)
+                .then(getVotes)
+                .then(getRoomPeoplenum)
+                .then(updateGauge)
+                .then(getComments)
+                .then(dispComments)
+                .then(dispModal);
+        };
+        {# 第二引数[msec]の間隔でfunctionを実行 #}
+        setInterval(function () {
+            getCurrentSlideNum()
+                .then(dispCurrentSlideNum)
+                .then(getVotes)
+                .then(getRoomPeoplenum)
+                .then(updateGauge)
+                .then(getComments)
+                .then(dispComments)
+                .then(dispModal);
+        }, 10000);
+
+    </script>
+
+    <div class="modal" id="modal-both" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-label">お知らせ</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    「もう知ってる」が80%「わからない」が50%を超えました
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-have-known" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-label">お知らせ</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    「もう知ってる」が80%を超えました
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-not-understand" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-label">お知らせ</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    「わからない」が50%を超えました
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
