@@ -42,6 +42,15 @@ def index(request):
                 else:
                     room.save()
                     return HttpResponseRedirect(reverse('poll:speaker_start', args=(room.id,)))
+            elif request.POST['action'] == 'view_results':
+                view = RoomTable.objects.filter(room_name__exact=input_name).first()
+                if view is None:
+                    return render(request, 'poll/index.html', {
+                        'form': form,
+                        'error_message': '"' + input_name + '"は存在しません．'
+                    })
+                else:
+                    return HttpResponseRedirect(reverse('poll:speaker_res', args=(view.id,)))
             elif request.POST['action'] == 'join_room':
                 join = RoomTable.objects.filter(room_name__exact=input_name).first()
                 if join is None:
@@ -126,9 +135,9 @@ def speaker_res(request, room_id):
         # time_divideごとのデータを作成する
         while plus_time_div < slide_end_time:
             # room_id_id == room_id && slide_no == i && time_temp <= vote_time < plus_time_div
-            votes = VoteTable.objects\
+            votes = VoteTable.objects \
                 .filter(slide_id__room_id_id__exact=room_id, slide_id__slide_no__exact=i,
-                        vote_time__gte=time_temp, vote_time__lt=plus_time_div)\
+                        vote_time__gte=time_temp, vote_time__lt=plus_time_div) \
                 .order_by('vote_time')
             for vote in votes:
                 if vote.vote_type == 1:

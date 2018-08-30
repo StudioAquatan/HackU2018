@@ -22,11 +22,20 @@
 {#            </a>#}
             <form action="{% url 'poll:index' %}" method="post">
                 {% csrf_token %}
-                {% bootstrap_form form layout='horizontal' %}
+                <div class="form-group row">
+                    <div class="offset-md-7 col-md-11">
+                            {% bootstrap_form form layout='horizontal' %}
+                    </div>
+                </div>
                 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-                <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='make_room'>Make room
+                <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='make_room'>
+                    Make room
                 </button>
-                <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='join_room'>Join room
+                <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='view_results'>
+                    View results
+                </button>
+                <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='join_room'>
+                    Join room
                 </button>
             </form>
         </div>
