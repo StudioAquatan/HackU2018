@@ -15,7 +15,7 @@ def get_slide(get_id):
             # 最新のスライドが終了していれば講義が終了していると判断して-2を返す
             return -2
     else:
-        # slideがなければ-2を返す
+        # slideがなければ-1を返す
         return -1
 
 
