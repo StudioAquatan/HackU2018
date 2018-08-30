@@ -7,32 +7,38 @@
 {# メインコンテンツ #}
 {% block content %}
     <div class="jumbotron jumbotron-fluid">
-        <div class="container-fluid jumbotron-container">
-            <form action="{% url 'poll:listener' %}" method="post">
+        <form action="{% url 'poll:listener_b' room_id %}" method="post">
+            <div class="row">
                 {% csrf_token %}
-                <button class="btn btn-circle btn-lg" type="submit" name="button_1" id="btn_1" onclick="clicked();">
-                    わかった
-                </button>
-                <button class="btn btn-circle btn-lg" type="submit" name="button_2" id="btn_2" onclick="clicked();">
-                    もう知ってる
-                </button>
-                <button class="btn btn-circle btn-lg" type="submit" name="button_3" id="btn_3" onclick="clicked();">
-                    わからない
-                </button>
-            </form>
-            <form action="{% url 'poll:listener' %}" method="post">
-                {% csrf_token %}
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Input comment" size="100" name="input_comment">
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit" style="background-color: white"
-                                name="button_submit">
-                            <i class="far fa-paper-plane"></i>
-                        </button>
-                    </div>
+                <div class="col-lg">
+                    <h3>わかった</h3>
+                    <button class="btn btn-circle btn-understand" name="button_1">
+                    </button>
                 </div>
-            </form>
-        </div>
+                <div class="col-lg">
+                    <h3>もう知っている</h3>
+                    <button class="btn btn-circle btn-have-known" name="button_2">
+                    </button>
+                </div>
+                <div class="col-lg">
+                    <h3>わからない</h3>
+                    <button class="btn btn-circle btn-not-understand" name="button_3">
+                    </button>
+                </div>
+            </div>
+        </form>
+        <form action="{% url 'poll:listener_b' room_id %}" method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Input comment" size="100" name="input_comment">
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit" style="background-color: white"
+                            name="button_submit">
+                        <i class="far fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
 {% endblock %}
 
@@ -51,7 +57,7 @@
         clearInterval(statusAble);
     }
 
-    function clicked() { //① + ②
+    window.onload = function clicked() { //① + ②
         statusDis = setInterval(btnDisable, 1); //ボタンを押した直後に①を呼び出し
         statusAble = setInterval(btnAble, 60000); //ボタンを押して三秒後に②を呼び出し
     }
