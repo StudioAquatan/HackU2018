@@ -69,6 +69,7 @@ def index(request):
     return render(request, 'poll/index.html', {'form': form})
 
 
+# 一回目のリスナーページ読み込み
 def listener_a(request, room_id):
     template_name = 'poll/listener_a.html'
 
@@ -92,6 +93,7 @@ def listener_a(request, room_id):
     return render(request, template_name, {'room_id': room_id})
 
 
+# 二回目以降のリスナーページ読み込み
 def listener_b(request, room_id):
     template_name = 'poll/listener_b.html'
 
