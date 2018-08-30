@@ -41,6 +41,8 @@ def index(request):
                     return HttpResponseRedirect(reverse('poll:speaker_res', args=(view.id,)))
             elif request.POST['action'] == 'join_room':
                 join = RoomTable.objects.filter(room_name__exact=input_name).first()
+                join.num_listener += 1
+                join.save()
                 if join is None:
                     return render(request, 'poll/index.html', {
                         'form': form,
@@ -294,7 +296,7 @@ class VoteViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """querysetを取得する関数をオーバーライド"""
         queryset = super(VoteViewSet, self).get_queryset()
-        return queryset.filter(vote_time__gte=timezone.now() - timedelta(seconds=10))
+        return queryset.filter(vote_time__gte=timezone.now() - timedelta(seconds=60))
 
 
 class RoomViewSet(viewsets.ModelViewSet):
