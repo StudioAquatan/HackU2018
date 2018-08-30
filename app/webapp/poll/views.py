@@ -41,6 +41,8 @@ def index(request):
                     return HttpResponseRedirect(reverse('poll:speaker_res', args=(view.id,)))
             elif request.POST['action'] == 'join_room':
                 join = RoomTable.objects.filter(room_name__exact=input_name).first()
+                join.num_listener += 1
+                join.save()
                 if join is None:
                     return render(request, 'poll/index.html', {
                         'form': form,
