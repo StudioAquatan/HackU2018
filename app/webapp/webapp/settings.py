@@ -24,8 +24,8 @@ SECRET_KEY = 'n$#5%k))_wvb#14a+g+h+l@$%9#!)aj113579kz$-cf@i=-44i'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['www.masapyon.info']
+X
 # Application definition
 
 INSTALLED_APPS = [
