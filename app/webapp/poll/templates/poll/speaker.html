@@ -41,7 +41,7 @@
     </div>
     <div class="container-fluid jumbotron-container">
         <div class="slide-group-buttons">
-            <form action="{% url 'poll:change-status' %}" method="post">
+            <form action="{% url 'poll:change-status' room_id %}" method="post">
                 {% csrf_token %}
                 <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='next-slide'>
                     次のスライド
@@ -68,7 +68,7 @@
     </div>
     <div class="container-fluid jumbotron-container">
         <div class="slide-group-buttons">
-            <form action="{% url 'poll:change-status' %}" method="post">
+            <form action="{% url 'poll:change-status' room_id %}" method="post">
                 {% csrf_token %}
                 <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='next-slide'>
                     次のスライド
@@ -281,6 +281,7 @@
         }, 10000);
 
     </script>
+
 
     {# モーダルの配置 #}
     <div class="modal" id="modal-both" tabindex="-1">
