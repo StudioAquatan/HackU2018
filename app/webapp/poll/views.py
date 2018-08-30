@@ -294,7 +294,7 @@ class VoteViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """querysetを取得する関数をオーバーライド"""
         queryset = super(VoteViewSet, self).get_queryset()
-        return queryset.filter(vote_time__gte=timezone.now() - timedelta(seconds=10))
+        return queryset.filter(vote_time__gte=timezone.now() - timedelta(seconds=60))
 
 
 class RoomViewSet(viewsets.ModelViewSet):
