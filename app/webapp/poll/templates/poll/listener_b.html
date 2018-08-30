@@ -7,22 +7,22 @@
 {# メインコンテンツ #}
 {% block content %}
     <div class="jumbotron jumbotron-fluid">
-        <form action="{% url 'poll:listener_b' room_id %}" method="post">
+        <form name="vote" action="{% url 'poll:listener_b' room_id %}" method="post">
             <div class="row">
                 {% csrf_token %}
                 <div class="col-lg">
                     <h3>わかった</h3>
-                    <button class="btn btn-circle btn-understand" name="button_1">
+                    <button class="btn btn-circle btn-understand" name="button_1" id="btn_1">
                     </button>
                 </div>
                 <div class="col-lg">
                     <h3>もう知っている</h3>
-                    <button class="btn btn-circle btn-have-known" name="button_2">
+                    <button class="btn btn-circle btn-have-known" name="button_2" id="btn_2">
                     </button>
                 </div>
                 <div class="col-lg">
                     <h3>わからない</h3>
-                    <button class="btn btn-circle btn-not-understand" name="button_3">
+                    <button class="btn btn-circle btn-not-understand" name="button_3" id="btn_3">
                     </button>
                 </div>
             </div>
@@ -43,22 +43,18 @@
 {% endblock %}
 
 <script type="text/javascript">
-    function btnDisable() { //①ボタンを無効にする
-        document.getElementById('btn_1').disabled = true;
-        document.getElementById('btn_2').disabled = true;
-        document.getElementById('btn_3').disabled = true;
-        clearInterval(statusDis);
-    }
 
-    function btnAble() {  //②ボタンを有効にする
+    function btnAble() {
         document.getElementById('btn_1').disabled = false;
         document.getElementById('btn_2').disabled = false;
         document.getElementById('btn_3').disabled = false;
-        clearInterval(statusAble);
     }
 
-    window.onload = function clicked() { //① + ②
-        statusDis = setInterval(btnDisable, 1); //ボタンを押した直後に①を呼び出し
-        statusAble = setInterval(btnAble, 60000); //ボタンを押して三秒後に②を呼び出し
+    window.onload = function() {
+        //ボタンを無効化する
+        document.vote.elements[0].disabled = "disabled";
+        document.getElementById('btn_2').disabled = true;
+        document.getElementById('btn_3').disabled = true;
+        // statusAble = setTimeout(btnAble, 60000); //ボタンを押して60秒後に②を呼び出し
     }
 </script>
