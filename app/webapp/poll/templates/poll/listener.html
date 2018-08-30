@@ -8,7 +8,7 @@
 {% block content %}
     <div class="jumbotron jumbotron-fluid">
         <div class="container-fluid jumbotron-container">
-            <form action="{% url 'poll:listener' %}" method="post">
+            <form action="{% url 'poll:listener' room_id  %}" method="post">
                 {% csrf_token %}
                 <button class="btn btn-circle btn-lg" type="submit" name="button_1">
                     わかった
@@ -20,7 +20,7 @@
                     わからない
                 </button>
             </form>
-            <form action="{% url 'poll:listener' %}" method="post">
+            <form action="{% url 'poll:listener' room_id  %}" method="post">
                 {% csrf_token %}
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Input comment" size="100" name="input_comment">
