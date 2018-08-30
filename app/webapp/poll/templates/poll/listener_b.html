@@ -1,0 +1,61 @@
+{# base.htmlを継承 #}
+{% extends 'base.html' %}
+
+{# タイトルを変更 #}
+{% block title %}Listener{% endblock %}
+
+{# メインコンテンツ #}
+{% block content %}
+    <div class="listener-group">
+        <form name="vote" action="{% url 'poll:listener_b' room_id %}" method="post">
+            <div class="row">
+                {% csrf_token %}
+                <div class="col-lg" style="text-align: center">
+                    <h3>わかった</h3>
+                    <button class="btn btn-circle btn-understand" name="button_1" id="btn_1">
+                    </button>
+                </div>
+                <div class="col-lg" style="text-align: center">
+                    <h3>もう知っている</h3>
+                    <button class="btn btn-circle btn-have-known" name="button_2" id="btn_2">
+                    </button>
+                </div>
+                <div class="col-lg" style="text-align: center">
+                    <h3>わからない</h3>
+                    <button class="btn btn-circle btn-not-understand" name="button_3" id="btn_3">
+                    </button>
+                </div>
+            </div>
+        </form>
+        <form action="{% url 'poll:listener_b' room_id %}" method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Input comment" size="100" name="input_comment">
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit" style="background-color: white"
+                            name="button_submit">
+                        <i class="far fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+
+<script type="text/javascript">
+
+    function btnAble() {
+        document.getElementById('btn_1').disabled = false;
+        document.getElementById('btn_2').disabled = false;
+        document.getElementById('btn_3').disabled = false;
+    }
+
+    window.onload = function () {
+        //ボタンを無効化する
+        document.vote.elements[0].disabled = "disabled";
+        document.getElementById('btn_2').disabled = true;
+        document.getElementById('btn_3').disabled = true;
+        // statusAble = setTimeout(btnAble, 60000); //ボタンを押して60秒後に②を呼び出し
+    }
+</script>
