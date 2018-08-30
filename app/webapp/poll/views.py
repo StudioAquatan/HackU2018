@@ -125,7 +125,7 @@ def speaker_res(request, room_id):
     data1_list = []  # わかる
     data2_list = []  # しってる
     data3_list = []  # わからん
-    regex_time = r'\d\d:\d\d:\d\d'
+    regex_time = r'\d\d-\d\d \d\d:\d\d:\d\d'
     regex_date_time = r'\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d'
     time_divide = 10  # グラフの集計をする時の区切りの秒数.例えばtime_divide=10の場合，グラフは最低10秒の間隔ができる．
 
