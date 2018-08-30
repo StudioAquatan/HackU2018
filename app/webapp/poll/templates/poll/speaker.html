@@ -8,7 +8,7 @@
 {% block content %}
 
     <div class="container-head" style="color: #FF8200">
-        <h1>Speaking Now!!</h1>
+        <h1 id="speaking_title">Speaking Now!!</h1>
     </div>
 
     <div class="container-fluid container-group-meter">
@@ -263,6 +263,10 @@
             }
         }
 
+        function dispCurrentSlideNum() {
+            $("#speaking_title").text("Slide" + current_slidenum);
+        }
+
         {# ゲージの値をDBから取得した値に基づいて更新 #}
 
         function updateGauge() {
@@ -301,6 +305,7 @@
         {# 画面読み込み時に実行 #}
         window.onload = function () {
             getCurrentSlideNum()
+                .then(dispCurrentSlideNum)
                 .then(getVotes)
                 .then(getRoomPeoplenum)
                 .then(updateGauge)
@@ -310,7 +315,9 @@
         };
         {# 第二引数[msec]の間隔でfunctionを実行 #}
         setInterval(function () {
-            getVotes()
+            getCurrentSlideNum()
+                .then(dispCurrentSlideNum)
+                .then(getVotes)
                 .then(getRoomPeoplenum)
                 .then(updateGauge)
                 .then(getComments)
