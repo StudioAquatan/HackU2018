@@ -41,6 +41,8 @@ def index(request):
                     return HttpResponseRedirect(reverse('poll:speaker_res', args=(view.id,)))
             elif request.POST['action'] == 'join_room':
                 join = RoomTable.objects.filter(room_name__exact=input_name).first()
+                join.num_listener += 1
+                join.save()
                 if join is None:
                     return render(request, 'poll/index.html', {
                         'form': form,
@@ -64,23 +66,31 @@ def listener_a(request, room_id):
         input_comment = request.POST.get('input_comment')
         if 'button_1' in request.POST:
             # ボタン1がクリックされた場合の処理
-            is_slide_empty = button1(room_id)
+            slide_info = button1(room_id)
         elif 'button_2' in request.POST:
             # ボタン2がクリックされた場合の処理
-            is_slide_empty = button2(room_id)
+            slide_info = button2(room_id)
         elif 'button_3' in request.POST:
             # ボタン3がクリックされた場合の処理
-            is_slide_empty = button3(room_id)
+            slide_info = button3(room_id)
         elif 'button_submit' in request.POST:
-            is_slide_empty = comment_submit(input_comment, room_id)
+            slide_info = comment_submit(input_comment, room_id)
 
-        # slideがあればlistener_bへ
-        if is_slide_empty:
+        #  1:vote
+        #  2:comment
+        # -1:講義開始前
+        # -2:講義終了後
+        if slide_info == 1:
             template_name = 'poll/listener_b.html'
-        else:
+        elif slide_info == -1:
             return render(request, template_name, {
                 'room_id': room_id,
                 'error_message': '講義が始まっていません'
+            })
+        elif slide_info == -2:
+            return render(request, template_name, {
+                'room_id': room_id,
+                'error_message': '講義が終わっています'
             })
 
     return render(request, template_name, {'room_id': room_id})
@@ -88,51 +98,38 @@ def listener_a(request, room_id):
 
 # 二回目以降のリスナーページ読み込み
 def listener_b(request, room_id):
-    template_name = 'poll/listener_b.html'
+    template_name = 'poll/listener_a.html'
 
     if request.method == 'POST':
         input_comment = request.POST.get('input_comment')
         if 'button_1' in request.POST:
             # ボタン1がクリックされた場合の処理
-            button1(room_id)
+            slide_info = button1(room_id)
         elif 'button_2' in request.POST:
             # ボタン2がクリックされた場合の処理
-            button2(room_id)
+            slide_info = button2(room_id)
         elif 'button_3' in request.POST:
             # ボタン3がクリックされた場合の処理
-            is_slide_empty = button3(room_id)
+            slide_info = button3(room_id)
         elif 'button_submit' in request.POST:
-            comment_submit(input_comment, room_id)
+            slide_info = comment_submit(input_comment, room_id)
 
-        # slideがあればlistener_bへ
-        if is_slide_empty:
+        #  1:vote
+        #  2:comment
+        # -1:講義開始前
+        # -2:講義終了後
+        if slide_info == 1:
             template_name = 'poll/listener_b.html'
-        else:
+        elif slide_info == -1:
             return render(request, template_name, {
                 'room_id': room_id,
                 'error_message': '講義が始まっていません'
             })
-
-    return render(request, template_name, {'room_id': room_id})
-
-
-def listener_b(request, room_id):
-    template_name = 'poll/listener_b.html'
-
-    if request.method == 'POST':
-        input_comment = request.POST.get('input_comment')
-        if 'button_1' in request.POST:
-            # ボタン1がクリックされた場合の処理
-            button1(room_id)
-        elif 'button_2' in request.POST:
-            # ボタン2がクリックされた場合の処理
-            button2(room_id)
-        elif 'button_3' in request.POST:
-            # ボタン3がクリックされた場合の処理
-            button3(room_id)
-        elif 'button_submit' in request.POST:
-            comment_submit(input_comment, room_id)
-            template_name = 'poll/listener_a.html'
+        elif slide_info == -2:
+            return render(request, template_name, {
+                'room_id': room_id,
+                'error_message': '講義が終わっています'
+            })
 
     return render(request, template_name, {'room_id': room_id})
 
