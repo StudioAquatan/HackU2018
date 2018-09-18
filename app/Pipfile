@@ -10,6 +10,7 @@ python-dotenv = "*"
 djangorestframework = "*"
 django-filter = "*"
 django-cors-headers = "*"
+gunicorn = "*"
 
 [dev-packages]
 
