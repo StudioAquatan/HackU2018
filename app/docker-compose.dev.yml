@@ -1,0 +1,40 @@
+version: "3.2"
+
+services:
+  static:
+    image: nginx:stable
+    container_name: django_seevo_static
+    ports:
+      - "8000:80"
+    volumes:
+      - seevo_static_data:/var/www/static
+      - ./conf:/etc/nginx/conf.d
+    env_file:
+      - env_files/.env
+    networks:
+      django_seevo_net:
+        aliases:
+          - django_seevo_static
+
+  app:
+    build:
+      context: .
+    container_name: django_seevo_app
+    expose:
+      - 8000
+    volumes:
+      - seevo_static_data:/opt/sample/static
+      - seevo_app_data:/opt/sample/data
+    env_file:
+      - env_files/.env
+    networks:
+      django_seevo_net:
+        aliases:
+          - django_seevo_app
+
+networks:
+  django_seevo_net:
+
+volumes:
+  seevo_static_data:
+  seevo_app_data:
