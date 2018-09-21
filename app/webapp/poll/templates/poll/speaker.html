@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
-
-{# タイトルを変更 #}
-{% block title %}Speaker{% endblock %}
+{% load static %}
+{% block title %}
+    Speaker
+{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'poll/css/epoch.min.css' %}">
+    <script src="{% static 'poll/js/d3-v3.5.17.min.js' %}" charset="utf-8"></script>
+    <script src="{% static 'poll/js/epoch.min.js' %}"></script>
+{% endblock %}
 
 {# メインコンテンツ #}
 {% block content %}
@@ -89,6 +95,7 @@
         let not_understand_ratio;
         let comments = [];
         let current_slidenum = 1;
+        const host = '127.0.0.1:8000';
 
         let understand_gauge_chart = $('#understand_gauge .epoch').epoch({
             type: 'time.gauge',
@@ -109,7 +116,7 @@
             let dfd = $.Deferred();
             $('#result').text('通信中...');
             $.ajax({
-                url: 'http://127.0.0.1:8000/api/slides/?room_id__id={{ room_id }}',
+                url: 'http://' + host + '/api/slides/?room_id__id={{ room_id }}',
                 type: 'GET',
                 dataType: 'json',
                 data: $('form').serializeArray(),
@@ -134,7 +141,7 @@
             $('#result').text('通信中...');
             // Ajax通信を開始
             $.ajax({
-                url: 'http://127.0.0.1:8000/api/rooms/?id={{ room_id }}',
+                url: 'http://' + host + '/api/rooms/?id={{ room_id }}',
                 type: 'GET',
                 dataType: 'json',
                 data: $('form').serializeArray(),
@@ -155,8 +162,7 @@
             return dfd.promise();
         }
 
-        {# 票の情報を取得して集計 #}
-
+        //票の情報を取得して集計
         function getVotes() {
             let dfd = $.Deferred();
             understand_gauge_cnt = 0;
@@ -164,7 +170,7 @@
             not_understand_gauge_cnt = 0;
             $('#result').text('通信中...');
             $.ajax({
-                url: 'http://127.0.0.1:8000/api/votes/?slide_id__slide_no=' + current_slidenum + '&slide_id__room_id__id={{ room_id }}',
+                url: 'http://' + host + '/api/votes/?slide_id__slide_no=' + current_slidenum + '&slide_id__room_id__id={{ room_id }}',
                 type: 'GET',
                 dataType: 'json',
                 data: $('form').serializeArray(),
@@ -189,8 +195,7 @@
             return dfd.promise();
         }
 
-        {# コメントの情報を取得して集計 #}
-
+        //コメントの情報を取得して集計
         function getComments() {
             let dfd = $.Deferred();
             understand_gauge_cnt = 0;
@@ -198,7 +203,7 @@
             not_understand_gauge_cnt = 0;
             $('#result').text('通信中...');
             $.ajax({
-                url: 'http://127.0.0.1:8000/api/comments/?slide_id__slide_no=' + current_slidenum + '&slide_id__room_id__id={{ room_id }}',
+                url: 'http://' + host + '/api/comments/?slide_id__slide_no=' + current_slidenum + '&slide_id__room_id__id={{ room_id }}',
                 type: 'GET',
                 dataType: 'json',
                 data: $('form').serializeArray(),
@@ -238,8 +243,7 @@
             $("#speaking_title").text("Slide" + current_slidenum);
         }
 
-        {# ゲージの値をDBから取得した値に基づいて更新 #}
-
+        //ゲージの値をDBから取得した値に基づいて更新
         function updateGauge() {
             understand_ratio = understand_gauge_cnt / room_people_num;
             have_known_ratio = have_known_gauge_cnt / room_people_num;
@@ -269,7 +273,7 @@
             }
         }
 
-        {# 画面読み込み時に実行 #}
+        //画面読み込み時に実行
         window.onload = function () {
             getCurrentSlideNum()
                 .then(dispCurrentSlideNum)
@@ -280,7 +284,8 @@
                 .then(dispComments)
                 .then(dispModal);
         };
-        {# 第二引数[msec]の間隔でfunctionを実行 #}
+
+        //第二引数[msec]の間隔でfunctionを実行
         setInterval(function () {
             getCurrentSlideNum()
                 .then(dispCurrentSlideNum)
