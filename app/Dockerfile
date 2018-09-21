@@ -1,6 +1,6 @@
-FROM python:3.7.0-alpine3.8
+FROM python:3.6-alpine3.8
 
-ENV PROJECT_ROOT /opt
+ENV PROJECT_ROOT /opt/Hacku
 
 # Set timezone
 RUN set -x && \
@@ -10,16 +10,20 @@ RUN set -x && \
     apk del --purge tzdata && \
     rm -rf /var/cache/apk/*
 
-# Install dependencies
+# Install dependenciesi
+COPY Pipfile ${PROJECT_ROOT}/
+COPY Pipfile.lock ${PROJECT_ROOT}/
+
 RUN set -x && \
     pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir \
-        django>=2.0.7 \
-        python-dotenv>=0.9 \
-        gunicorn
+    pip3 install --no-cache-dir pipenv
+
+WORKDIR ${PROJECT_ROOT}
+
+RUN pipenv install
 
 COPY ./webapp ${PROJECT_ROOT}/webapp
 
 WORKDIR ${PROJECT_ROOT}/webapp
 
-CMD ["gunicorn", "webapp.wsgi", "--config", "gunicorn.config.py"]
+CMD ["pipenv","run","gunicorn", "webapp.wsgi", "--config", "gunicorn.config.py"]

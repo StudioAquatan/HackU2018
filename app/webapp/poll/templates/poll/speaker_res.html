@@ -1,8 +1,13 @@
-{# base.htmlを継承 #}
 {% extends 'base.html' %}
-
-{# タイトルを変更 #}
-{% block title %}Results{% endblock %}
+{% load static %}
+{% block title %}
+    Results
+{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'poll/css/c3-v0.4.18.min.css' %}"/>
+    <script src="{% static 'poll/js/d3-v3.5.17.min.js' %}" charset="utf-8"></script>
+    <script src="{% static 'poll/js/c3-v0.4.18.min.js' %}"></script>
+{% endblock %}
 
 {# メインコンテンツ #}
 {% block content %}
