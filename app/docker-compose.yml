@@ -1,12 +1,11 @@
-version: "3.2"
+version: "2"
 
 services:
   static:
     image: nginx:stable
     container_name: django_seevo_static
-    expose:
-      - 80
-      - 443
+    ports:
+      - "80:80"
     volumes:
       - seevo_static_data:/var/www/static
       - ./conf:/etc/nginx/conf.d
@@ -18,7 +17,7 @@ services:
         max-file: "3"
     restart: always
     networks:
-      shared:
+      django_seevo_net:
         aliases:
           - django_seevo_static
 
@@ -29,20 +28,18 @@ services:
     expose:
       - 8000
     volumes:
-      - seevo_static_data:/opt/sample/static
-      - seevo_app_data:/opt/sample/data
+      - seevo_static_data:/opt/Hacku/webapp/static
+      - seevo_app_data:/opt/Hacku/webapp/data
     env_file:
       - env_files/.env
     restart: always
     networks:
-      shared:
+      django_seevo_net:
         aliases:
           - django_seevo_app
 
 networks:
-  shared:
-    external:
-      name: shared
+  django_seevo_net:
 
 volumes:
   seevo_static_data:
