@@ -15,6 +15,7 @@
           integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <script src="{% static 'poll/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'poll/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'poll/js/footerFixed.js' %}"></script>
 
     {% block head %}{% endblock %}
 
@@ -44,7 +45,7 @@
 {# メインコンテンツ #}
 {% block content %}{% endblock %}
 
-<footer class="footer">
+<footer id="footer">
     <div class="credits">
         <span class="copyright">
 		    © <script>document.write(new Date().getFullYear().toString())</script> Studio Aquatan

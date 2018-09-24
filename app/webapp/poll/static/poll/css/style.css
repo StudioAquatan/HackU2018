@@ -115,26 +115,19 @@ body {
     margin-bottom: 60px;
 }
 
-.footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 50px;
-    background-color: #0086B2;
-    text-align: right;
-}
-
-/*.table .table-striped .table-bordered {*/
-
-/*}*/
-
-/*table, tbody, tr, th, td {*/
-/*display: block;*/
+/*footer#footer {*/
+    /*width: 100%;*/
+    /*height: 50px;*/
+    /*background-color: #0086B2;*/
+    /*text-align: right;*/
 /*}*/
 
 .credits {
+    width: 100%;
     padding: 10px;
     height: 50px;
+    background-color: #0086B2;
+    text-align: right;
 }
 
 .container-fluid .container-group-meter {
