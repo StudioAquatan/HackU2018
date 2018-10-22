@@ -14,10 +14,8 @@
         </div>
             <form action="{% url 'poll:index' %}" method="post">
                 {% csrf_token %}
-                <div class="form-group row">
-                    <div class="offset-md-6 col-md-12">
-                        {% bootstrap_form form layout='horizontal' %}
-                    </div>
+                <div class="form-row">
+                    <input type="text" class="form-control" placeholder="Room Name">
                 </div>
                 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
                 <button class="btn btn-outline-primary btn-lg" type='submit' name='action' value='make_room'>
